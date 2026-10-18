@@ -1,0 +1,19 @@
+{
+  "name": "HOROLOGIUM // Planetary Time & Meridian Telemetry",
+  "short_name": "Horologium",
+  "description": "Enterprise-grade high-precision interactive world timezone atlas, UTC meridian tracker, and live temporal telemetry operations architecture.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#08090B",
+  "theme_color": "#FF4400",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity", "navigation"]
+}
