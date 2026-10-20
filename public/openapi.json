@@ -1,0 +1,686 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HOROLOGIUM Core Telemetry & Temporal API",
+    "version": "1.2.0-PRO",
+    "description": "High-precision enterprise temporal telemetry, Stratum-1 atomic synchronization, cross-border meeting overlap planning, and geodesic country registry.",
+    "contact": {
+      "name": "Horologium Systems Architecture Directorate",
+      "url": "https://horologium.io"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Local Development & Telemetry Workbench"
+    },
+    {
+      "url": "https://api.horologium.io",
+      "description": "Production Anycast Global Edge Cluster"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "System Health & Telemetry Subsystems",
+        "description": "Returns operational status across the Core API, embedded/relational database, Redis 7.x caching cluster, and Stratum-1 NTP synchronization.",
+        "responses": {
+          "200": {
+            "description": "All subsystems nominal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/time": {
+      "get": {
+        "summary": "Atomic Master Time & Solar Coordinates",
+        "description": "Returns the sub-second atomic UTC epoch, solar declination, and subsolar longitude meridian.",
+        "responses": {
+          "200": {
+            "description": "High-precision temporal coordinates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeTelemetry"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stratum1/sync": {
+      "get": {
+        "summary": "Stratum-1 Atomic SNTP Consensus Diagnostics",
+        "description": "Queries primary Stratum-1 time servers (Cloudflare, NIST) via UDP socket and returns consensus clock skew and round-trip delay.",
+        "responses": {
+          "200": {
+            "description": "Stratum-1 consensus locked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stratum1Consensus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/zones/overlap": {
+      "get": {
+        "summary": "Cross-Border 24-Hour Working Overlap Engine",
+        "description": "Calculates the hour delta and business working window (09:00 - 18:00) between any two global stations, returning a 24-hour overlap matrix.",
+        "parameters": [
+          {
+            "name": "stationA",
+            "in": "query",
+            "required": true,
+            "description": "Base station IANA timezone key (e.g. Europe/London)",
+            "schema": {
+              "type": "string",
+              "default": "Europe/London"
+            }
+          },
+          {
+            "name": "stationB",
+            "in": "query",
+            "required": true,
+            "description": "Remote station IANA timezone key (e.g. Asia/Tokyo)",
+            "schema": {
+              "type": "string",
+              "default": "Asia/Tokyo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Calculated or Redis-cached overlap matrix",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoneOverlap"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pins": {
+      "get": {
+        "summary": "List Pinned Telemetry Stations",
+        "description": "Fetches active pinned stations from persistent storage (PostgreSQL/TimescaleDB or SQLite).",
+        "responses": {
+          "200": {
+            "description": "List of pinned stations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PinnedStation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Pin Station to Telemetry Deck",
+        "description": "Adds a new station to the flight deck. Requires operator authentication.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "CookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePinRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Station pinned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PinnedStation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized operator well"
+          }
+        }
+      }
+    },
+    "/api/v1/pins/{id}": {
+      "delete": {
+        "summary": "Remove Pinned Station",
+        "description": "Deletes a station pin by ID. Requires operator authentication.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "CookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Station unpinned successfully"
+          },
+          "401": {
+            "description": "Unauthorized operator well"
+          }
+        }
+      }
+    },
+    "/api/pins": {
+      "get": {
+        "summary": "List Pinned Telemetry Stations (Legacy Alias)",
+        "description": "Alias of /api/v1/pins.",
+        "responses": {
+          "200": {
+            "description": "List of pinned stations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PinnedStation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Pin Station to Telemetry Deck (Legacy Alias)",
+        "description": "Alias of /api/v1/pins.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "CookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePinRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Station pinned successfully"
+          }
+        }
+      }
+    },
+    "/api/pins/{id}": {
+      "delete": {
+        "summary": "Remove Pinned Station (Legacy Alias)",
+        "description": "Alias of /api/v1/pins/{id}.",
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "CookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Station unpinned successfully"
+          }
+        }
+      }
+    },
+    "/api/v1/stream/time": {
+      "get": {
+        "tags": [
+          "Real-Time Streaming"
+        ],
+        "summary": "Server-Sent Events (SSE) Live Temporal Pulse",
+        "description": "Continuous 1-second telemetry broadcast containing live UTC timestamp, astronomical solar declination, subsolar meridian, stratum, and clock skew.",
+        "responses": {
+          "200": {
+            "description": "Real-time text/event-stream connection"
+          }
+        }
+      }
+    },
+    "/api/v1/countries": {
+      "get": {
+        "tags": [
+          "Geodesic Registry"
+        ],
+        "summary": "List and Filter Sovereign Territories",
+        "description": "Returns paginated sovereign country records with capital cities, coordinates, IANA timezones, and UTC offsets.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Search by country name, ISO code, or capital",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "description": "Filter by exact IANA timezone",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page (default: 50, max: 250)",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated country records"
+          }
+        }
+      }
+    },
+    "/api/v1/countries/{code}": {
+      "get": {
+        "tags": [
+          "Geodesic Registry"
+        ],
+        "summary": "Get Sovereign Territory by Identifier",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "ISO-3166-1 alpha-2 code or territory name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Territory information"
+          },
+          "404": {
+            "description": "Territory not found"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "Observability & Metrics"
+        ],
+        "summary": "Prometheus / OpenMetrics Telemetry Exposition",
+        "description": "Exposes runtime process statistics, HTTP request counts, response latency histograms, active WebSocket SNTP clients, and stratum skew.",
+        "responses": {
+          "200": {
+            "description": "Standard Prometheus metrics plain text"
+          }
+        }
+      }
+    },
+    "/api/admin/backup": {
+      "post": {
+        "tags": [
+          "Database Administration"
+        ],
+        "summary": "Trigger Atomic SQLite Point-in-Time Backup",
+        "description": "Flushes WAL frames via PRAGMA wal_checkpoint(TRUNCATE) and generates an atomic database snapshot file. (Requires operator clearance).",
+        "security": [
+          {
+            "OperatorKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Backup created successfully"
+          },
+          "401": {
+            "description": "Unauthorized operator clearance"
+          }
+        }
+      }
+    },
+    "/api/admin/backups": {
+      "get": {
+        "tags": [
+          "Database Administration"
+        ],
+        "summary": "List Point-in-Time Database Snapshots",
+        "description": "Returns array of existing database backups with file sizes and creation timestamps.",
+        "security": [
+          {
+            "OperatorKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of backups"
+          },
+          "401": {
+            "description": "Unauthorized operator clearance"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Standard JWT authentication header: Bearer <token>"
+      },
+      "CookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "horologium_session",
+        "description": "HttpOnly signed operator session cookie"
+      }
+    },
+    "schemas": {
+      "HealthStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ONLINE"
+          },
+          "subsystem": {
+            "type": "string",
+            "example": "Horologium Core Telemetry API"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.2.0-PRO"
+          },
+          "uptimeSeconds": {
+            "type": "integer",
+            "example": 1420
+          },
+          "serverTimeUtc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "database": {
+            "type": "object",
+            "properties": {
+              "engine": {
+                "type": "string",
+                "example": "PostgreSQL 16 + TimescaleDB"
+              },
+              "status": {
+                "type": "string",
+                "example": "CONNECTED"
+              }
+            }
+          },
+          "cache": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "Redis 7.x (ioredis)"
+              },
+              "status": {
+                "type": "string",
+                "example": "OPERATIONAL"
+              }
+            }
+          },
+          "ntp": {
+            "type": "object",
+            "properties": {
+              "stratum": {
+                "type": "integer",
+                "example": 1
+              },
+              "source": {
+                "type": "string",
+                "example": "Cloudflare / NIST SNTP Pool"
+              },
+              "cachedSkewMs": {
+                "type": "number",
+                "example": 0.08
+              }
+            }
+          }
+        }
+      },
+      "TimeTelemetry": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "SYNCHRONIZED"
+          },
+          "utcTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "epochMs": {
+            "type": "integer",
+            "example": 1792083590000
+          },
+          "solarDeclinationDeg": {
+            "type": "number",
+            "example": -8.45
+          },
+          "subsolarLongitudeDeg": {
+            "type": "number",
+            "example": -22.5
+          }
+        }
+      },
+      "Stratum1Consensus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "SYNCHRONIZED"
+          },
+          "serverTimeUtc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "skewMs": {
+            "type": "number",
+            "example": 0.05
+          },
+          "roundTripMs": {
+            "type": "number",
+            "example": 14.2
+          },
+          "primaryServer": {
+            "type": "string",
+            "example": "time.cloudflare.com"
+          },
+          "stratum": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "ZoneOverlap": {
+        "type": "object",
+        "properties": {
+          "stationA": {
+            "type": "string",
+            "example": "Europe/London"
+          },
+          "stationB": {
+            "type": "string",
+            "example": "Asia/Tokyo"
+          },
+          "deltaHours": {
+            "type": "integer",
+            "example": 9
+          },
+          "calculatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source": {
+            "type": "string",
+            "example": "REDIS_CACHE_HIT"
+          },
+          "overlapHours": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "hourUtc": {
+                  "type": "integer",
+                  "example": 12
+                },
+                "hourA": {
+                  "type": "integer",
+                  "example": 12
+                },
+                "hourB": {
+                  "type": "integer",
+                  "example": 21
+                },
+                "isGoldenOverlap": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "isOneSided": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "PinnedStation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "city": {
+            "type": "string",
+            "example": "Tokyo"
+          },
+          "country": {
+            "type": "string",
+            "example": "Japan"
+          },
+          "tz": {
+            "type": "string",
+            "example": "Asia/Tokyo"
+          },
+          "sort_order": {
+            "type": "integer",
+            "example": 0
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreatePinRequest": {
+        "type": "object",
+        "required": [
+          "city",
+          "country",
+          "tz"
+        ],
+        "properties": {
+          "city": {
+            "type": "string",
+            "example": "Reykjavik"
+          },
+          "country": {
+            "type": "string",
+            "example": "Iceland"
+          },
+          "tz": {
+            "type": "string",
+            "example": "Atlantic/Reykjavik"
+          },
+          "sort_order": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      }
+    }
+  }
+}
