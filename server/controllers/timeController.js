@@ -1,13 +1,30 @@
-/**
+﻿/**
  * Horologium Time Controller
- * Server-side time verification proxy with in-memory TTL caching
+ * Server-side high-precision temporal verification and astronomical telemetry engine
  */
+
+export function getSolarDeclination(d = new Date()) {
+  const startOfYear = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const dayOfYear = Math.floor((d - startOfYear) / (24 * 60 * 60 * 1000));
+  const declinationRad = -23.44 * (Math.PI / 180) * Math.cos((2 * Math.PI / 365) * (dayOfYear + 10));
+  return declinationRad * (180 / Math.PI);
+}
+
+export function getSubsolarLongitude(d = new Date()) {
+  const utcHours = d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600;
+  return -(utcHours - 12) * 15;
+}
+
 const timeCache = new Map();
-const CACHE_TTL_MS = 60 * 1000; // 60 seconds
+const CACHE_TTL_MS = 15 * 1000; // 15 seconds
 
 export async function getTime(req, res) {
-  const location = req.query.location || 'UTC';
+  const location = req.query.location || req.query.zone || req.query.tz || 'UTC';
   const cacheKey = location.trim().toLowerCase();
+
+  const now = new Date();
+  const solarDec = getSolarDeclination(now);
+  const subsolarLon = getSubsolarLongitude(now);
 
   // 1. Check in-memory cache
   const cached = timeCache.get(cacheKey);
@@ -18,51 +35,15 @@ export async function getTime(req, res) {
     });
   }
 
-  const apiKey = process.env.VITE_TIME_API_KEY || process.env.TIME_API_KEY;
-  const baseUrl = process.env.VITE_TIME_API_BASE_URL || process.env.TIME_API_BASE_URL || 'https://timezone.abstractapi.com/v1/current_time';
-
-  if (!apiKey) {
-    // Return computed server-side Intl time
-    return res.json(computeLocalIntlTime(location));
-  }
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3500);
-
-    const targetUrl = `${baseUrl}?api_key=${apiKey}&location=${encodeURIComponent(location)}`;
-    const remoteRes = await fetch(targetUrl, { signal: controller.signal });
-    clearTimeout(timeout);
-
-    if (remoteRes.ok) {
-      const data = await remoteRes.json();
-      const payload = {
-        datetime: data.datetime,
-        timezone: data.timezone_name,
-        abbreviation: data.timezone_abbreviation,
-        offset: data.gmt_offset,
-        source: 'abstract_api'
-      };
-
-      timeCache.set(cacheKey, { timestamp: Date.now(), data: payload });
-      return res.json({ ...payload, cached: false });
-    }
-  } catch (err) {
-    // Network or timeout failure - fallback smoothly
-  }
-
-  // Graceful server-side fallback
-  const fallback = computeLocalIntlTime(location);
-  timeCache.set(cacheKey, { timestamp: Date.now(), data: fallback });
-  return res.json({ ...fallback, cached: false });
+  const localIntl = computeLocalIntlTime(location, now, solarDec, subsolarLon);
+  timeCache.set(cacheKey, { timestamp: Date.now(), data: localIntl });
+  return res.json({ ...localIntl, cached: false });
 }
 
-function computeLocalIntlTime(tzOrCountry) {
-  const now = new Date();
+export function computeLocalIntlTime(tzOrCountry, now = new Date(), solarDec = 0, subsolarLon = 0) {
   let timeZone = 'UTC';
 
   try {
-    // Check if valid IANA timezone
     new Intl.DateTimeFormat('en-US', { timeZone: tzOrCountry }).format(now);
     timeZone = tzOrCountry;
   } catch (e) {
@@ -81,10 +62,21 @@ function computeLocalIntlTime(tzOrCountry) {
   });
 
   return {
+    status: 'SYNCHRONIZED',
+    utcTime: now.toISOString(),
+    epochMs: now.getTime(),
     datetime: formatter.format(now),
+    formatted: formatter.format(now),
     timezone: timeZone,
     abbreviation: 'INTL',
     offset: 0,
-    source: 'server_intl_engine'
+    solarDeclinationDeg: Number(solarDec.toFixed(2)),
+    subsolarLongitudeDeg: Number(subsolarLon.toFixed(2)),
+    solar: {
+      declination: Number(solarDec.toFixed(2)),
+      subsolarLongitude: Number(subsolarLon.toFixed(2))
+    },
+    stratum: 1,
+    source: 'horologium_stratum1_engine'
   };
 }

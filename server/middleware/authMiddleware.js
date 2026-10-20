@@ -11,7 +11,7 @@ export function requireOperatorAuth(req, res, next) {
   if (!session) {
     return res.status(401).json({
       success: false,
-      error: 'Security clearance required. Please authenticate at /src/pages/auth.html.'
+      error: 'Security clearance required. Please authenticate at /operator-gateway/.'
     });
   }
 
