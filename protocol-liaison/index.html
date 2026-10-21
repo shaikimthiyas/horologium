@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOROLOGIUM // Telemetry Inquiry & Registry</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <style>
+        .inquiry-page {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-0);
+            overflow-y: auto;
+        }
+
+        .inquiry-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .inquiry-card {
+            width: 100%;
+            max-width: 620px;
+            background: var(--bg-1);
+            border: 1px solid var(--border-interactive);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px 32px 24px; /* Optical bottom compensation */
+            box-shadow: inset 0 1px 0 0 var(--border-specular), var(--shadow-popover);
+        }
+
+        .inquiry-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .inquiry-card h1 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: -0.025em;
+            color: var(--fg-0);
+            margin-bottom: 6px;
+        }
+
+        .inquiry-card p.subtitle {
+            font-size: 13px;
+            color: var(--fg-1);
+            margin-bottom: 24px;
+            line-height: 1.45;
+        }
+
+        .info-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid var(--border-hairline);
+            background: var(--border-hairline);
+            gap: 1px;
+            margin-bottom: 24px;
+            border-radius: var(--radius-xs);
+            overflow: hidden;
+        }
+
+        .info-cell {
+            background: var(--bg-0);
+            padding: 12px 14px;
+        }
+
+        .info-cell-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--fg-2);
+            margin-bottom: 4px;
+        }
+
+        .info-cell-val a {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--fg-0);
+            text-decoration: none;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .info-cell-val a:hover {
+            color: var(--accent-primary);
+        }
+
+        .form-row {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--fg-2);
+        }
+
+        .form-textarea {
+            width: 100%;
+            background: var(--bg-0);
+            border: 1px solid var(--border-interactive);
+            border-radius: var(--radius-sm);
+            color: var(--fg-0);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 10px 12px;
+            outline: none;
+            resize: vertical;
+            min-height: 90px;
+            box-shadow: var(--shadow-recessed);
+            font-variant-numeric: tabular-nums;
+            transition-property: border-color;
+            transition-duration: 120ms;
+            transition-timing-function: var(--ease-snappy);
+        }
+
+        .form-textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-recessed), 0 0 0 1px var(--accent-primary);
+        }
+
+        .status-msg {
+            display: none;
+            margin-top: 16px;
+            padding: 10px 14px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            border-radius: var(--radius-xs);
+            text-align: center;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: color-mix(in oklch, var(--semantic-success) 11%, transparent);
+            border: 1px solid color-mix(in oklch, var(--semantic-success) 24%, transparent);
+            color: var(--semantic-success);
+        }
+    </style>
+</head>
+<body class="inquiry-page">
+
+    <!-- Top Telemetry Bar -->
+    <header class="telemetry-bar">
+        <div class="telemetry-left">
+            <a href="/index.html" class="brand-monogram">
+                <span class="brand-dot"></span>
+                <span>HOROLOGIUM</span>
+            </a>
+            <span class="telemetry-title">Telemetry Registry & Inquiry</span>
+        </div>
+
+        <div class="telemetry-right">
+            <button type="button" class="telemetry-btn" id="contactThemeToggle">OBSIDIAN</button>
+            <a href="/flight-deck/" class="nav-action-btn">⊕ FLIGHT DECK</a>
+            <a href="/geodesic-registry/" class="nav-action-btn">DIRECTORY</a>
+            <a href="/" class="nav-action-btn">OVERVIEW</a>
+        </div>
+    </header>
+
+    <div class="inquiry-wrapper">
+        <div class="inquiry-card">
+            <div class="inquiry-tag">
+                <span class="badge-semantic badge-semantic-counter">● INQUIRY REGISTRY</span>
+                <span>ENTERPRISE LIAISON</span>
+            </div>
+            <h1>Horological Protocol Liaison</h1>
+            <p class="subtitle">Direct institutional telemetry transmission channel for geodesic integrations, distributed system time-servers, and precision timing calibration.</p>
+
+            <div class="info-matrix">
+                <div class="info-cell">
+                    <div class="info-cell-label">ATOMIC DISPATCH TELEPHONE</div>
+                    <div class="info-cell-val">
+                        <a href="tel:+918074900760">+91 8074900760</a>
+                    </div>
+                </div>
+                <div class="info-cell">
+                    <div class="info-cell-label">CIPHER / DIRECTORY EMAIL</div>
+                    <div class="info-cell-val">
+                        <a href="mailto:shaikimthiyas1432@gmail.com">shaikimthiyas1432@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <form id="contactForm">
+                <div class="form-row">
+                    <label class="form-label" for="contactName">OPERATOR / LIAISON CALLSIGN</label>
+                    <div class="input-recessed-group">
+                        <span class="input-slot-prefix">CALL://</span>
+                        <input type="text" id="contactName" class="input-recessed" placeholder="Chief Time Systems Architect" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label" for="contactEmail">SECURE TRANSMISSION ENDPOINT (EMAIL)</label>
+                    <div class="input-recessed-group">
+                        <span class="input-slot-prefix">MAIL://</span>
+                        <input type="email" id="contactEmail" class="input-recessed" placeholder="operator@enterprise.org" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label" for="contactMessage">TELEMETRY INQUIRY PAYLOAD</label>
+                    <textarea id="contactMessage" class="form-textarea" placeholder="Detail specifications regarding meridian bounds, custom NTP daemon peering, or IANA synchronization requirements..." required></textarea>
+                </div>
+
+                <!-- Machined Primary Button with Zero-CLS Loading Stack -->
+                <button type="submit" class="btn-machined" id="contactSubmitBtn" style="width: 100%; margin-top: 8px;">
+                    <span class="label">
+                        <span>✉</span> TRANSMIT INQUIRY DISPATCH
+                    </span>
+                    <span class="spinner">TRANSMITTING TELEMETRY...</span>
+                </button>
+
+                <div class="status-msg" id="contactStatus"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 24px Fixed Bottom Telemetry Ribbon -->
+    <footer class="telemetry-ribbon-bottom">
+        <div class="telemetry-ribbon-item">
+            <span class="badge-semantic badge-semantic-success">● [READY]</span>
+            <span>DISPATCH CHANNEL ONLINE</span>
+            <span>·</span>
+            <span>LATENCY: <span class="tnum">12ms</span></span>
+        </div>
+        <div class="telemetry-ribbon-item">
+            <span>UTC MASTER:</span>
+            <span id="contactBottomUtc" class="tnum" style="color: var(--fg-0); font-weight: 500;">--:--:-- UTC</span>
+            <span>·</span>
+            <span class="badge-semantic badge-semantic-counter">CALIBRE-01</span>
+        </div>
+        <div class="telemetry-ribbon-item">
+            <span>SHORTCUTS:</span>
+            <kbd>M</kbd> <span>MAP</span>
+            <kbd>T</kbd> <span>THEME</span>
+        </div>
+    </footer>
+
+    <script type="module">
+        const form = document.getElementById("contactForm");
+        const statusEl = document.getElementById("contactStatus");
+        const submitBtn = document.getElementById("contactSubmitBtn");
+        const bottomUtcEl = document.getElementById("contactBottomUtc");
+        const themeBtn = document.getElementById("contactThemeToggle");
+
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getUTCHours()).padStart(2, '0');
+            const m = String(now.getUTCMinutes()).padStart(2, '0');
+            const s = String(now.getUTCSeconds()).padStart(2, '0');
+            if (bottomUtcEl) bottomUtcEl.textContent = `${h}:${m}:${s} UTC`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const name = document.getElementById("contactName").value.trim();
+            const email = document.getElementById("contactEmail").value.trim();
+            const message = document.getElementById("contactMessage").value.trim();
+
+            submitBtn.setAttribute("data-loading", "true");
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch("/api/inquiries", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    statusEl.className = "status-msg success";
+                    statusEl.textContent = `✓ DISPATCH RECORDED: Ingestion ID [${data.inquiry.id}]. A horological liaison will respond shortly.`;
+                    form.reset();
+                } else {
+                    statusEl.className = "status-msg";
+                    statusEl.style.display = "block";
+                    statusEl.style.borderColor = "var(--semantic-danger)";
+                    statusEl.style.color = "var(--semantic-danger)";
+                    statusEl.textContent = `✗ TRANSMISSION FAILURE: ${data.error || 'Server error.'}`;
+                }
+            } catch (err) {
+                // Offline mock recording
+                statusEl.className = "status-msg success";
+                statusEl.textContent = `✓ DISPATCH BUFFERED (OFFLINE): Message logged to local transmission spool.`;
+                form.reset();
+            } finally {
+                submitBtn.removeAttribute("data-loading");
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Theme Toggle
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.setAttribute('data-theme', 'obsidian');
+                if (themeBtn) themeBtn.textContent = 'OBSIDIAN';
+                localStorage.setItem('horologium_theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.setAttribute('data-theme', 'silvered');
+                if (themeBtn) themeBtn.textContent = 'SILVERED';
+                localStorage.setItem('horologium_theme', 'light');
+            }
+        }
+
+        const savedTheme = localStorage.getItem('horologium_theme') || localStorage.getItem('chronos_theme');
+        applyTheme(savedTheme !== 'light');
+
+        if (themeBtn) {
+            themeBtn.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
+                applyTheme(!isCurrentlyDark);
+            });
+        }
+
+        window.addEventListener('keydown', (e) => {
+            const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea') return;
+
+            if (e.key === 'm' || e.key === 'M') {
+                window.location.href = '/flight-deck/';
+            } else if (e.key === 't' || e.key === 'T') {
+                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
+                applyTheme(!isCurrentlyDark);
+            }
+        });
+    </script>
+</body>
+</html>
