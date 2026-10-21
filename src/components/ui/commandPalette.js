@@ -21,7 +21,10 @@ export class CommandPalette {
     if (!this.searchModal) return;
 
     if (this.searchTriggerBtn) {
-      this.searchTriggerBtn.addEventListener('click', () => this.open());
+      this.searchTriggerBtn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        this.open();
+      });
     }
 
     this.searchModal.addEventListener('click', (e) => {
