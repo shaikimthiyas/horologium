@@ -18,7 +18,7 @@ before(async () => {
 });
 
 after(async () => {
-  await new Promise((resolve) => server.close(resolve));
+  await new Promise((resolve) => { server.closeAllConnections ? server.closeAllConnections() : null; server.close(resolve); }); server.unref();
 });
 
 describe('Horologium Core Telemetry API Integration Tests', () => {
