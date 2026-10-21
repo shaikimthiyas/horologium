@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/cover.jpg" alt="HOROLOGIUM // Calibre-01 Desktop Cover" width="100%">
+</p>
+
 # HOROLOGIUM // Global Temporal & Meridian Telemetry System
 
 > **A tier-1 interactive world timezone atlas, UTC meridian tracker, and temporal telemetry platform engineered with Swiss horological precision, embedded SQLite persistence, and an isolated Node.js API runtime.**
@@ -31,13 +35,14 @@
 graph TD
     Client([Browser Navigator]) --> VHost[Vite Dev :5173 / Node Prod :3000]
 
-    subgraph "Frontend Layer (Vite + ES Modules)"
-        VHost --> Index[index.html // Canonical Root]
-        VHost --> MapView[src/pages/map.html // Atlas Flight Deck]
-        VHost --> DirView[src/pages/country.html // Universal Directory]
-        VHost --> AuthView[src/pages/auth.html // Operator Clearance]
-        VHost --> ContactView[src/pages/contact.html // Telemetry Registry]
-        MapView --> Runtime[src/main.js // Core Orchestrator]
+    subgraph "Frontend Layer (Enterprise Multi-Route Architecture)"
+        VHost --> Index[index.html // Canonical Root Operations Workbench]
+        VHost --> FlightDeck[flight-deck/ // Planetary Cartography Deck]
+        VHost --> GeodesicReg[geodesic-registry/ // 220+ Territory Directory]
+        VHost --> OperatorGate[operator-gateway/ // Security Clearance Access]
+        VHost --> ProtocolLiaison[protocol-liaison/ // Telemetry Inquiry Registry]
+        VHost --> ApiExplorer[api-explorer/ // OpenAPI 3.1 Developer Console]
+        FlightDeck --> Runtime[src/main.js // Core Orchestrator]
     end
 
     subgraph "Backend API Layer (server/)"
@@ -98,19 +103,24 @@ horologium/
 │   │   └── ui/                # CommandPalette (Cmd+K) & NavigationHeader
 │   ├── config/                # env.js & constants.js
 │   ├── data/                  # countries.data.js (220 nations)
-│   ├── pages/                 # map.html, country.html, auth.html, contact.html
+│   ├── pages/                 # Legacy zero-breakage forwarders
 │   ├── styles/                # tokens.css, base.css, layout.css, main.css
-│   ├── utils/                 # dom.js, router.js, timeMath.js
+│   ├── utils/                 # dom.js, router.js, timeMath.js, sntpClient.js
 │   └── main.js                # Primary application bootstrap
+├── flight-deck/               # Canonical Vector & 3D WebGL Flight Deck (index.html)
+├── geodesic-registry/         # 220+ Sovereign Nations & IANA Offsets (index.html)
+├── operator-gateway/          # Security Clearance Level-01 Session Portal (index.html)
+├── protocol-liaison/          # Enterprise Telemetry Ingestion Registry (index.html)
+├── api-explorer/              # OpenAPI 3.1 Interactive Specification (index.html)
 ├── .env                       # Local secrets (NEVER COMMITTED)
 ├── .env.example               # Committed template defining required keys
 ├── .gitignore                 # Production-grade Git ignore rules
 ├── docker-compose.yml         # Container orchestration manifest
 ├── Dockerfile                 # Multi-stage production container build
-├── index.html                 # Single Unified Root Entry Point
+├── index.html                 # Single Unified Root Operations Workbench
 ├── package.json               # Scripts: dev, dev:server, dev:client, build, start
 ├── server.js                  # Production server entrypoint
-├── vite.config.js             # Multi-page build & /api proxy configuration
+├── vite.config.js             # Multi-page build & enterprise route proxy configuration
 └── README.md                  # Comprehensive architectural reference
 ```
 
