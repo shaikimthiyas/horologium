@@ -80,6 +80,7 @@ export class WebSocketSntpServer {
         ws.ping();
       }
     }, 30000);
+    if (this.heartbeatInterval.unref) this.heartbeatInterval.unref();
   }
 
   handleMessage(ws, rawData, t2) {

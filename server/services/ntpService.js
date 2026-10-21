@@ -148,6 +148,7 @@ class Stratum1NtpService {
     this.syncInterval = setInterval(() => {
       this.getStratum1Consensus().catch(() => {});
     }, 5 * 60 * 1000);
+    if (this.syncInterval.unref) this.syncInterval.unref();
   }
 }
 

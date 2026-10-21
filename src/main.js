@@ -14,6 +14,7 @@ import { timeService } from './api/timeService.js';
 import { APP_CONFIG } from './config/constants.js';
 import { getCountryData } from './data/countries.data.js';
 import { getQueryParam } from './utils/router.js';
+import { sntpClient } from './utils/sntpClient.js';
 
 class HorologiumApp {
   constructor() {
@@ -113,15 +114,28 @@ class HorologiumApp {
       }, 150);
     }
 
-    // 6. Start Master Telemetry Clock Loop
+    // 6. Global Horologium Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'textarea') return;
+
+      if (e.key === 't' || e.key === 'T') {
+        if (this.navHeader) this.navHeader.toggleTheme();
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        if (this.scrubberController) this.scrubberController.snapToLive();
+      }
+    });
+
+    // 7. Start Master Telemetry Clock Loop
     this.startClockTicker();
 
-    // 7. Verify atomic time with remote service in background
+    // 8. Verify atomic time with remote service in background
     this.syncRemoteTime();
   }
 
   getEffectiveDate() {
-    const now = new Date();
+    const now = sntpClient.getAtomicTime();
     if (this.isLive || this.simulatedOffsetMinutes === 0) {
       return now;
     }
