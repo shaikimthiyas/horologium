@@ -1,11 +1,24 @@
 /**
- * Horologium Application Constants
+ * HOROLOGIUM DESIGN SYSTEM (v1.0.0-PRO) // APPLICATION CONFIG & ROUTE ARCHITECTURE
+ * Codename: Calibre-01
  */
 export const APP_CONFIG = {
   APP_NAME: 'Horologium',
-  VERSION: '1.0.0',
+  CODENAME: 'Calibre-01',
+  VERSION: '1.2.0',
   CLOCK_TICK_INTERVAL_MS: 1000,
   DEFAULT_FOCAL_COUNTRY: 'United Kingdom',
+  
+  // Enterprise Multi-Route Architecture
+  ROUTES: {
+    HOME: '/',
+    FLIGHT_DECK: '/flight-deck/',
+    GEODESIC_REGISTRY: '/geodesic-registry/',
+    OPERATOR_GATEWAY: '/operator-gateway/',
+    PROTOCOL_LIAISON: '/protocol-liaison/',
+    API_EXPLORER: '/api-explorer/'
+  },
+
   DEFAULT_PINNED_CITIES: [
     { city: 'London', country: 'United Kingdom', tz: 'Europe/London' },
     { city: 'Tokyo', country: 'Japan', tz: 'Asia/Tokyo' },
@@ -17,7 +30,9 @@ export const APP_CONFIG = {
   STORAGE_KEYS: {
     THEME: 'horologium_theme',
     TIME_FORMAT: 'horologium_format',
-    PINNED: 'horologium_pinned'
+    PINNED: 'horologium_pinned',
+    OPERATOR_TOKEN: 'horologium_operator_token',
+    OPERATOR_CALLSIGN: 'horologium_operator_callsign'
   },
   MAP: {
     VIEWBOX_WIDTH: 2000,
@@ -35,3 +50,4 @@ export const APP_CONFIG = {
 };
 
 export const STORAGE_KEYS = APP_CONFIG.STORAGE_KEYS;
+export const ROUTES = APP_CONFIG.ROUTES;
