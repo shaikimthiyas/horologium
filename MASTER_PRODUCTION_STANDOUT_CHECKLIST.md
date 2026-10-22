@@ -40,7 +40,7 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | **P0** | **FE-07** | **Offline PWA Service Worker** | [x] | `public/sw.js`. Stale-while-revalidate asset caching and offline page support. |
 | **P1** | **FE-08** | **Deterministic Finite State Machine (FSM)** | [x] | Replace ad-hoc flags in `src/main.js` with a formal clock FSM: `INITIALIZING` → `PROBING_NTP` → `LOCKED` → `DEGRADED` → `OFFLINE`. |
 | **P1** | **FE-09** | **Global Chronometer Error Boundary** | [x] | Capture `window.onerror` & `unhandledrejection` and render a mechanical 'Chronometer Safe Mode' diagnostic dialog. |
-| **P2** | **FE-10** | **Zero-Layout-Shift Local Font Assets** | [ ] | Bundle WOFF2 font files locally with CSS `size-adjust` to eliminate Google Fonts CDN roundtrips and layout shifts. |
+| **P2** | **FE-10** | **Zero-Layout-Shift Local Font Assets** | [x] | Bundle WOFF2 font files locally with CSS `size-adjust` to eliminate Google Fonts CDN roundtrips and layout shifts. |
 | **P0** | **FE-11** | **Solar Coordinate Math Integrity** | [x] | `src/utils/timeMath.js`. Astronomical subsolar latitude, declination bounds [-23.45°, +23.45°], and equation of time. |
 | **P0** | **FE-12** | **24-Hour Overlap Planner & Ribbon** | [x] | `src/main.js`. Visual overlap ribbon, golden working hours (09:00-18:00), and RFC-9557 copy token. |
 
@@ -55,7 +55,7 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | **P1** | **BE-03** | **Strict Request Schema Validation (Zod)** | [x] | Introduce Zod validation schemas for all query params (`query`, `limit`, `offset`) and body payloads. |
 | **P1** | **BE-04** | **RFC 7807 Problem Details for HTTP APIs** | [x] | Standardize all API error responses to return `application/problem+json` with `type`, `title`, `status`, `detail`, and `instance`. |
 | **P0** | **BE-05** | **Kubernetes-Standard Health Probes** | [x] | Expand `/health` into `/healthz` (liveness), `/readyz` (readiness: DB, Redis, NTP check), and `/startupz`. |
-| **P1** | **BE-06** | **Structured JSON Logging (Pino)** | [ ] | Replace `console.log` with high-speed Pino logger injecting `trace_id` and `request_id` into every log entry. |
+| **P1** | **BE-06** | **Structured JSON Logging (Pino)** | [x] | Replace `console.log` with high-speed Pino logger injecting `trace_id` and `request_id` into every log entry. |
 | **P0** | **BE-07** | **Zero-Downtime Graceful Process Shutdown** | [x] | Intercept `SIGTERM` & `SIGINT`, close HTTP/WS listener, drain active requests, close database pool and Redis cleanly. |
 | **P1** | **BE-08** | **Circuit Breaker for Upstream NTP** | [ ] | Wrap external NTP queries in a 3-state circuit breaker (Closed/Open/Half-Open) to guard against network partitions. |
 | **P1** | **BE-09** | **API Idempotency Key Handling** | [ ] | Add `Idempotency-Key` HTTP header validation backed by Redis for write endpoints to eliminate duplicate writes. |
@@ -108,8 +108,8 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | Priority | ID | Capability / Standard | Current Status | Target Architecture & File Location |
 | :---: | :---: | :--- | :---: | :--- |
 | **P0** | **SC-01** | **Security Response Headers** | [x] | `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `X-XSS-Protection: 1; mode=block`. |
-| **P1** | **SC-02** | **Strict Content Security Policy (CSP)** | [ ] | Enforce CSP restricting script/style/font/connect origins (`connect-src 'self' ws: wss:`). |
-| **P1** | **SC-03** | **Environment Variable Fast-Fail Validator** | [ ] | Validate required env vars on boot; exit immediately if insecure default secrets are used in production. |
+| **P1** | **SC-02** | **Strict Content Security Policy (CSP)** | [x] | Enforce CSP restricting script/style/font/connect origins (`connect-src 'self' ws: wss:`). |
+| **P1** | **SC-03** | **Environment Variable Fast-Fail Validator** | [x] | Validate required env vars on boot; exit immediately if insecure default secrets are used in production. |
 | **P0** | **SC-04** | **SQL Injection Protection** | [x] | Parameterized queries used across both PostgreSQL client and SQLite prepared statements. |
 | **P1** | **SC-05** | **WebSocket Anti-Replay Nonce Validation** | [ ] | Cryptographic nonces in SNTP WebSocket packets to reject spoofed or replayed time stamps. |
 
