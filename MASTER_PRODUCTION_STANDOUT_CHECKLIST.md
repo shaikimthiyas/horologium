@@ -99,7 +99,7 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | **P1** | **OB-03** | **Complete USE Metrics (Util, Saturation, Error)**| [ ] | Node.js event loop lag gauge, libuv active handles, heap memory usage, DB pool queue saturation. |
 | **P0** | **OB-04** | **Horological Domain Gauges** | [x] | `horologium_ntp_offset_milliseconds`, `horologium_ntp_jitter_milliseconds`, `horologium_ws_connected_clients`. |
 | **P1** | **OB-05** | **W3C TraceContext (OpenTelemetry Ready)** | [ ] | Generate or propagate `traceparent` header across all HTTP and WebSocket transactions for distributed tracing. |
-| **P2** | **OB-06** | **Pre-Built Grafana Dashboard Definition** | [ ] | `deploy/grafana/dashboard.json`. Exportable JSON dashboard for instant import in Prometheus/Grafana stacks. |
+| **P2** | **OB-06** | **Pre-Built Grafana Dashboard Definition** | [x] | `deploy/grafana/dashboard.json`. Exportable JSON dashboard for instant import in Prometheus/Grafana stacks. |
 
 ---
 
@@ -134,9 +134,9 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | Priority | ID | Capability / Standard | Current Status | Target Architecture & File Location |
 | :---: | :---: | :--- | :---: | :--- |
 | **P0** | **DO-01** | **Go Stratum-1 Multi-Stage Dockerfile** | [x] | `server/ntp-stratum1/Dockerfile`. Multi-stage scratch build for micro-footprint Go binary. |
-| **P1** | **DO-02** | **Root Multi-Stage Node.js Dockerfile** | [ ] | Optimized production Dockerfile for Node gateway with non-root user and curl healthcheck. |
-| **P1** | **DO-03** | **Production Docker Compose Stack** | [ ] | `docker-compose.yml` orchestrating Node Gateway, Go NTP daemon, TimescaleDB, Redis, Prometheus, Grafana. |
-| **P1** | **DO-04** | **GitHub Actions CI/CD Pipeline** | [ ] | `.github/workflows/ci.yml` executing linting, unit tests, integration tests, and Docker build. |
+| **P1** | **DO-02** | **Root Multi-Stage Node.js Dockerfile** | [x] | Optimized production Dockerfile for Node gateway with non-root user and curl healthcheck. |
+| **P1** | **DO-03** | **Production Docker Compose Stack** | [x] | `docker-compose.yml` orchestrating Node Gateway, Go NTP daemon, TimescaleDB, Redis, Prometheus, Grafana. |
+| **P1** | **DO-04** | **GitHub Actions CI/CD Pipeline** | [x] | `.github/workflows/ci.yml` executing linting, unit tests, integration tests, and Docker build. |
 
 ---
 

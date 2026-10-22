@@ -1,39 +1,68 @@
 # ==============================================================================
-# HOROLOGIUM // DOCKER PRODUCTION CONTAINER (MULTI-STAGE)
-# Node.js 24 Alpine with Embedded SQLite & Production Vite Bundle
+# HOROLOGIUM // ENTERPRISE MULTI-STAGE PRODUCTION DOCKERFILE
+# ==============================================================================
+# Architecture:
+# - Stage 1 (builder): Installs full dependencies & compiles Vite multi-page assets
+# - Stage 2 (runner):  Hardened minimal Node.js Alpine image, unprivileged user,
+#                      production dependencies only, built-in health check probe.
 # ==============================================================================
 
-# STAGE 1: Build Frontend Assets
-FROM node:24-alpine AS builder
+# ------------------------------------------------------------------------------
+# STAGE 1: Client & Asset Compilation
+# ------------------------------------------------------------------------------
+FROM node:22-alpine AS builder
+
 WORKDIR /app
-COPY package*.json ./
+
+# Cache package dependencies layer
+COPY package.json package-lock.json ./
 RUN npm ci
+
+# Copy full application tree
 COPY . .
+
+# Compile multi-page client application and minified chunks
 RUN npm run build
 
-# STAGE 2: Production Server Runner
-FROM node:24-alpine AS runner
+# ------------------------------------------------------------------------------
+# STAGE 2: Hardened Production Runtime
+# ------------------------------------------------------------------------------
+FROM node:22-alpine AS runner
+
 WORKDIR /app
 
-ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOST=0.0.0.0
+# Install curl for container orchestration health checks
+RUN apk add --no-cache curl
 
-COPY package*.json ./
-RUN npm ci --omit=dev
+ENV NODE_ENV=production \
+    PORT=3001 \
+    HOST=0.0.0.0
 
-# Copy built frontend assets and server application
+# Install production dependencies only
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# Copy pre-compiled Vite distribution from builder
 COPY --from=builder /app/dist ./dist
+
+# Copy backend server modules and geodesic datasets
 COPY --from=builder /app/server ./server
-COPY --from=builder /app/server.js ./server.js
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/src/data ./src/data
+COPY --from=builder /app/server.js ./server.js
 
-# Ensure database directory exists
-RUN mkdir -p /app/server/data
+# Ensure local data directory exists with unprivileged permissions
+RUN mkdir -p /app/server/data && chown -R node:node /app
 
-EXPOSE 3000
+# Run as non-root unprivileged system user
+USER node
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+# Expose HTTP API & WebSocket SNTP gateway port
+EXPOSE 3001
 
+# Kubernetes & Docker Healthcheck Probe
+HEALTHCHECK --interval=20s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:3001/healthz || exit 1
+
+# Launch Horologium Production Gateway
 CMD ["node", "server.js"]
