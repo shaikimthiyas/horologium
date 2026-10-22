@@ -1,10 +1,11 @@
 /**
  * Horologium Stratum-1 Atomic Synchronization Engine (Node.js Native SNTP)
  * Directly interfaces with Cloudflare (time.cloudflare.com) and NIST (time.nist.gov)
- * via UDP sockets using RFC 5905 algorithms.
+ * via UDP sockets using RFC 5905 algorithms and Marzullo's Intersection Consensus.
  */
 
 import dgram from 'node:dgram';
+import { computeMarzulloConsensus } from './marzullo.js';
 
 const NTP_SERVERS = [
   'time.cloudflare.com',
@@ -21,8 +22,13 @@ class Stratum1NtpService {
     this.cachedSync = {
       serverTimeUtc: new Date().toISOString(),
       skewMs: 0.0,
+      confidenceHalfWidthMs: 1.0,
       roundTripMs: 12.0,
       primaryServer: 'time.cloudflare.com',
+      stratum: 1,
+      marzulloStatus: 'INITIALIZING',
+      truechimersCount: 1,
+      falsetickersCount: 0,
       lastSyncEpoch: Date.now()
     };
     this.syncInterval = null;
@@ -82,7 +88,9 @@ class Stratum1NtpService {
           server: serverHost,
           stratum,
           skewMs: offset,
+          offset,
           roundTripMs: delay,
+          delay,
           atomicEpoch: t4 + offset
         });
       });
@@ -104,7 +112,7 @@ class Stratum1NtpService {
   }
 
   /**
-   * Run consensus query across primary Stratum-1 pool
+   * Run consensus query across primary Stratum-1 pool with Marzullo's algorithm
    */
   async getStratum1Consensus() {
     const promises = NTP_SERVERS.map(host => 
@@ -117,24 +125,25 @@ class Stratum1NtpService {
       return this.cachedSync;
     }
 
-    // Sort by lowest latency
-    results.sort((a, b) => a.roundTripMs - b.roundTripMs);
-    const best = results[0];
+    // Apply Marzullo's Intersection Algorithm across responsive sources
+    const marzullo = computeMarzulloConsensus(results);
+    const primaryId = marzullo.truechimers.length > 0 ? marzullo.truechimers[0].server : results[0].server;
+    const bestResult = results.find(r => r.server === primaryId) || results[0];
 
-    // Compute mean skew across top 2 lowest latency responses
-    const topCount = Math.min(2, results.length);
-    let totalSkew = 0;
-    for (let i = 0; i < topCount; i++) {
-      totalSkew += results[i].skewMs;
-    }
-    const meanSkew = totalSkew / topCount;
+    const consensusSkew = marzullo.consensusOffset;
 
     this.cachedSync = {
-      serverTimeUtc: new Date(Date.now() + meanSkew).toISOString(),
-      skewMs: Number(meanSkew.toFixed(3)),
-      roundTripMs: Number(best.roundTripMs.toFixed(2)),
-      primaryServer: best.server,
-      stratum: best.stratum,
+      serverTimeUtc: new Date(Date.now() + consensusSkew).toISOString(),
+      skewMs: Number(consensusSkew.toFixed(3)),
+      confidenceHalfWidthMs: marzullo.confidenceHalfWidth,
+      roundTripMs: Number(bestResult.roundTripMs.toFixed(2)),
+      primaryServer: primaryId,
+      stratum: bestResult.stratum || 1,
+      marzulloStatus: marzullo.status,
+      truechimersCount: marzullo.truechimers.length,
+      falsetickersCount: marzullo.falsetickers.length,
+      truechimers: marzullo.truechimers,
+      falsetickers: marzullo.falsetickers,
       lastSyncEpoch: Date.now()
     };
 
