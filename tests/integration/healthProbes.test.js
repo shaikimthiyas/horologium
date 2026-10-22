@@ -68,6 +68,7 @@ describe('Kubernetes Health, Readiness & Liveness Probes', () => {
     const body = await res.json();
     assert.equal(body.status, 'SYNCHRONIZED');
     assert.equal(body.algorithm, 'MARZULLO_INTERSECTION_CONSENSUS');
-    assert.ok(Array.isArray(body.truechimers));
+    assert.ok(Array.isArray(body.truechimers), 'truechimers must be an array');
+    assert.ok(typeof body.skewMs === 'number', 'skewMs must be a number');
   });
 });
