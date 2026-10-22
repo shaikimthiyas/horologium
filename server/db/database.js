@@ -1,7 +1,7 @@
 /**
  * Horologium Embedded SQLite Database Engine
  * High-performance, zero-external-dependency embedded database via node:sqlite
- * with resilient in-memory fallback for Node environments < 22.5.0.
+ * with resilient in-memory fallback for Node environments < 22.5.0 and test isolation.
  */
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -105,13 +105,16 @@ class InMemorySqliteFallback {
   }
 }
 
+// In test / CI environments, use ':memory:' to avoid file-lock contention across concurrent test workers
+const isTestEnv = process.env.NODE_ENV === 'test' || Boolean(process.env.CI);
+const dbPath = isTestEnv ? ':memory:' : resolve(dataDir, 'horologium.db');
+
 export const db = DatabaseSyncClass
-  ? new DatabaseSyncClass(resolve(dataDir, 'horologium.db'))
+  ? new DatabaseSyncClass(dbPath)
   : new InMemorySqliteFallback();
 
 // Initialize tables in WAL mode if native SQLite is available
 db.exec(`
-  PRAGMA journal_mode = WAL;
   PRAGMA foreign_keys = ON;
 
   CREATE TABLE IF NOT EXISTS operators (

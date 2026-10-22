@@ -39,6 +39,7 @@ jobs:
       - name: Execute Automated Test Suite (Unit & Integration)
         env:
           CI: true
+          NODE_ENV: test
         run: npm test
 
       - name: Compile Production Multi-Page Vite Bundle
