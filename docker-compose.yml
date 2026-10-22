@@ -12,8 +12,6 @@
 # Licensing & Cost: 100% Free Open-Source Software (FOSS) / Zero Cloud Cost (Rs 0)
 # ==============================================================================
 
-version: '3.8'
-
 services:
   # ----------------------------------------------------------------------------
   # 1. HOROLOGIUM CORE API & TELEMETRY GATEWAY

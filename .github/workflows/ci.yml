@@ -19,6 +19,7 @@ jobs:
     name: Test & Build (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version: [20.x, 22.x]
 
@@ -36,6 +37,8 @@ jobs:
         run: npm ci
 
       - name: Execute Automated Test Suite (Unit & Integration)
+        env:
+          CI: true
         run: npm test
 
       - name: Compile Production Multi-Page Vite Bundle

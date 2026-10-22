@@ -55,7 +55,11 @@ describe('RFC 7807 Problem Details & Zod Schema Validation', () => {
 
   after(async () => {
     if (server) {
+      if (typeof server.closeAllConnections === 'function') {
+        server.closeAllConnections();
+      }
       await new Promise((resolve) => server.close(resolve));
+      server.unref();
     }
   });
 

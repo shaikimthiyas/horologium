@@ -24,7 +24,11 @@ describe('Kubernetes Health, Readiness & Liveness Probes', () => {
 
   after(async () => {
     if (server) {
+      if (typeof server.closeAllConnections === 'function') {
+        server.closeAllConnections();
+      }
       await new Promise((resolve) => server.close(resolve));
+      server.unref();
     }
   });
 
