@@ -1,21 +1,159 @@
+# ==============================================================================
+# HOROLOGIUM // COMPLETE PRODUCTION INFRASTRUCTURE DOCKER COMPOSE STACK
+# ==============================================================================
+# Services:
+# - gateway:     High-Precision Node.js API Gateway, WS SNTP & Multi-Page Web App (Port 3001)
+# - stratum1:    Autonomous Go UDP Stratum-1 Atomic NTP Server (Port 123/udp)
+# - timescaledb: PostgreSQL 16 + TimescaleDB Extension Time-Series Engine (Port 5432)
+# - redis:       High-Throughput In-Memory Cache & Sliding-Window Rate Limiter (Port 6379)
+# - prometheus:  Metrics Telemetry Ingestion & Alerting Engine (Port 9090)
+# - grafana:     Real-Time Mission Control Operations & Observability Dashboard (Port 3000)
+#
+# Licensing & Cost: 100% Free Open-Source Software (FOSS) / Zero Cloud Cost (Rs 0)
+# ==============================================================================
+
+version: '3.8'
+
 services:
-  horologium:
+  # ----------------------------------------------------------------------------
+  # 1. HOROLOGIUM CORE API & TELEMETRY GATEWAY
+  # ----------------------------------------------------------------------------
+  gateway:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: horologium-app
+    container_name: horologium-gateway
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - HOST=0.0.0.0
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://horologium_admin:chronos_secret_vault@timescaledb:5432/horologium
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=horologium_prod_secure_secret_calibre_01
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      stratum1:
+        condition: service_started
+    networks:
+      - horologium-net
+
+  # ----------------------------------------------------------------------------
+  # 2. GO STRATUM-1 AUTONOMOUS ATOMIC NTP DAEMON
+  # ----------------------------------------------------------------------------
+  stratum1:
+    build:
+      context: ./server/ntp-stratum1
+      dockerfile: Dockerfile
+    container_name: horologium-stratum1
+    restart: unless-stopped
+    ports:
+      - "123:123/udp"
+    networks:
+      - horologium-net
+
+  # ----------------------------------------------------------------------------
+  # 3. POSTGRESQL 16 + TIMESCALEDB TIME-SERIES PERSISTENCE ENGINE
+  # ----------------------------------------------------------------------------
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: horologium-timescaledb
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=horologium_admin
+      - POSTGRES_PASSWORD=chronos_secret_vault
+      - POSTGRES_DB=horologium
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+      - ./server/db/migrations/001_timescaledb_init.sql:/docker-entrypoint-initdb.d/001_timescaledb_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U horologium_admin -d horologium"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - horologium-net
+
+  # ----------------------------------------------------------------------------
+  # 4. REDIS SLIDING-WINDOW RATE LIMITER & TRANSIENT TELEMETRY CACHE
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: horologium-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - horologium-net
+
+  # ----------------------------------------------------------------------------
+  # 5. PROMETHEUS OPENMETRICS TELEMETRY SCRAPER
+  # ----------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: horologium-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    depends_on:
+      - gateway
+    networks:
+      - horologium-net
+
+  # ----------------------------------------------------------------------------
+  # 6. GRAFANA OBSERVABILITY & SRE MISSION CONTROL DASHBOARD
+  # ----------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: horologium-grafana
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - HOST=0.0.0.0
-      - SESSION_SECRET=horologium_production_meridian_key_2026
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=horologium
+      - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
-      # Persist SQLite database volume across container restarts
-      - horologium_data:/app/server/data
+      - ./deploy/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./deploy/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - horologium-net
 
 volumes:
-  horologium_data:
+  timescale-data:
     driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+networks:
+  horologium-net:
+    driver: bridge
