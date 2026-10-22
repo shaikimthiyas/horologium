@@ -1,12 +1,16 @@
 /**
  * Horologium WebSocket SNTP (Simple Network Time Protocol) Client
- * Implements bidirectional RFC 4330/5905 time synchronization over WebSockets.
+ * Implements bidirectional RFC 4330/5905 time synchronization over WebSockets
+ * with Linux-style smooth clock frequency slewing (adjtime).
  * 
  * Provides sub-millisecond atomic clock synchronization, measuring:
  * - One-Way Network Delay (tau)
  * - True Client Clock Skew (theta)
- * - Round-Trip Jitter Filter across a sliding window of probes
+ * - Jitter Filter across a sliding window of probes
+ * - Monotonic Clock Slew Controller to eliminate visual stepping
  */
+
+import { clockSlewController } from './clockSlew.js';
 
 class WebSocketSntpClient {
   constructor() {
@@ -160,6 +164,9 @@ class WebSocketSntpClient {
     this.primaryServer = sample.reference || 'time.cloudflare.com';
     this.isSynchronized = true;
 
+    // Apply smooth frequency slewing controller
+    clockSlewController.setTargetOffset(this.clockOffsetMs);
+
     const metrics = this.getMetrics();
 
     // Dispatch global event for UI telemetry bars
@@ -181,10 +188,10 @@ class WebSocketSntpClient {
   }
 
   /**
-   * Returns high-precision synchronized Date object
+   * Returns high-precision synchronized Date object with smooth slewing
    */
   getAtomicTime() {
-    return new Date(Date.now() + this.clockOffsetMs);
+    return clockSlewController.now();
   }
 
   getMetrics() {
@@ -195,7 +202,8 @@ class WebSocketSntpClient {
       oneWayDelayMs: Number(this.oneWayDelayMs.toFixed(2)),
       stratum: this.stratum,
       primaryServer: this.primaryServer,
-      samplesRecorded: this.sampleHistory.length
+      samplesRecorded: this.sampleHistory.length,
+      slew: clockSlewController.getTelemetry()
     };
   }
 }

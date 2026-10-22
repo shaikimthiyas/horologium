@@ -9,6 +9,8 @@ import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { apiRouter } from './routes/api.js';
 import { metricsMiddleware } from './middleware/metricsMiddleware.js';
+import { livenessProbe, readinessProbe, startupProbe } from './middleware/healthProbes.js';
+import { problemDetailsErrorHandler } from './middleware/problemDetails.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,6 +31,12 @@ app.use((req, res, next) => {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   next();
 });
+
+// Kubernetes-Standard Probes (Top-level Aliases)
+app.get('/healthz', livenessProbe);
+app.get('/livez', livenessProbe);
+app.get('/readyz', readinessProbe);
+app.get('/startupz', startupProbe);
 
 // Top-level Prometheus Metrics endpoint alias
 app.get('/metrics', (req, res, next) => {
@@ -55,27 +63,27 @@ app.get('/api/openapi.json', (req, res) => {
 // Enterprise Route Aliases & Legacy Redirections (Zero-Breakage Guarantee)
 app.get(['/flight-deck', '/map', '/src/pages/map.html'], (req, res) => {
   const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, /flight-deck/);
+  res.redirect(301, `/flight-deck/${qs}`);
 });
 
 app.get(['/geodesic-registry', '/registry', '/directory', '/country', '/src/pages/country.html'], (req, res) => {
   const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, /geodesic-registry/);
+  res.redirect(301, `/geodesic-registry/${qs}`);
 });
 
 app.get(['/operator-gateway', '/operator', '/security', '/auth', '/src/pages/auth.html'], (req, res) => {
   const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, /operator-gateway/);
+  res.redirect(301, `/operator-gateway/${qs}`);
 });
 
 app.get(['/protocol-liaison', '/liaison', '/inquiry', '/contact', '/src/pages/contact.html'], (req, res) => {
   const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, /protocol-liaison/);
+  res.redirect(301, `/protocol-liaison/${qs}`);
 });
 
 app.get(['/docs', '/api/docs', '/src/pages/docs.html'], (req, res) => {
   const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, /api-explorer/);
+  res.redirect(301, `/api-explorer/${qs}`);
 });
 
 // API Routes
@@ -94,3 +102,6 @@ if (existsSync(distPath)) {
     res.sendFile(resolve(distPath, 'index.html'));
   });
 }
+
+// RFC 7807 Standardized Problem Details Error Middleware
+app.use(problemDetailsErrorHandler);
