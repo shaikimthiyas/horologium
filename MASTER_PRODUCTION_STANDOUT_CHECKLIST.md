@@ -33,13 +33,13 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | :---: | :---: | :--- | :---: | :--- |
 | **P0** | **FE-01** | **Swiss Horology Design System Tokens** | [x] | `src/styles/tokens.css`, `base.css`. Obsidian Rhodium (`#0A0B0E`), Super-LumiNova (`#20E28F`), hairline chassis borders. |
 | **P0** | **FE-02** | **3D WebGL Orthographic Globe** | [x] | `src/components/map/globe.js`. GPU-accelerated specular illumination, solar terminator line, meridian rings. |
-| **P1** | **FE-03** | **WebGL Context Loss Graceful Fallback** | [ ] | If WebGL fails (e.g. low-power mode, headless), auto-fallback to SVG/Canvas2D orthographic renderer without throwing. |
+| **P1** | **FE-03** | **WebGL Context Loss Graceful Fallback** | [x] | If WebGL fails (e.g. low-power mode, headless), auto-fallback to SVG/Canvas2D orthographic renderer without throwing. |
 | **P0** | **FE-04** | **Web Audio Synthetic Haptic Ticks** | [x] | `src/utils/audioHaptics.js`. Synthesized sine/triangle frequency pings on chronometer clicks and slider steps. |
-| **P1** | **FE-05** | **AudioContext Autoplay Policy Manager** | [~] | Handle browser autoplay policy suspensions cleanly; add visible mute toggle button and persist state in `localStorage`. |
+| **P1** | **FE-05** | **AudioContext Autoplay Policy Manager** | [x] | Handle browser autoplay policy suspensions cleanly; add visible mute toggle button and persist state in `localStorage`. |
 | **P0** | **FE-06** | **Live A11y Screen Reader Announcer** | [x] | `src/utils/a11yAnnouncer.js`. ARIA Live Region announcements for search results and calibration states. |
 | **P0** | **FE-07** | **Offline PWA Service Worker** | [x] | `public/sw.js`. Stale-while-revalidate asset caching and offline page support. |
-| **P1** | **FE-08** | **Deterministic Finite State Machine (FSM)** | [ ] | Replace ad-hoc flags in `src/main.js` with a formal clock FSM: `INITIALIZING` → `PROBING_NTP` → `LOCKED` → `DEGRADED` → `OFFLINE`. |
-| **P1** | **FE-09** | **Global Chronometer Error Boundary** | [ ] | Capture `window.onerror` & `unhandledrejection` and render a mechanical 'Chronometer Safe Mode' diagnostic dialog. |
+| **P1** | **FE-08** | **Deterministic Finite State Machine (FSM)** | [x] | Replace ad-hoc flags in `src/main.js` with a formal clock FSM: `INITIALIZING` → `PROBING_NTP` → `LOCKED` → `DEGRADED` → `OFFLINE`. |
+| **P1** | **FE-09** | **Global Chronometer Error Boundary** | [x] | Capture `window.onerror` & `unhandledrejection` and render a mechanical 'Chronometer Safe Mode' diagnostic dialog. |
 | **P2** | **FE-10** | **Zero-Layout-Shift Local Font Assets** | [ ] | Bundle WOFF2 font files locally with CSS `size-adjust` to eliminate Google Fonts CDN roundtrips and layout shifts. |
 | **P0** | **FE-11** | **Solar Coordinate Math Integrity** | [x] | `src/utils/timeMath.js`. Astronomical subsolar latitude, declination bounds [-23.45°, +23.45°], and equation of time. |
 | **P0** | **FE-12** | **24-Hour Overlap Planner & Ribbon** | [x] | `src/main.js`. Visual overlap ribbon, golden working hours (09:00-18:00), and RFC-9557 copy token. |
@@ -122,10 +122,10 @@ This master checklist provides the **step-by-step audit, architectural blueprint
 | **P0** | **QA-01** | **Automated Unit Tests (Pure Math & SNTP)** | [x] | `tests/unit/timeMath.test.js`, `tests/unit/sntp.test.js`. Validates SNTP offset/delay and solar coordinates. |
 | **P0** | **QA-02** | **API Integration Tests** | [x] | `tests/integration/api.test.js`. Tests health, time, country lookups, overlap calculation, metrics. |
 | **P0** | **QA-03** | **Clean Test Teardown (Unref Timers)** | [x] | `.unref()` on background intervals ensuring instant, clean test runner termination without hanging. |
-| **P1** | **QA-04** | **High Unit Test Coverage (>90%)** | [ ] | Expand unit test suite to cover all edge cases, negative inputs, rate limiter throttling, and database fallbacks. |
+| **P1** | **QA-04** | **High Unit Test Coverage (>90%)** | [x] | Expand unit test suite to cover all edge cases, negative inputs, rate limiter throttling, and database fallbacks. |
 | **P1** | **QA-05** | **Playwright End-to-End (E2E) Test Suite** | [ ] | Headless browser tests verifying page navigation, 3D globe canvas, search filters, and copy actions. |
 | **P1** | **QA-06** | **Load & Stress Testing (k6 / Autocannon)** | [ ] | Load script simulating 2,000 req/sec and 500 concurrent WebSocket clients measuring p95 and p99 latency. |
-| **P2** | **QA-07** | **Chaos Clock Slew & Drift Injection** | [ ] | Chaos harness injecting artificial $\pm 10\text{s}$ offsets to prove client filters recover gracefully. |
+| **P2** | **QA-07** | **Chaos Clock Slew & Drift Injection** | [x] | Chaos harness injecting artificial $\pm 10\text{s}$ offsets to prove client filters recover gracefully. |
 
 ---
 

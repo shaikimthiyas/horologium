@@ -11,6 +11,20 @@
 import { calculateSolarDeclination, getSubsolarLongitude } from '../../utils/timeMath.js';
 
 export class GlobeWebGL {
+  /**
+   * Static capability probe testing WebGL availability
+   */
+  static isSupported(canvas) {
+    if (typeof window === 'undefined') return false;
+    try {
+      const testCanvas = canvas || document.createElement('canvas');
+      const gl = testCanvas.getContext('webgl2') || testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+      return Boolean(gl);
+    } catch (e) {
+      return false;
+    }
+  }
+
   constructor(canvasElement, options = {}) {
     this.canvas = canvasElement;
     this.options = Object.assign({
@@ -20,12 +34,20 @@ export class GlobeWebGL {
       fov: 45,
       near: 0.1,
       far: 100.0,
-      onRotate: null
+      onRotate: null,
+      onFallback: null,
+      onContextLost: null,
+      onContextRestored: null
     }, options);
+
+    this.isContextLost = false;
 
     this.gl = this.canvas.getContext('webgl2') || this.canvas.getContext('webgl');
     if (!this.gl) {
       console.warn('[GlobeWebGL] WebGL not supported on this device. Fallback to 2D.');
+      if (typeof this.options.onFallback === 'function') {
+        this.options.onFallback('WEBGL_UNSUPPORTED');
+      }
       return;
     }
 
@@ -311,13 +333,13 @@ export class GlobeWebGL {
   }
 
   bindEvents() {
-    this.canvas.addEventListener('mousedown', (e) => {
+    this._onMouseDown = (e) => {
       this.isDragging = true;
       this.lastMouseX = e.clientX;
       this.lastMouseY = e.clientY;
-    });
+    };
 
-    window.addEventListener('mousemove', (e) => {
+    this._onMouseMove = (e) => {
       if (!this.isDragging) return;
       const dx = e.clientX - this.lastMouseX;
       const dy = e.clientY - this.lastMouseY;
@@ -325,22 +347,21 @@ export class GlobeWebGL {
       this.targetRotX = Math.max(-1.4, Math.min(1.4, this.targetRotX + dy * 0.005));
       this.lastMouseX = e.clientX;
       this.lastMouseY = e.clientY;
-    });
+    };
 
-    window.addEventListener('mouseup', () => {
+    this._onMouseUp = () => {
       this.isDragging = false;
-    });
+    };
 
-    // Touch Support
-    this.canvas.addEventListener('touchstart', (e) => {
+    this._onTouchStart = (e) => {
       if (e.touches.length === 1) {
         this.isDragging = true;
         this.lastMouseX = e.touches[0].clientX;
         this.lastMouseY = e.touches[0].clientY;
       }
-    }, { passive: true });
+    };
 
-    window.addEventListener('touchmove', (e) => {
+    this._onTouchMove = (e) => {
       if (!this.isDragging || e.touches.length !== 1) return;
       const dx = e.touches[0].clientX - this.lastMouseX;
       const dy = e.touches[0].clientY - this.lastMouseY;
@@ -348,19 +369,63 @@ export class GlobeWebGL {
       this.targetRotX = Math.max(-1.4, Math.min(1.4, this.targetRotX + dy * 0.005));
       this.lastMouseX = e.touches[0].clientX;
       this.lastMouseY = e.touches[0].clientY;
-    }, { passive: true });
+    };
 
-    window.addEventListener('touchend', () => {
+    this._onTouchEnd = () => {
       this.isDragging = false;
-    });
+    };
 
-    // Wheel Zoom
-    this.canvas.addEventListener('wheel', (e) => {
+    this._onWheel = (e) => {
       e.preventDefault();
       this.targetDistance = Math.max(1.8, Math.min(4.5, this.targetDistance + e.deltaY * 0.002));
-    }, { passive: false });
+    };
 
-    window.addEventListener('resize', () => this.resize());
+    this._onResize = () => this.resize();
+
+    // Context Loss & Recovery (FE-03)
+    this._onContextLost = (e) => {
+      e.preventDefault(); // Crucial: prevents browser from permanently terminating context
+      this.isContextLost = true;
+      this.stop();
+      console.warn('[GlobeWebGL] WebGL context lost. Suspended render loop.');
+      if (typeof this.options.onContextLost === 'function') {
+        this.options.onContextLost();
+      }
+    };
+
+    this._onContextRestored = () => {
+      console.info('[GlobeWebGL] WebGL context restored. Rebuilding GPU resources.');
+      this.isContextLost = false;
+      try {
+        this.initShaders();
+        this.initSphereGeometry(64, 48);
+        this.initTexture();
+        this.resize();
+        this.start();
+        if (typeof this.options.onContextRestored === 'function') {
+          this.options.onContextRestored();
+        }
+      } catch (err) {
+        console.error('[GlobeWebGL] Failed to reinitialize after context restoration:', err);
+        if (typeof this.options.onFallback === 'function') {
+          this.options.onFallback('RESTORE_FAILED');
+        }
+      }
+    };
+
+    this.canvas.addEventListener('mousedown', this._onMouseDown);
+    window.addEventListener('mousemove', this._onMouseMove);
+    window.addEventListener('mouseup', this._onMouseUp);
+
+    this.canvas.addEventListener('touchstart', this._onTouchStart, { passive: true });
+    window.addEventListener('touchmove', this._onTouchMove, { passive: true });
+    window.addEventListener('touchend', this._onTouchEnd);
+
+    this.canvas.addEventListener('wheel', this._onWheel, { passive: false });
+    window.addEventListener('resize', this._onResize);
+
+    this.canvas.addEventListener('webglcontextlost', this._onContextLost, false);
+    this.canvas.addEventListener('webglcontextrestored', this._onContextRestored, false);
   }
 
   resize() {
@@ -395,7 +460,7 @@ export class GlobeWebGL {
 
   render() {
     const gl = this.gl;
-    if (!gl) return;
+    if (!gl || this.isContextLost) return;
 
     // Smooth critically damped rotation & zoom easing
     if (!this.isDragging && this.options.autoRotate) {
@@ -505,14 +570,36 @@ export class GlobeWebGL {
 
   destroy() {
     this.stop();
+
+    // Detach all DOM and Window listeners
+    if (this.canvas) {
+      if (this._onMouseDown) this.canvas.removeEventListener('mousedown', this._onMouseDown);
+      if (this._onTouchStart) this.canvas.removeEventListener('touchstart', this._onTouchStart);
+      if (this._onWheel) this.canvas.removeEventListener('wheel', this._onWheel);
+      if (this._onContextLost) this.canvas.removeEventListener('webglcontextlost', this._onContextLost);
+      if (this._onContextRestored) this.canvas.removeEventListener('webglcontextrestored', this._onContextRestored);
+    }
+
+    if (typeof window !== 'undefined') {
+      if (this._onMouseMove) window.removeEventListener('mousemove', this._onMouseMove);
+      if (this._onMouseUp) window.removeEventListener('mouseup', this._onMouseUp);
+      if (this._onTouchMove) window.removeEventListener('touchmove', this._onTouchMove);
+      if (this._onTouchEnd) window.removeEventListener('touchend', this._onTouchEnd);
+      if (this._onResize) window.removeEventListener('resize', this._onResize);
+    }
+
     const gl = this.gl;
-    if (gl) {
-      if (this.posVbo) gl.deleteBuffer(this.posVbo);
-      if (this.normVbo) gl.deleteBuffer(this.normVbo);
-      if (this.uvVbo) gl.deleteBuffer(this.uvVbo);
-      if (this.ibo) gl.deleteBuffer(this.ibo);
-      if (this.texture) gl.deleteTexture(this.texture);
-      if (this.program) gl.deleteProgram(this.program);
+    if (gl && !this.isContextLost) {
+      try {
+        if (this.posVbo) gl.deleteBuffer(this.posVbo);
+        if (this.normVbo) gl.deleteBuffer(this.normVbo);
+        if (this.uvVbo) gl.deleteBuffer(this.uvVbo);
+        if (this.ibo) gl.deleteBuffer(this.ibo);
+        if (this.texture) gl.deleteTexture(this.texture);
+        if (this.program) gl.deleteProgram(this.program);
+      } catch (e) {
+        // Suppress cleanup error on lost context
+      }
     }
   }
 }
