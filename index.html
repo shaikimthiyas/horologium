@@ -789,6 +789,22 @@
         import { offlineStorage } from '/src/utils/offlineStorage.js';
         import { a11y } from '/src/utils/a11yAnnouncer.js';
         import { sntpClient } from '/src/utils/sntpClient.js';
+        import { ClockFSM, ClockEvent } from '/src/utils/clockFSM.js';
+        import { ErrorBoundary } from '/src/utils/errorBoundary.js';
+
+        // Deterministic Chronometer State Engine & Global Safe Mode Boundary (FE-08, FE-09)
+        const clockFsm = new ClockFSM();
+        const errorBoundary = new ErrorBoundary({ fsm: clockFsm });
+        window.__HOROLOGIUM_FSM__ = clockFsm;
+        window.__HOROLOGIUM_ERROR_BOUNDARY__ = errorBoundary;
+
+        clockFsm.subscribe((from, to, reason) => {
+          console.info(`[ClockFSM] ${from} -> ${to} (${reason})`);
+        });
+        clockFsm.dispatch(ClockEvent.BOOT);
+
+        window.addEventListener('offline', () => clockFsm.dispatch(ClockEvent.CONNECTION_LOST));
+        window.addEventListener('online', () => clockFsm.dispatch(ClockEvent.CONNECTION_RESTORED));
 
         // Listen for WebSocket SNTP metrics
         window.addEventListener('sntp:metrics', (e) => {
