@@ -167,6 +167,48 @@ export class ClockFSM {
   }
 
   /**
+   * Semantic alias for dispatch
+   */
+  handleEvent(event, payload = {}) {
+    return this.dispatch(event, payload);
+  }
+
+  /**
+   * Temperature-Compensated Crystal Oscillator (TCXO) Drift Calculation
+   * Simulates microsecond-level oscillator drift during offline marine / flight operations.
+   * Based on standard parabolic quartz resonance curve: Δf/f = -0.034 ppm/°C² * (T - T0)²
+   */
+  getOfflineDriftMetrics(ambientTempC = 25.0) {
+    if (this.currentState !== ClockState.OFFLINE) {
+      return {
+        isOffline: false,
+        status: 'SYNCHRONIZED_NTP',
+        accumulatedDriftMs: 0.0,
+        driftRatePpm: 0.0
+      };
+    }
+
+    const elapsedSeconds = this.timeInCurrentStateMs / 1000;
+    const referenceTempC = 25.0;
+    const tempDelta = ambientTempC - referenceTempC;
+    const thermalDriftPpm = -0.034 * (tempDelta * tempDelta);
+    const nominalDriftPpm = 0.035; // calibrated TCXO stability factor
+    const totalDriftPpm = nominalDriftPpm + thermalDriftPpm;
+    
+    // Accumulated drift in milliseconds: (totalDriftPpm * elapsed_seconds) / 1000
+    const accumulatedDriftMs = (totalDriftPpm * elapsedSeconds) / 1000;
+
+    return {
+      isOffline: true,
+      status: 'SOVEREIGN_TCXO_DRIFT_ACTIVE',
+      elapsedOfflineSeconds: Math.floor(elapsedSeconds),
+      nominalDriftPpm,
+      totalDriftPpm,
+      accumulatedDriftMs: Number(accumulatedDriftMs.toFixed(6))
+    };
+  }
+
+  /**
    * Subscribe to state transition events
    * @param {Function} listener (fromState, toState, reason, metadata) => void
    * @returns {Function} unsubscribe function
@@ -189,7 +231,8 @@ export class ClockFSM {
       timeInCurrentStateMs: this.timeInCurrentStateMs,
       stateEnterTimestamp: this.stateEnterTimestamp,
       transitionCounts: { ...this.transitionCounts },
-      historyDepth: this.history.length
+      historyDepth: this.history.length,
+      offlineDrift: this.getOfflineDriftMetrics()
     };
   }
 
@@ -268,3 +311,5 @@ export class ClockFSM {
     }
   }
 }
+
+export const clockFSM = new ClockFSM();

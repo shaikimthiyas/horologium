@@ -1,11 +1,13 @@
 {
+  "id": "/",
   "name": "HOROLOGIUM // Planetary Time & Meridian Telemetry",
   "short_name": "Horologium",
   "description": "Enterprise-grade high-precision interactive world timezone atlas, UTC meridian tracker, and live temporal telemetry operations architecture.",
   "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#08090B",
-  "theme_color": "#FF4400",
+  "background_color": "#0A0D10",
+  "theme_color": "#0A0D10",
   "orientation": "any",
   "icons": [
     {
@@ -13,6 +15,23 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Flight Deck",
+      "url": "/flight-deck/",
+      "description": "Planetary 3D chronometer and timezone flight deck."
+    },
+    {
+      "name": "Geodesic Registry",
+      "url": "/geodesic-registry/",
+      "description": "Sovereign meridian atlas and geodesic search."
+    },
+    {
+      "name": "Operator Gateway",
+      "url": "/operator-gateway/",
+      "description": "NTP telemetry hub and operator controls."
     }
   ],
   "categories": ["utilities", "productivity", "navigation"]
