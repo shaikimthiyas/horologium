@@ -1,7 +1,7 @@
 /**
  * Horologium Master Navigation Chassis & Global Shortcuts Controller (Calibre-01)
  * 
- * Provides unified multi-page navigation across all 5 canonical operational consoles:
+ * Provides unified multi-page navigation across all 6 canonical operational consoles:
  * 1. Mission Gateway (/)
  * 2. Flight Deck (/flight-deck/)
  * 3. Geodesic Registry (/geodesic-registry/)
@@ -12,11 +12,13 @@
  * Includes:
  * - Semantic <nav> strip with 1px Vermilion indicator needle
  * - Real-time ClockFSM status sync & LED pip
+ * - PWA Offline Marine Chronometer TCXO status badge & 1-click install button
  * - Web Audio Haptics mute toggle & sync
  * - Global accessible Keyboard Shortcuts (<kbd>1-6</kbd>, <kbd>M</kbd>, <kbd>T</kbd>, <kbd>?</kbd>)
  */
 
 import { haptics } from '../../utils/audioHaptics.js';
+import { pwaManager } from '../../utils/pwaManager.js';
 
 export const CANONICAL_PAGES = [
   { id: 'gateway', label: 'GATEWAY', href: '/', shortcut: '1' },
@@ -39,7 +41,7 @@ export class MasterHeaderController {
     }
   }
 
-  init() {
+  async init() {
     this.headerEl = document.querySelector('.telemetry-bar') || document.querySelector('header');
     if (!this.headerEl) return;
 
@@ -47,6 +49,12 @@ export class MasterHeaderController {
     this.mountTelemetryDock();
     this.bindKeyboardShortcuts();
     this.startMasterClock();
+
+    // Initialize PWA Manager & Service Worker lifecycle
+    try {
+      await pwaManager.init();
+      this.syncPwaControls();
+    } catch (_) {}
   }
 
   mountNavStrip() {
@@ -106,7 +114,23 @@ export class MasterHeaderController {
       }
     }
 
-    // 2. Sound Toggle Sync
+    // 2. PWA Install & Offline Indicator Dock
+    if (!right.querySelector('#masterPwaInstallBtn')) {
+      const pwaBtn = document.createElement('button');
+      pwaBtn.type = 'button';
+      pwaBtn.id = 'masterPwaInstallBtn';
+      pwaBtn.className = 'telemetry-btn pwa-install-btn';
+      pwaBtn.style.display = 'none'; // Shown when installable
+      pwaBtn.setAttribute('aria-label', 'Install Standalone Chronometer App [PWA]');
+      pwaBtn.innerHTML = `<span>⬇</span> <span>INSTALL</span>`;
+      pwaBtn.onclick = () => {
+        haptics.playMechanicalClick();
+        pwaManager.promptInstall();
+      };
+      right.appendChild(pwaBtn);
+    }
+
+    // 3. Sound Toggle Sync
     const audioBtn = right.querySelector('#soundToggleBtn') || right.querySelector('.audio-toggle-btn');
     if (!audioBtn && !right.querySelector('#masterSoundToggle')) {
       const soundBtn = document.createElement('button');
@@ -125,7 +149,7 @@ export class MasterHeaderController {
       });
     }
 
-    // 3. Shortcuts Button (?)
+    // 4. Shortcuts Button (?)
     if (!right.querySelector('#masterShortcutsBtn')) {
       const shortcutsBtn = document.createElement('button');
       shortcutsBtn.type = 'button';
@@ -138,12 +162,34 @@ export class MasterHeaderController {
     }
   }
 
+  syncPwaControls() {
+    const installBtn = document.getElementById('masterPwaInstallBtn');
+    if (installBtn && pwaManager.isInstallable) {
+      installBtn.style.display = 'inline-flex';
+    }
+
+    pwaManager.subscribe((event) => {
+      if (event.type === 'INSTALLABLE_READY' && installBtn) {
+        installBtn.style.display = 'inline-flex';
+      }
+      if (event.type === 'APP_INSTALLED' && installBtn) {
+        installBtn.style.display = 'none';
+      }
+      if (event.type === 'CONNECTIVITY_CHANGED') {
+        const text = document.getElementById('masterFsmText');
+        if (text && event.isOffline) {
+          text.textContent = 'OFFLINE (TCXO)';
+        }
+      }
+    });
+  }
+
   updateFsmState(state) {
     const led = document.getElementById('masterFsmLed');
     const text = document.getElementById('masterFsmText');
     if (!led || !text) return;
 
-    text.textContent = state;
+    text.textContent = state === 'OFFLINE' ? 'OFFLINE (TCXO)' : state;
     led.className = `fsm-status-led status-${state.toLowerCase()}`;
   }
 
@@ -253,7 +299,7 @@ export class MasterHeaderController {
             <div class="shortcut-row"><span>OpenAPI Explorer</span> <kbd class="shortcut-kbd">6</kbd></div>
             <div class="shortcut-row"><span>Audio Haptics Mute</span> <kbd class="shortcut-kbd">M</kbd></div>
             <div class="shortcut-row"><span>Toggle Theme</span> <kbd class="shortcut-kbd">T</kbd></div>
-            <div class="shortcut-row"><span>Geodesic Command Palette</span> <kbd class="shortcut-kbd">Ctrl+K</kbd></div>
+            <div class="shortcut-row"><span>Install Standalone PWA</span> <kbd class="shortcut-kbd">⬇ HUD</kbd></div>
             <div class="shortcut-row"><span>Close Modals / Reset</span> <kbd class="shortcut-kbd">Esc</kbd></div>
           </div>
 

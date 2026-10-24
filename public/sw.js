@@ -1,32 +1,40 @@
 /**
- * Horologium Enterprise Service Worker (PWA Offline Engine)
- * Cache-First for core application shell, Stale-While-Revalidate for country data and telemetry
+ * HOROLOGIUM ENTERPRISE SERVICE WORKER (PWA Offline Chronometer Engine v1.4.0)
+ * 
+ * - Cache-First for static assets, WebGL shaders, styles, and multi-page shell
+ * - Network-First with synthetic offline fallback for /api/v1/* telemetry
+ * - Stale-While-Revalidate for sovereign country & geodesic datasets
  */
 
-const CACHE_NAME = 'horologium-core-v1.3.0';
+const CACHE_NAME = 'horologium-core-v1.4.0';
 
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/flight-deck/',
+  '/flight-deck/index.html',
   '/geodesic-registry/',
+  '/geodesic-registry/index.html',
   '/operator-gateway/',
+  '/operator-gateway/index.html',
   '/protocol-liaison/',
+  '/protocol-liaison/index.html',
   '/api-explorer/',
+  '/api-explorer/index.html',
   '/src/styles/main.css',
   '/src/styles/tokens.css',
   '/src/styles/base.css',
   '/src/styles/layout.css',
   '/favicon.svg',
-  '/public/manifest.webmanifest'
+  '/manifest.webmanifest'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.info('[Horologium SW] Precaching application shell assets');
+      console.info('[Horologium SW v1.4.0] Precaching multi-page application shell');
       return cache.addAll(PRECACHE_ASSETS).catch((err) => {
-        console.warn('[Horologium SW] Precache partial error (non-fatal):', err);
+        console.warn('[Horologium SW v1.4.0] Precache partial note (will populate on navigation):', err.message);
       });
     }).then(() => self.skipWaiting())
   );
@@ -38,7 +46,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((name) => {
           if (name !== CACHE_NAME) {
-            console.info('[Horologium SW] Evicting deprecated cache:', name);
+            console.info('[Horologium SW v1.4.0] Purging deprecated cache namespace:', name);
             return caches.delete(name);
           }
         })
@@ -53,7 +61,7 @@ self.addEventListener('fetch', (event) => {
   // Skip WebSocket connections
   if (url.protocol === 'ws:' || url.protocol === 'wss:') return;
 
-  // Stale-While-Revalidate for API endpoints
+  // Stale-While-Revalidate + Synthetic Fallback for Telemetry API
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
@@ -63,15 +71,29 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         }).catch(() => {
-          // Offline fallback from cache
+          // Check cached response first
           return cache.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) return cachedResponse;
-            return new Response(JSON.stringify({
+            if (cachedResponse) {
+              const headers = new Headers(cachedResponse.headers);
+              headers.set('X-Horologium-Offline-Cached', 'true');
+              return cachedResponse;
+            }
+
+            // Synthetic offline response for time / telemetry endpoints
+            const syntheticPayload = {
               offline: true,
+              stratum: 'OFFLINE_TCXO_QUARTZ_EMULATOR',
               timestamp: new Date().toISOString(),
-              message: 'Operating in disconnected / flight mode. Using offline IndexedDB storage.'
-            }), {
-              headers: { 'Content-Type': 'application/json' }
+              systemStatus: 'SOVEREIGN_OFFLINE_MODE',
+              message: 'Operating in disconnected / marine flight mode. Drift compensation active via client TCXO.'
+            };
+
+            return new Response(JSON.stringify(syntheticPayload), {
+              status: 200,
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Horologium-Offline': 'true'
+              }
             });
           });
         });
@@ -80,11 +102,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-First for static assets (Scripts, styles, images, HTML)
+  // Cache-First for static assets, scripts, styles, images, and HTML shell
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Fetch in background to revalidate cache
+        // Background revalidation
         fetch(event.request).then((networkResponse) => {
           if (networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
@@ -102,7 +124,7 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Fallback for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('/index.html') || caches.match('/');
         }
       });
     })

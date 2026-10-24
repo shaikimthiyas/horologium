@@ -11,7 +11,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/cover.jpg" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="manifest" href="/public/manifest.webmanifest" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#FF4400" />
     <link rel="stylesheet" href="/src/styles/main.css"/>
     <style>
@@ -820,7 +820,7 @@
 
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/public/sw.js').then((reg) => {
+            navigator.serviceWorker.register('/sw.js').then((reg) => {
                 console.info('[Horologium PWA] Service Worker registered in scope:', reg.scope);
             }).catch((err) => {
                 console.warn('[Horologium PWA] Service worker registration failed:', err);
