@@ -3,7 +3,7 @@
   "info": {
     "title": "HOROLOGIUM Core Telemetry & Temporal API",
     "version": "1.2.0-PRO",
-    "description": "High-precision enterprise temporal telemetry, Stratum-1 atomic synchronization, cross-border meeting overlap planning, and geodesic country registry.",
+    "description": "Enterprise high-precision distributed chronometry, Marzullo Stratum-1 time consensus, solar astronomical mapping, and geodesic territorial telemetry API. Includes official Postman collection at /horologium.postman_collection.json.",
     "contact": {
       "name": "Horologium Systems Architecture Directorate",
       "url": "https://horologium.io"
@@ -433,6 +433,102 @@
           }
         }
       }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Kubernetes Liveness Probe",
+        "description": "Validates runtime process liveness and container health.",
+        "tags": [
+          "Observability & Probes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Process ALIVE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ALIVE"
+                    },
+                    "subsystem": {
+                      "type": "string",
+                      "example": "horologium-core-runtime"
+                    },
+                    "uptimeSeconds": {
+                      "type": "number",
+                      "example": 1420.5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readyz": {
+      "get": {
+        "summary": "Kubernetes Readiness Probe",
+        "description": "Validates database, cache, and NTP subsystem readiness.",
+        "tags": [
+          "Observability & Probes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Subsystems READY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "READY"
+                    },
+                    "subsystems": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/startupz": {
+      "get": {
+        "summary": "Kubernetes Startup Probe",
+        "description": "Verifies server bootstrap and schema verification completion.",
+        "tags": [
+          "Observability & Probes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Server STARTED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "STARTED"
+                    },
+                    "bootDurationMs": {
+                      "type": "number",
+                      "example": 45.2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -678,6 +774,50 @@
           "sort_order": {
             "type": "integer",
             "default": 0
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "https://horologium.internal/errors/validation-error"
+          },
+          "title": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "status": {
+            "type": "integer",
+            "example": 400
+          },
+          "detail": {
+            "type": "string",
+            "example": "Invalid request parameters."
+          },
+          "instance": {
+            "type": "string",
+            "example": "/api/v1/time"
+          },
+          "code": {
+            "type": "string",
+            "example": "SCHEMA_VALIDATION_FAILED"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
           }
         }
       }

@@ -1,0 +1,321 @@
+{
+  "info": {
+    "_postman_id": "c71a39d1-0f6b-4e42-9908-horologium-core",
+    "name": "HOROLOGIUM // Planetary Telemetry & Chronometry API (v1.0.0-PRO)",
+    "description": "Comprehensive Postman test collection for Horologium's enterprise REST API, Marzullo Stratum-1 time consensus, Kubernetes health probes, and RFC 7807 problem details.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Kubernetes Health & Probes",
+      "item": [
+        {
+          "name": "Liveness Probe (/healthz)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/healthz",
+              "host": ["{{baseUrl}}"],
+              "path": ["healthz"]
+            },
+            "description": "Validates application runtime liveness for container orchestrators (Kubernetes / Docker Compose)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 ALIVE', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('ALIVE');",
+                  "    pm.expect(json.subsystem).to.eql('horologium-core-runtime');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Readiness Probe (/readyz)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/readyz",
+              "host": ["{{baseUrl}}"],
+              "path": ["readyz"]
+            },
+            "description": "Validates database and caching subsystem readiness before accepting incoming traffic."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 READY', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('READY');",
+                  "    pm.expect(json.subsystems).to.be.an('object');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Startup Probe (/startupz)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/startupz",
+              "host": ["{{baseUrl}}"],
+              "path": ["startupz"]
+            },
+            "description": "Verifies completion of server boot sequence and database schema verification."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 STARTED', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('STARTED');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Stratum-1 Chronometry & Consensus",
+      "item": [
+        {
+          "name": "Marzullo Consensus Sync (/api/v1/stratum1/sync)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stratum1/sync",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "stratum1", "sync"]
+            },
+            "description": "Executes Marzullo's truechimer algorithm across active atomic NTP reference clocks."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Stratum-1 consensus reached', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('SYNCHRONIZED');",
+                  "    pm.expect(json.algorithm).to.eql('MARZULLO_INTERSECTION_CONSENSUS');",
+                  "    pm.expect(json.truechimers).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Canonical Temporal Position (/api/v1/time)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/time?timezone=Europe/Zurich",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "time"],
+              "query": [
+                { "key": "timezone", "value": "Europe/Zurich" }
+              ]
+            },
+            "description": "Returns ISO 8601 millisecond-precision atomic time with astronomical solar coordinates."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Valid temporal telemetry payload', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.iso).to.be.a('string');",
+                  "    pm.expect(json.epochMs).to.be.a('number');",
+                  "    pm.expect(json.solar).to.be.an('object');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "24-Hour Business Overlap (/api/v1/zones/overlap)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/zones/overlap?stationA=Europe/London&stationB=Asia/Tokyo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "zones", "overlap"],
+              "query": [
+                { "key": "stationA", "value": "Europe/London" },
+                { "key": "stationB", "value": "Asia/Tokyo" }
+              ]
+            },
+            "description": "Calculates mutual working hour overlap (09:00 - 18:00) between two international stations."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Overlap matrix returned', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.overlapHours).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sovereign Geodesic Directory",
+      "item": [
+        {
+          "name": "List All Sovereign Countries (/api/v1/countries)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/countries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "countries"]
+            },
+            "description": "Returns 220 sovereign territories with geodesic bounds and primary timezones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns country directory', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.total).to.be.above(200);",
+                  "    pm.expect(json.countries).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Country By ISO Code (/api/v1/countries/CH)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/countries/CH",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "countries", "CH"]
+            },
+            "description": "Returns geodesic bounds and timezone telemetry for Switzerland."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns Switzerland telemetry', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.code).to.eql('CH');",
+                  "    pm.expect(json.name).to.include('Switzerland');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Observability & OpenMetrics",
+      "item": [
+        {
+          "name": "Prometheus Metrics Exposition (/metrics)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "text/plain" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["metrics"]
+            },
+            "description": "OpenMetrics formatted instrumentation for Prometheus / Grafana scraping."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Metrics exposition valid', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.text()).to.include('horologium_http_requests_total');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
