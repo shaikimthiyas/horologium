@@ -50,14 +50,23 @@ if (existsSync(publicPath)) {
   app.use('/public', express.static(publicPath));
 }
 
-// Serve OpenAPI Specification
-app.get('/api/openapi.json', (req, res) => {
+// Serve OpenAPI Specification & Postman Collection
+app.get(['/openapi.json', '/api/openapi.json'], (req, res) => {
   const specPath = resolve(__dirname, '../public/openapi.json');
   if (existsSync(specPath)) {
     res.setHeader('Content-Type', 'application/json');
     return res.sendFile(specPath);
   }
   res.status(404).json({ error: 'OpenAPI specification not found.' });
+});
+
+app.get(['/horologium.postman_collection.json', '/api/postman.json'], (req, res) => {
+  const postmanPath = resolve(__dirname, '../public/horologium.postman_collection.json');
+  if (existsSync(postmanPath)) {
+    res.setHeader('Content-Type', 'application/json');
+    return res.sendFile(postmanPath);
+  }
+  res.status(404).json({ error: 'Postman collection not found.' });
 });
 
 // Enterprise Route Aliases & Legacy Redirections (Zero-Breakage Guarantee)
