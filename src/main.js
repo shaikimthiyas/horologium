@@ -67,6 +67,10 @@ class HorologiumApp {
           this.telemetryMatrix.setFocalCountry(countryName);
           this.telemetryMatrix.render(this.getEffectiveDate());
         }
+        const cData = getCountryData(countryName);
+        if (cData && cData.timezone && this.scrubberController) {
+          this.scrubberController.setFocalTimeZone(cData.timezone);
+        }
       }
     });
 
@@ -86,11 +90,21 @@ class HorologiumApp {
       });
     }
 
-    // 4. Initialize 24-Hour Scrubber Controller
+    // 4. Initialize 24-Hour Chrono-Slider Controller (Sprint J)
     this.scrubberController = new ScrubberController({
-      onTimeShift: ({ offsetMinutes, isLive }) => {
-        this.simulatedOffsetMinutes = offsetMinutes;
-        this.isLive = isLive;
+      onTimeShift: (shiftData) => {
+        if (shiftData instanceof Date) {
+          this.simulatedOffsetMinutes = Math.round((shiftData.getTime() - sntpClient.getAtomicTime().getTime()) / 60000);
+          this.isLive = false;
+        } else if (shiftData && typeof shiftData.offsetMinutes === 'number') {
+          this.simulatedOffsetMinutes = shiftData.offsetMinutes;
+          this.isLive = Boolean(shiftData.isLive);
+        }
+        this.updateTimeFrame();
+      },
+      onLiveSnap: () => {
+        this.simulatedOffsetMinutes = 0;
+        this.isLive = true;
         this.updateTimeFrame();
       }
     });
@@ -158,6 +172,11 @@ class HorologiumApp {
     // Update docked matrix horology
     if (this.telemetryMatrix) {
       this.telemetryMatrix.render(effectiveDate);
+    }
+
+    // Update scrubber live needle position when operating on Stratum-1
+    if (this.scrubberController && this.isLive) {
+      this.scrubberController.updateLiveNeedle(effectiveDate);
     }
   }
 
