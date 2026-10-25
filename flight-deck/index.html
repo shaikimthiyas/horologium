@@ -1635,8 +1635,12 @@
     <!-- 4. DOCKED PINNED CITIES / TIMEZONE MATRIX (Bento Grid) -->
     <section class="telemetry-matrix-panel" id="telemetryMatrixPanel">
         <div class="matrix-header-bar">
-            <span>PINNED TELEMETRY MATRIX // MULTI-ZONE HOROLOGY</span>
-            <span id="simulatedOffsetLabel" style="color: var(--accent-primary);">OFFSET: ±00:00 (LIVE)</span>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span>PINNED TELEMETRY MATRIX // MULTI-ZONE HOROLOGY</span>
+                <span id="dstStatusLabel" class="dst-badge badge-dst-none">STANDARD TIME</span>
+                <span id="subsolarPosLabel" style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">☀️ SUN: +00.0° LAT | 00.0° LON</span>
+            </div>
+            <span id="simulatedOffsetLabel" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 11px;">OFFSET: ±00:00 (LIVE STRATUM-1)</span>
         </div>
         <div class="matrix-grid" id="matrixGrid">
             <!-- Pinned horology cells populated dynamically -->

@@ -440,12 +440,19 @@ export class GlobeWebGL {
   }
 
   /**
-   * Calculate 3D unit vector for current astronomical sun position
+   * Set simulated or scrubbed temporal date for 3D astronomical solar rendering
    */
-  getSunVector() {
-    const now = new Date();
-    const decDeg = calculateSolarDeclination(now);
-    const subLonDeg = getSubsolarLongitude(now);
+  setDate(date) {
+    this.simulatedDate = date;
+  }
+
+  /**
+   * Calculate 3D unit vector for astronomical sun position at given or simulated date
+   */
+  getSunVector(date) {
+    const targetDate = date || this.simulatedDate || new Date();
+    const decDeg = calculateSolarDeclination(targetDate);
+    const subLonDeg = getSubsolarLongitude(targetDate);
 
     const decRad = (decDeg * Math.PI) / 180;
     const lonRad = (subLonDeg * Math.PI) / 180;

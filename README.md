@@ -11,7 +11,7 @@
     <img src="https://github.com/shaikimthiyas/horologium/actions/workflows/ci.yml/badge.svg" alt="CI Pipeline">
   </a>
   <img src="https://img.shields.io/badge/Node.js-20.x%20%7C%2022.x-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js LTS">
-  <img src="https://img.shields.io/badge/Tests-79%20Passing-brightgreen?style=flat&logo=node.js" alt="74 Passing Tests">
+  <img src="https://img.shields.io/badge/Tests-92%20Passing-brightgreen?style=flat&logo=node.js" alt="74 Passing Tests">
   <img src="https://img.shields.io/badge/Accessibility-WCAG%202.2%20AAA-blueviolet?style=flat" alt="WCAG 2.2 AAA">
   <img src="https://img.shields.io/badge/OpenAPI-3.1.0-6BA539?style=flat&logo=openapiinitiative&logoColor=white" alt="OpenAPI 3.1.0">
   <img src="https://img.shields.io/badge/Postman-v2.1.0-FF6C37?style=flat&logo=postman&logoColor=white" alt="Postman Collection">
@@ -28,6 +28,9 @@
 **Horologium** (named after the southern constellation *Horologium Oscillatorium* / "The Pendulum Clock") is a production-grade, distributed temporal telemetry platform engineered for low-latency operations, mathematical clock consensus, and high-availability global time visualization.
 
 - **Zero-Latency Client-Side Chronometry:** Native `Intl.DateTimeFormat` and IANA database indexing eliminate third-party API rate limits and network dependency.
+- **Dynamic Chrono-Slider & Solar Time Travel:** 24-hour continuous mechanical scrub with 1px Vermilion needle, temporal simulation engine (1x, 60x, 3600x speeds), and 1-click spring-eased Snap-to-Live Stratum-1 atomic clock recovery.
+- **Astronomical Solar Day/Night Terminator:** Real-time dynamic recalculation of solar declination and subsolar meridian coordinates across 2D Mercator SVG cartography and 3D WebGL spherical globe.
+- **Universal Daylight Saving Time (DST) Engine:** Pure mathematical detection of seasonal DST variations, standard offsets, and temporal shifts across all 400+ IANA global zones.
 - **Marzullo Truechimer Consensus:** Multi-source atomic NTP evaluation filtering out rogue falsetickers to compute tight, provable intersection bounds.
 - **Continuous Clock Slewing (Linux `adjtime` Emulation):** Smooth sub-millisecond drift adjustment preventing backwards time discontinuities.
 - **Tri-Engine Persistence Architecture:** Native edge support for **Turso (LibSQL)**, enterprise **TimescaleDB / PostgreSQL 16**, and embedded high-performance **SQLite (WAL mode)** with in-memory test isolation.
