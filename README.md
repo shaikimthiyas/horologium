@@ -11,7 +11,7 @@
     <img src="https://github.com/shaikimthiyas/horologium/actions/workflows/ci.yml/badge.svg" alt="CI Pipeline">
   </a>
   <img src="https://img.shields.io/badge/Node.js-20.x%20%7C%2022.x-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js LTS">
-  <img src="https://img.shields.io/badge/Tests-74%20Passing-brightgreen?style=flat&logo=node.js" alt="74 Passing Tests">
+  <img src="https://img.shields.io/badge/Tests-79%20Passing-brightgreen?style=flat&logo=node.js" alt="74 Passing Tests">
   <img src="https://img.shields.io/badge/Accessibility-WCAG%202.2%20AAA-blueviolet?style=flat" alt="WCAG 2.2 AAA">
   <img src="https://img.shields.io/badge/OpenAPI-3.1.0-6BA539?style=flat&logo=openapiinitiative&logoColor=white" alt="OpenAPI 3.1.0">
   <img src="https://img.shields.io/badge/Postman-v2.1.0-FF6C37?style=flat&logo=postman&logoColor=white" alt="Postman Collection">

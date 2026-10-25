@@ -33,7 +33,16 @@ function enterpriseRoutePlugin() {
           '/src/pages/contact.html': '/protocol-liaison/',
           '/api-explorer': '/api-explorer/',
           '/docs': '/api-explorer/',
-          '/src/pages/docs.html': '/api-explorer/'
+          '/src/pages/docs.html': '/api-explorer/',
+          '/about': '/about/',
+          '/colophon': '/about/',
+          '/author': '/about/',
+          '/status': '/status/',
+          '/telemetry': '/status/',
+          '/uptime': '/status/',
+          '/privacy': '/privacy/',
+          '/legal': '/privacy/',
+          '/terms': '/privacy/'
         };
 
         if (aliasMap[path]) {
@@ -75,7 +84,11 @@ export default defineConfig({
         legacyCountry: resolve(__dirname, 'src/pages/country.html'),
         legacyAuth: resolve(__dirname, 'src/pages/auth.html'),
         legacyContact: resolve(__dirname, 'src/pages/contact.html'),
-        legacyDocs: resolve(__dirname, 'src/pages/docs.html')
+        legacyDocs: resolve(__dirname, 'src/pages/docs.html'),
+        about: resolve(__dirname, 'about/index.html'),
+        status: resolve(__dirname, 'status/index.html'),
+        privacy: resolve(__dirname, 'privacy/index.html'),
+        notFound: resolve(__dirname, '404.html')
       }
     }
   }

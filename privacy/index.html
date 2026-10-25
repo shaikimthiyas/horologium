@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOROLOGIUM // Data Sovereignty & Telemetry Privacy Policy</title>
+    <meta name="description" content="Data sovereignty disclosures, zero-knowledge chronometry policy, and legal compliance notice for Horologium." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <link rel="stylesheet" href="/src/styles/layout.css"/>
+    <style>
+        .privacy-page {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-0);
+            overflow-y: auto;
+        }
+
+        .privacy-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 28px 24px 64px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .privacy-masthead {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 32px 36px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+        }
+
+        .privacy-card {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-sm);
+            padding: 28px 32px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .privacy-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--fg-1);
+        }
+
+        .privacy-body p {
+            margin: 0 0 14px;
+        }
+
+        .privacy-body p:last-child {
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="privacy-page">
+
+    <!-- Top Telemetry Bar with Master Header -->
+    <header class="telemetry-bar">
+        <div class="telemetry-left">
+            <a href="/" class="brand-monogram">
+                <span class="brand-dot"></span>
+                <span>HOROLOGIUM</span>
+            </a>
+            <span class="telemetry-title">Data Sovereignty & Legal Policy</span>
+        </div>
+
+        <div class="telemetry-center">
+            <!-- Populated by masterHeader.js -->
+        </div>
+
+        <div class="telemetry-right">
+            <!-- Populated by masterHeader.js -->
+        </div>
+    </header>
+
+    <main class="privacy-container">
+        <!-- Masthead -->
+        <section class="privacy-masthead">
+            <div style="margin-bottom: 8px;">
+                <span class="badge-semantic badge-semantic-success">● PRIVACY-BY-DESIGN</span>
+            </div>
+            <h1 style="font-size: 28px; font-weight: 500; color: var(--fg-0); margin: 0 0 8px;">
+                Data Sovereignty & Privacy Policy
+            </h1>
+            <p style="font-size: 14px; color: var(--fg-1); margin: 0; line-height: 1.5;">
+                Effective Date: October 25, 2026 // Lead Architect: Shaik Imthiyas
+            </p>
+        </section>
+
+        <!-- Section 1 -->
+        <article class="privacy-card">
+            <h2 style="font-size: 18px; font-weight: 600; color: var(--fg-0); margin: 0;">
+                1. Zero-Knowledge Client Chronometry
+            </h2>
+            <div class="privacy-body">
+                <p>
+                    Horologium operates on a <strong>zero-knowledge client architecture</strong>. All timezone calculations, subsolar meridian projections, and business overlap computations execute locally within your browser engine using the standard ECMAScript <code>Intl.DateTimeFormat</code> API.
+                </p>
+                <p>
+                    Your geographical location, coordinates, and local timezone selections are never transmitted to third parties, advertising networks, or telemetry trackers.
+                </p>
+            </div>
+        </article>
+
+        <!-- Section 2 -->
+        <article class="privacy-card">
+            <h2 style="font-size: 18px; font-weight: 600; color: var(--fg-0); margin: 0;">
+                2. Cookie-Free Architecture
+            </h2>
+            <div class="privacy-body">
+                <p>
+                    Horologium does not set or read any HTTP tracking cookies. No third-party analytics pixels, fingerprinting scripts, or cross-site tracking mechanisms are embedded into any page of this platform.
+                </p>
+            </div>
+        </article>
+
+        <!-- Section 3 -->
+        <article class="privacy-card">
+            <h2 style="font-size: 18px; font-weight: 600; color: var(--fg-0); margin: 0;">
+                3. Local Persistence & Client Storage
+            </h2>
+            <div class="privacy-body">
+                <p>
+                    When you pin custom telemetry stations, toggle between Obsidian Rhodium and Silvered Dial themes, or queue offline transmissions, data is stored locally in your browser's <code>localStorage</code> or <code>IndexedDB</code>. You retain complete ownership of this data and may purge it at any time via your browser settings.
+                </p>
+            </div>
+        </article>
+
+        <!-- Section 4 -->
+        <article class="privacy-card">
+            <h2 style="font-size: 18px; font-weight: 600; color: var(--fg-0); margin: 0;">
+                4. International Chronometry Standards & RFC 9557 Compliance
+            </h2>
+            <div class="privacy-body">
+                <p>
+                    All timestamps, zone offsets, and temporal representations adhere strictly to <strong>RFC 9557</strong> (Date and Time on the Internet: Timestamps with Additional Information) and <strong>RFC 5905</strong> (Network Time Protocol Version 4). Zone identifiers follow the official IANA Time Zone Database (TZDB 2024b).
+                </p>
+            </div>
+        </article>
+
+        <!-- Section 5 -->
+        <article class="privacy-card">
+            <h2 style="font-size: 18px; font-weight: 600; color: var(--fg-0); margin: 0;">
+                5. Open Source Governance & Contact
+            </h2>
+            <div class="privacy-body">
+                <p>
+                    Horologium is open-source software distributed under the terms of the <strong>MIT License</strong>. The complete source code and automated test suites are publicly auditable on <a href="https://github.com/shaikimthiyas/horologium" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">GitHub</a>.
+                </p>
+                <p>
+                    For privacy inquiries or technical disclosures, contact lead engineer <strong>Shaik Imthiyas</strong> at <code>shaik.imthiyas.t@gmail.com</code>.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <footer style="text-align: center; padding: 24px 20px 48px; border-top: 1px solid var(--border-hairline); font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">
+        <p style="margin: 0 0 8px;">HOROLOGIUM // DATA SOVEREIGNTY PROTOCOL // SHAIK IMTHIYAS</p>
+        <div style="display: flex; gap: 16px; justify-content: center;">
+            <a href="/about/" style="color: var(--fg-1); text-decoration: none;">Colophon</a>
+            <a href="/flight-deck/" style="color: var(--fg-1); text-decoration: none;">Flight Deck</a>
+            <a href="/status/" style="color: var(--fg-1); text-decoration: none;">System Status</a>
+            <a href="/api-explorer/" style="color: var(--fg-1); text-decoration: none;">OpenAPI 3.1</a>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initMasterHeader } from '/src/components/navigation/masterHeader.js';
+        initMasterHeader({ activePage: 'privacy' });
+    </script>
+</body>
+</html>
