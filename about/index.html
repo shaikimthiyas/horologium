@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOROLOGIUM // Colophon & Builder's Note — Shaik Imthiyas</title>
+    <meta name="description" content="Engineering manifesto, design colophon, and technical specifications for Horologium, conceived and built by Shaik Imthiyas." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <link rel="stylesheet" href="/src/styles/layout.css"/>
+    <style>
+        .colophon-page {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-0);
+            overflow-y: auto;
+        }
+
+        .colophon-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 24px 64px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .colophon-masthead {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 36px 40px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .colophon-masthead::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-primary);
+        }
+
+        .builder-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            background: rgba(255, 68, 0, 0.1);
+            border: 1px solid rgba(255, 68, 0, 0.3);
+            border-radius: var(--radius-xs);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent-primary);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .builder-chip .pip {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-primary);
+        }
+
+        .colophon-card {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-sm);
+            padding: 28px 32px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--fg-0);
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        .manifesto-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--fg-1);
+            margin: 0;
+        }
+
+        .manifesto-body p {
+            margin: 0 0 14px;
+        }
+
+        .manifesto-body p:last-child {
+            margin: 0;
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .spec-item {
+            background: var(--bg-0);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-xs);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .spec-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--fg-2);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .spec-val {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg-0);
+        }
+
+        .spec-desc {
+            font-size: 12px;
+            color: var(--fg-1);
+            line-height: 1.4;
+        }
+
+        .profile-card {
+            background: linear-gradient(145deg, var(--bg-1) 0%, var(--bg-0) 100%);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 32px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+        }
+
+        .profile-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-profile-action {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            padding: 9px 18px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border-hairline);
+            background: var(--bg-2);
+            color: var(--fg-0);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 120ms ease;
+        }
+
+        .btn-profile-action:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            background: var(--bg-3);
+        }
+
+        .btn-profile-action.primary {
+            background: var(--accent-primary);
+            color: #000;
+            border-color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .btn-profile-action.primary:hover {
+            background: #ff5714;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="colophon-page">
+
+    <!-- Top Telemetry Bar with Master Header -->
+    <header class="telemetry-bar">
+        <div class="telemetry-left">
+            <a href="/" class="brand-monogram">
+                <span class="brand-dot"></span>
+                <span>HOROLOGIUM</span>
+            </a>
+            <span class="telemetry-title">Colophon & Builder's Note</span>
+        </div>
+
+        <div class="telemetry-center">
+            <!-- Populated by masterHeader.js -->
+        </div>
+
+        <div class="telemetry-right">
+            <!-- Populated by masterHeader.js -->
+        </div>
+    </header>
+
+    <main class="colophon-container">
+        <!-- Masthead -->
+        <section class="colophon-masthead">
+            <div style="max-width: 680px;">
+                <div style="margin-bottom: 12px;">
+                    <span class="builder-chip">
+                        <span class="pip"></span>
+                        <span>ARCHITECT & LEAD BUILDER // SHAIK IMTHIYAS</span>
+                    </span>
+                </div>
+                <h1 style="font-size: 32px; font-weight: 500; color: var(--fg-0); margin: 0 0 12px; letter-spacing: -0.02em;">
+                    Colophon & Builder's Note
+                </h1>
+                <p style="font-size: 15px; color: var(--fg-1); margin: 0; line-height: 1.6;">
+                    Horologium was conceived, designed, and engineered from first principles by <strong>Shaik Imthiyas</strong>. It represents an uncompromised fusion of Swiss mechanical horology, distributed consensus algorithms, and sovereign client-side architecture.
+                </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+                <span class="badge-semantic badge-semantic-success">● PRODUCTION CALIBRE-01</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">RELEASE v1.4.0-PRO</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);" id="colophonUtcClock">--:--:-- UTC</span>
+            </div>
+        </section>
+
+        <!-- Section 1: The Builder's Manifesto -->
+        <article class="colophon-card">
+            <div class="section-tag">
+                <span>01</span>
+                <span>// THE ENGINEERING MANIFESTO</span>
+            </div>
+            <h2 class="section-title">Why Time is Broken on the Web — And How We Solved It</h2>
+            <div class="manifesto-body">
+                <p>
+                    Modern web software treats time as an afterthought. Browsers routinely sample non-monotonic system clocks that jump backwards on NTP step adjustments, break during daylight saving shifts, and leak geographic telemetry through invasive third-party IP lookups.
+                </p>
+                <p>
+                    In 1759, carpenter and watchmaker <strong>John Harrison</strong> solved longitude at sea by inventing the H4 marine chronometer — a mechanical instrument so stable it operated as an autonomous sovereign reference. <strong>Horologium is the modern software heir to that philosophy.</strong>
+                </p>
+                <p>
+                    Rather than trusting a single external server, Horologium implements <strong>Marzullo's Intersection Algorithm</strong> to query multiple Stratum-1 atomic reference clocks simultaneously, identify and discard statistical falsetickers, and lock onto verified consensus. When offset drifts, a continuous <strong>Linux <code>adjtime</code>-style slew controller</strong> gradually steers time back to atomic synchronization without ever allowing the client clock to tick backwards.
+                </p>
+                <p>
+                    When network connectivity is completely severed, Horologium’s <strong>Progressive Web App engine</strong> transitions into sovereign flight mode, executing microsecond-level temperature-compensated crystal oscillator (TCXO) mathematical drift compensation.
+                </p>
+            </div>
+        </article>
+
+        <!-- Section 2: Technical Specifications & Craft -->
+        <article class="colophon-card">
+            <div class="section-tag">
+                <span>02</span>
+                <span>// ARCHITECTURAL SPECIFICATIONS</span>
+            </div>
+            <h2 class="section-title">Calibre-01 Horological Chassis Specifications</h2>
+            
+            <div class="spec-grid">
+                <div class="spec-item">
+                    <span class="spec-label">Time Consensus Engine</span>
+                    <span class="spec-val">Marzullo's Truechimer</span>
+                    <span class="spec-desc">Evaluates concurrent UDP NTP packets; rejects rogue falsetickers via strict geometric intersection.</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Clock Discontinuity Control</span>
+                    <span class="spec-val">Monotonic Slewing</span>
+                    <span class="spec-desc">Emulates Linux <code>adjtime</code> at ±0.5 ms/s slew rate. Strictly guarantees d/dt > 0.</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Offline Drift Model</span>
+                    <span class="spec-val">Parabolic TCXO Quartz</span>
+                    <span class="spec-desc">Calculates Δf/f = -0.034 ppm/°C² · (T - T₀)² + aging when disconnected from satellite/NTP.</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Persistence Tri-Engine</span>
+                    <span class="spec-val">Turso + Timescale + SQLite</span>
+                    <span class="spec-desc">Zero-pause edge LibSQL, enterprise TimescaleDB hypertables, and embedded SQLite WAL mode.</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Accessibility Compliance</span>
+                    <span class="spec-val">WCAG 2.2 AAA</span>
+                    <span class="spec-desc">Mathematical contrast verification (≥ 7:1) across Obsidian Rhodium and Silvered Dial themes.</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Quality & Verification</span>
+                    <span class="spec-val">74 Tests (9 Suites)</span>
+                    <span class="spec-desc">Automated unit, integration, and chaos drift suites running on Node 20.x, 22.x, and Go 1.22.</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Section 3: Design & Typography Colophon -->
+        <article class="colophon-card">
+            <div class="section-tag">
+                <span>03</span>
+                <span>// DESIGN COLOPHON & TYPOGRAPHY</span>
+            </div>
+            <h2 class="section-title">Swiss Industrial Precision & Optical Ergonomics</h2>
+            <div class="manifesto-body">
+                <p>
+                    Horologium’s visual language is modeled on 20th-century marine chronometers, aeronautical flight instruments, and Swiss horological movements:
+                </p>
+                <ul>
+                    <li><strong>Monospace Numeral Dial:</strong> Set in <code>JetBrains Mono</code> with tabular figures (<code>font-variant-numeric: tabular-nums</code>) to guarantee zero character jitter during high-frequency millisecond ticks.</li>
+                    <li><strong>Primary Interface:</strong> Set in <code>Syne</code> and <code>Instrument Sans</code> for high-legibility architectural contrast.</li>
+                    <li><strong>Color System:</strong> Obsidian Rhodium (<code>#0A0D10</code> deep background), Specular Vermilion (<code>#FF4400</code> for 1px indicator needles and atomic alerts), and Silvered Dial (<code>#ECEFF1</code>).</li>
+                    <li><strong>Optical Halation Compensation:</strong> Negative sub-pixel tracking and anti-aliasing smoothing prevent optical text vibration against pitch-black OLED displays.</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- Section 4: Lead Builder Profile -->
+        <section class="profile-card">
+            <div>
+                <div style="margin-bottom: 6px;">
+                    <span class="section-tag">04 // AUTHOR & CRAFTSMAN</span>
+                </div>
+                <h2 style="font-size: 24px; font-weight: 600; color: var(--fg-0); margin: 0 0 6px;">
+                    Shaik Imthiyas
+                </h2>
+                <p style="font-size: 13px; color: var(--fg-1); margin: 0; max-width: 52ch; line-height: 1.5;">
+                    Full-Stack & Distributed Systems Engineer specializing in low-latency reactive applications, resilient database persistence, and human-factors engineering.
+                </p>
+            </div>
+
+            <div class="profile-links">
+                <a href="https://github.com/shaikimthiyas/horologium" target="_blank" rel="noopener noreferrer" class="btn-profile-action">
+                    <span>🐙</span> GITHUB REPOSITORY
+                </a>
+                <a href="https://github.com/shaikimthiyas" target="_blank" rel="noopener noreferrer" class="btn-profile-action">
+                    <span>👤</span> BUILDER GITHUB
+                </a>
+                <a href="/public/horologium.postman_collection.json" download class="btn-profile-action primary">
+                    <span>⬇</span> POSTMAN COLLECTION
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 24px 20px 48px; border-top: 1px solid var(--border-hairline); font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">
+        <p style="margin: 0 0 8px;">HOROLOGIUM // CONCEIVED & ENGINEERED BY SHAIK IMTHIYAS // MIT OPEN SOURCE LICENSE</p>
+        <div style="display: flex; gap: 16px; justify-content: center;">
+            <a href="/flight-deck/" style="color: var(--fg-1); text-decoration: none;">Flight Deck</a>
+            <a href="/geodesic-registry/" style="color: var(--fg-1); text-decoration: none;">Geodesic Registry</a>
+            <a href="/status/" style="color: var(--fg-1); text-decoration: none;">System Status</a>
+            <a href="/privacy/" style="color: var(--fg-1); text-decoration: none;">Privacy & Legal</a>
+            <a href="/api-explorer/" style="color: var(--fg-1); text-decoration: none;">OpenAPI 3.1</a>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initMasterHeader } from '/src/components/navigation/masterHeader.js';
+        initMasterHeader({ activePage: 'about' });
+
+        function updateClock() {
+            const now = new Date();
+            const el = document.getElementById('colophonUtcClock');
+            if (el) el.textContent = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>

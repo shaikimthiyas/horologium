@@ -301,6 +301,9 @@ export class MasterHeaderController {
             <div class="shortcut-row"><span>Toggle Theme</span> <kbd class="shortcut-kbd">T</kbd></div>
             <div class="shortcut-row"><span>Install Standalone PWA</span> <kbd class="shortcut-kbd">⬇ HUD</kbd></div>
             <div class="shortcut-row"><span>Close Modals / Reset</span> <kbd class="shortcut-kbd">Esc</kbd></div>
+            <div class="shortcut-row" style="border-top:1px dashed var(--border-hairline);margin-top:6px;padding-top:6px;"><a href="/about/" style="color:var(--accent-primary);text-decoration:none;font-size:11px;">Colophon & Builder's Note [Imthiyas]</a> <kbd class="shortcut-kbd">About</kbd></div>
+            <div class="shortcut-row"><a href="/status/" style="color:var(--accent-primary);text-decoration:none;font-size:11px;">Live Telemetry & Health Probes</a> <kbd class="shortcut-kbd">Status</kbd></div>
+            <div class="shortcut-row"><a href="/privacy/" style="color:var(--accent-primary);text-decoration:none;font-size:11px;">Data Sovereignty & Privacy</a> <kbd class="shortcut-kbd">Legal</kbd></div>
           </div>
 
           <div style="padding:10px 16px;background:var(--bg-0);border-top:1px solid var(--border-hairline);text-align:right;">

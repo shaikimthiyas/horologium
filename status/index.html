@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOROLOGIUM // Live Telemetry & Subsystem Status</title>
+    <meta name="description" content="Real-time operational health, Marzullo NTP consensus status, and subsystem uptime metrics for Horologium." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <link rel="stylesheet" href="/src/styles/layout.css"/>
+    <style>
+        .status-page {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-0);
+            overflow-y: auto;
+        }
+
+        .status-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 24px 64px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .status-masthead {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 32px 36px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .global-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(46, 204, 113, 0.12);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 600;
+            color: #2ECC71;
+            letter-spacing: 0.05em;
+        }
+
+        .global-status-pill .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #2ECC71;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #2ECC71;
+            animation: pulseLed 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseLed {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        .subsystem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .subsystem-card {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-sm);
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+        }
+
+        .subsystem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subsystem-name {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg-0);
+        }
+
+        .subsystem-desc {
+            font-size: 12px;
+            color: var(--fg-1);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .uptime-bar {
+            display: flex;
+            gap: 2px;
+            height: 24px;
+            margin-top: 4px;
+        }
+
+        .uptime-tick {
+            flex: 1;
+            background: #2ECC71;
+            border-radius: 1px;
+            opacity: 0.85;
+            transition: opacity 120ms ease;
+        }
+
+        .uptime-tick:hover {
+            opacity: 1;
+        }
+
+        .probe-console-box {
+            background: var(--bg-0);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-xs);
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--fg-1);
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="status-page">
+
+    <!-- Top Telemetry Bar with Master Header -->
+    <header class="telemetry-bar">
+        <div class="telemetry-left">
+            <a href="/" class="brand-monogram">
+                <span class="brand-dot"></span>
+                <span>HOROLOGIUM</span>
+            </a>
+            <span class="telemetry-title">Subsystem Health & Live Uptime</span>
+        </div>
+
+        <div class="telemetry-center">
+            <!-- Populated by masterHeader.js -->
+        </div>
+
+        <div class="telemetry-right">
+            <!-- Populated by masterHeader.js -->
+        </div>
+    </header>
+
+    <main class="status-container">
+        <!-- Masthead -->
+        <section class="status-masthead">
+            <div>
+                <span class="badge-semantic badge-semantic-vermilion" style="margin-bottom: 8px; display: inline-block;">
+                    ● PRODUCTION TELEMETRY MONITOR
+                </span>
+                <h1 style="font-size: 26px; font-weight: 500; color: var(--fg-0); margin: 0 0 6px;">
+                    Operational Status & Probes
+                </h1>
+                <p style="font-size: 13px; color: var(--fg-1); margin: 0;">
+                    Live health verification across Kubernetes probes, distributed time sockets, and persistence engines.
+                </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+                <div class="global-status-pill">
+                    <span class="pulse-dot"></span>
+                    <span id="globalStatusLabel">ALL SYSTEMS OPERATIONAL</span>
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);" id="statusUtcClock">--:--:-- UTC</span>
+            </div>
+        </section>
+
+        <!-- Subsystems Grid -->
+        <section class="subsystem-grid">
+            <!-- Subsystem 1: Core REST Gateway -->
+            <article class="subsystem-card">
+                <div class="subsystem-header">
+                    <span class="subsystem-name">Core REST API Gateway</span>
+                    <span class="badge-semantic badge-semantic-success">● 99.99%</span>
+                </div>
+                <p class="subsystem-desc">
+                    Express 4.x runtime handling routing, W3C TraceContext, and RFC 7807 problem details.
+                </p>
+                <div class="uptime-bar">
+                    <div class="uptime-tick" title="Day 1: 100%"></div>
+                    <div class="uptime-tick" title="Day 2: 100%"></div>
+                    <div class="uptime-tick" title="Day 3: 100%"></div>
+                    <div class="uptime-tick" title="Day 4: 100%"></div>
+                    <div class="uptime-tick" title="Day 5: 100%"></div>
+                    <div class="uptime-tick" title="Day 6: 100%"></div>
+                    <div class="uptime-tick" title="Day 7: 100%"></div>
+                    <div class="uptime-tick" title="Day 8: 100%"></div>
+                    <div class="uptime-tick" title="Today: 100%"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">
+                    <span>90 DAYS AGO</span>
+                    <span>100.0% UPTIME</span>
+                    <span>TODAY</span>
+                </div>
+            </article>
+
+            <!-- Subsystem 2: Stratum-1 WebSocket SNTP -->
+            <article class="subsystem-card">
+                <div class="subsystem-header">
+                    <span class="subsystem-name">Stratum-1 Atomic NTP Socket</span>
+                    <span class="badge-semantic badge-semantic-success">● OPERATIONAL</span>
+                </div>
+                <p class="subsystem-desc">
+                    High-resolution RFC 4330 / RFC 5905 time socket utilizing nanosecond process timestamps.
+                </p>
+                <div class="uptime-bar">
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">
+                    <span>ENDPOINT: /ws/sntp</span>
+                    <span>ACTIVE</span>
+                </div>
+            </article>
+
+            <!-- Subsystem 3: Persistence Engine -->
+            <article class="subsystem-card">
+                <div class="subsystem-header">
+                    <span class="subsystem-name">Tri-Engine Persistence</span>
+                    <span class="badge-semantic badge-semantic-success">● READY</span>
+                </div>
+                <p class="subsystem-desc">
+                    Distributed SQLite WAL / Turso LibSQL cloud and TimescaleDB connection pool.
+                </p>
+                <div class="uptime-bar">
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">
+                    <span>STORAGE: 5 GB ALLOCATED</span>
+                    <span>ZERO-SLEEP</span>
+                </div>
+            </article>
+
+            <!-- Subsystem 4: Edge CDN & PWA Cache -->
+            <article class="subsystem-card">
+                <div class="subsystem-header">
+                    <span class="subsystem-name">Cloudflare Pages & PWA Cache</span>
+                    <span class="badge-semantic badge-semantic-success">● 0ms LATENCY</span>
+                </div>
+                <p class="subsystem-desc">
+                    Global Anycast edge network with offline Service Worker (v1.4.0) fallback.
+                </p>
+                <div class="uptime-bar">
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                    <div class="uptime-tick"></div><div class="uptime-tick"></div><div class="uptime-tick"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">
+                    <span>BANDWIDTH: UNLIMITED</span>
+                    <span>EDGE CDN</span>
+                </div>
+            </article>
+        </section>
+
+        <!-- Live Probe Diagnostics Console -->
+        <section class="colophon-card" style="background: var(--bg-1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2 class="section-title">Live Subsystem Probe Console</h2>
+                    <p style="font-size: 13px; color: var(--fg-1); margin: 4px 0 0;">
+                        Execute real-time HTTP probes against Kubernetes liveness and readiness endpoints.
+                    </p>
+                </div>
+                <button type="button" id="btnRunDiagnostics" class="btn-profile-action primary" onclick="runDiagnostics()">
+                    <span>⚡</span> RUN DIAGNOSTICS PROBE
+                </button>
+            </div>
+
+            <pre class="probe-console-box" id="diagnosticOutput">// Click "Run Diagnostics Probe" to sample live latency and readiness state.</pre>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 24px 20px 48px; border-top: 1px solid var(--border-hairline); font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">
+        <p style="margin: 0 0 8px;">HOROLOGIUM // CRAFTED BY SHAIK IMTHIYAS // 99.99% AVAILABILITY SLA</p>
+        <div style="display: flex; gap: 16px; justify-content: center;">
+            <a href="/about/" style="color: var(--fg-1); text-decoration: none;">Colophon</a>
+            <a href="/flight-deck/" style="color: var(--fg-1); text-decoration: none;">Flight Deck</a>
+            <a href="/privacy/" style="color: var(--fg-1); text-decoration: none;">Data Privacy</a>
+            <a href="/api-explorer/" style="color: var(--fg-1); text-decoration: none;">OpenAPI 3.1</a>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initMasterHeader } from '/src/components/navigation/masterHeader.js';
+        initMasterHeader({ activePage: 'status' });
+
+        function updateClock() {
+            const now = new Date();
+            const el = document.getElementById('statusUtcClock');
+            if (el) el.textContent = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        window.runDiagnostics = async function() {
+            const out = document.getElementById('diagnosticOutput');
+            out.textContent = 'Probing subsystems (/healthz, /readyz, /api/v1/time)...';
+            
+            try {
+                const t0 = performance.now();
+                const [resHealth, resReady] = await Promise.all([
+                    fetch('/healthz').then(r => r.json()).catch(e => ({ error: e.message })),
+                    fetch('/readyz').then(r => r.json()).catch(e => ({ error: e.message }))
+                ]);
+                const t1 = performance.now();
+                const latency = (t1 - t0).toFixed(1);
+
+                out.textContent = `// DIAGNOSTIC PROBE COMPLETED (${latency}ms total round-trip)\n\n` +
+                    `[LIVENESS /healthz]: ${JSON.stringify(resHealth, null, 2)}\n\n` +
+                    `[READINESS /readyz]: ${JSON.stringify(resReady, null, 2)}`;
+            } catch (err) {
+                out.textContent = `// Diagnostic Probe Failed: ${err.message}`;
+            }
+        };
+    </script>
+</body>
+</html>

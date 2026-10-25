@@ -70,30 +70,20 @@ app.get(['/horologium.postman_collection.json', '/api/postman.json'], (req, res)
 });
 
 // Enterprise Route Aliases & Legacy Redirections (Zero-Breakage Guarantee)
-app.get(['/flight-deck', '/map', '/src/pages/map.html'], (req, res) => {
+const redirectWithTrailingSlash = (targetPath) => (req, res, next) => {
+  if (req.path === targetPath) return next();
   const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, `/flight-deck/${qs}`);
-});
+  res.redirect(301, `${targetPath}${qs}`);
+};
 
-app.get(['/geodesic-registry', '/registry', '/directory', '/country', '/src/pages/country.html'], (req, res) => {
-  const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, `/geodesic-registry/${qs}`);
-});
-
-app.get(['/operator-gateway', '/operator', '/security', '/auth', '/src/pages/auth.html'], (req, res) => {
-  const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, `/operator-gateway/${qs}`);
-});
-
-app.get(['/protocol-liaison', '/liaison', '/inquiry', '/contact', '/src/pages/contact.html'], (req, res) => {
-  const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, `/protocol-liaison/${qs}`);
-});
-
-app.get(['/docs', '/api/docs', '/src/pages/docs.html'], (req, res) => {
-  const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  res.redirect(301, `/api-explorer/${qs}`);
-});
+app.get(['/flight-deck', '/map', '/src/pages/map.html'], redirectWithTrailingSlash('/flight-deck/'));
+app.get(['/geodesic-registry', '/registry', '/directory', '/country', '/src/pages/country.html'], redirectWithTrailingSlash('/geodesic-registry/'));
+app.get(['/operator-gateway', '/operator', '/security', '/auth', '/src/pages/auth.html'], redirectWithTrailingSlash('/operator-gateway/'));
+app.get(['/protocol-liaison', '/liaison', '/inquiry', '/contact', '/src/pages/contact.html'], redirectWithTrailingSlash('/protocol-liaison/'));
+app.get(['/docs', '/api/docs', '/src/pages/docs.html'], redirectWithTrailingSlash('/api-explorer/'));
+app.get(['/about', '/colophon', '/author'], redirectWithTrailingSlash('/about/'));
+app.get(['/status', '/telemetry', '/uptime'], redirectWithTrailingSlash('/status/'));
+app.get(['/privacy', '/legal', '/terms'], redirectWithTrailingSlash('/privacy/'));
 
 // API Routes
 app.use('/api', apiRouter);
@@ -103,9 +93,23 @@ const distPath = resolve(__dirname, '../dist');
 if (existsSync(distPath)) {
   app.use(express.static(distPath));
 
+  // Explicit directory handlers to guarantee sub-page index resolution
+  app.get('/about/', (req, res) => res.sendFile(resolve(distPath, 'about/index.html')));
+  app.get('/status/', (req, res) => res.sendFile(resolve(distPath, 'status/index.html')));
+  app.get('/privacy/', (req, res) => res.sendFile(resolve(distPath, 'privacy/index.html')));
+  app.get('/flight-deck/', (req, res) => res.sendFile(resolve(distPath, 'flight-deck/index.html')));
+  app.get('/geodesic-registry/', (req, res) => res.sendFile(resolve(distPath, 'geodesic-registry/index.html')));
+  app.get('/operator-gateway/', (req, res) => res.sendFile(resolve(distPath, 'operator-gateway/index.html')));
+  app.get('/protocol-liaison/', (req, res) => res.sendFile(resolve(distPath, 'protocol-liaison/index.html')));
+  app.get('/api-explorer/', (req, res) => res.sendFile(resolve(distPath, 'api-explorer/index.html')));
+
   app.use((req, res, next) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/ws')) {
       return next();
+    }
+    const notFoundPath = resolve(distPath, '404.html');
+    if (existsSync(notFoundPath)) {
+      return res.status(404).sendFile(notFoundPath);
     }
     // Route to root index for unmapped front-end paths
     res.sendFile(resolve(distPath, 'index.html'));

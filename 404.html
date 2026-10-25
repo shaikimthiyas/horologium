@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOROLOGIUM // 404 Temporal Discontinuity</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <link rel="stylesheet" href="/src/styles/layout.css"/>
+    <style>
+        .error-page {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-0);
+            padding: 24px;
+            font-family: var(--font-mono);
+        }
+
+        .error-card {
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 40px;
+            max-width: 640px;
+            width: 100%;
+            text-align: center;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .radar-scan-reticle {
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--accent-primary);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .radar-scan-reticle::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-primary);
+            opacity: 0.4;
+        }
+
+        .radar-scan-reticle::after {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            background: var(--accent-primary);
+            opacity: 0.4;
+        }
+
+        .radar-sweep {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 70%, rgba(255, 68, 0, 0.4) 100%);
+            animation: radarRotate 3s linear infinite;
+        }
+
+        @keyframes radarRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .error-code {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .action-dock {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body class="error-page">
+    <main class="error-card">
+        <div class="radar-scan-reticle">
+            <div class="radar-sweep"></div>
+            <span style="width: 6px; height: 6px; background: var(--accent-primary); border-radius: 50%;"></span>
+        </div>
+
+        <div>
+            <span class="badge-semantic badge-semantic-vermilion" style="margin-bottom: 8px; display: inline-block;">
+                ● TEMPORAL DISCONTINUITY DETECTED
+            </span>
+            <h1 class="error-code">404</h1>
+            <p style="font-size: 14px; color: var(--fg-0); font-weight: 500; margin: 8px 0 4px;">
+                COORDINATE OUT OF BOUNDS
+            </p>
+            <p style="font-size: 12px; color: var(--fg-1); margin: 0; max-width: 44ch; line-height: 1.5;">
+                The requested meridian vector or temporal URL does not exist in the Horologium IANA telemetry registry.
+            </p>
+        </div>
+
+        <div style="background: var(--bg-0); border: 1px solid var(--border-hairline); border-radius: var(--radius-xs); padding: 10px 16px; font-size: 11px; color: var(--fg-2);">
+            CURRENT ATOMIC TIME: <span id="clock404" style="color: var(--fg-0); font-weight: 600;">--:--:-- UTC</span>
+        </div>
+
+        <nav class="action-dock" aria-label="Recovery Navigation">
+            <a href="/" class="nav-action-btn" style="border-color: var(--accent-primary); color: var(--accent-primary);">
+                <span>1</span> MISSION GATEWAY
+            </a>
+            <a href="/flight-deck/" class="nav-action-btn">
+                <span>2</span> FLIGHT DECK
+            </a>
+            <a href="/geodesic-registry/" class="nav-action-btn">
+                <span>3</span> GEODESIC REGISTRY
+            </a>
+            <a href="/status/" class="nav-action-btn">
+                <span>⚡</span> SYSTEM STATUS
+            </a>
+        </nav>
+    </main>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const el = document.getElementById('clock404');
+            if (el) el.textContent = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
