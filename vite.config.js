@@ -14,6 +14,8 @@ function enterpriseRoutePlugin() {
         const qs = query ? `?${query}` : '';
 
         const aliasMap = {
+          '/horo': '/horo/',
+          '/horologium': '/horo/',
           '/flight-deck': '/map/',
           '/map': '/map/',
           '/geodesic-registry': '/directory/',
@@ -70,6 +72,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        horo: resolve(__dirname, 'horo/index.html'),
         map: resolve(__dirname, 'map/index.html'),
         flightDeck: resolve(__dirname, 'flight-deck/index.html'),
         directory: resolve(__dirname, 'directory/index.html'),
