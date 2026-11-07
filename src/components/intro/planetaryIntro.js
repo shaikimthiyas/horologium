@@ -281,6 +281,11 @@ export class PlanetaryIntroStage {
     const cy = size / 2;
     const R = size * 0.40; // Globe Radius
 
+    const isLight = (typeof document !== 'undefined') &&
+      (document.documentElement.getAttribute('data-theme') === 'silvered' ||
+       document.documentElement.getAttribute('data-theme') === 'light' ||
+       !document.documentElement.classList.contains('dark'));
+
     ctx.clearRect(0, 0, size, size);
 
     // Rotate globe continuously (approx 1 rev / 16 seconds)
@@ -325,16 +330,22 @@ export class PlanetaryIntroStage {
     ctx.arc(cx, cy, R, 0, Math.PI * 2);
     ctx.clip();
 
-    // Base Ocean Gradient
+    // Base Ocean Gradient (Adaptive Theme Surfaces)
     const oceanGrad = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.3, R * 0.1, cx, cy, R);
-    oceanGrad.addColorStop(0, '#10141c');
-    oceanGrad.addColorStop(0.7, '#07090d');
-    oceanGrad.addColorStop(1, '#030406');
+    if (isLight) {
+      oceanGrad.addColorStop(0, '#EAECEF');
+      oceanGrad.addColorStop(0.7, '#DDE1E8');
+      oceanGrad.addColorStop(1, '#CBD2DF');
+    } else {
+      oceanGrad.addColorStop(0, '#10141c');
+      oceanGrad.addColorStop(0.7, '#07090d');
+      oceanGrad.addColorStop(1, '#030406');
+    }
     ctx.fillStyle = oceanGrad;
     ctx.fill();
 
     // 4. Latitude Parallels (Equator, Tropics, Arctic)
-    ctx.strokeStyle = 'rgba(237, 239, 242, 0.08)';
+    ctx.strokeStyle = isLight ? 'rgba(13, 16, 23, 0.08)' : 'rgba(237, 239, 242, 0.08)';
     ctx.lineWidth = 1;
     const parallels = [-66.5, -23.44, 0, 23.44, 66.5];
     parallels.forEach(latDeg => {
@@ -356,17 +367,17 @@ export class PlanetaryIntroStage {
       if (cosLon > -0.1) {
         ctx.beginPath();
         ctx.strokeStyle = (lonDeg === 0)
-          ? 'rgba(255, 68, 0, 0.45)' // Highlight 0° Prime Meridian in Vermilion
-          : 'rgba(237, 239, 242, 0.09)';
+          ? (isLight ? 'rgba(37, 99, 235, 0.65)' : 'rgba(255, 87, 34, 0.6)')
+          : (isLight ? 'rgba(13, 16, 23, 0.08)' : 'rgba(237, 239, 242, 0.09)');
         ctx.lineWidth = (lonDeg === 0) ? 1.5 : 1;
         ctx.ellipse(cx, cy, Math.abs(sinLon) * R, R, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
     }
 
-    // 6. Continents Landmass Polygons
-    ctx.fillStyle = '#181f2a';
-    ctx.strokeStyle = 'rgba(0, 229, 184, 0.45)';
+    // 6. Continents Landmass Polygons (Theme Sensitive)
+    ctx.fillStyle = isLight ? '#FFFFFF' : '#181D27';
+    ctx.strokeStyle = isLight ? 'rgba(37, 99, 235, 0.35)' : 'rgba(56, 189, 248, 0.45)';
     ctx.lineWidth = 1.2;
 
     CONTINENT_POLYGONS.forEach(poly => {
@@ -421,9 +432,15 @@ export class PlanetaryIntroStage {
       cy,
       R * 1.1
     );
-    nightGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    nightGrad.addColorStop(0.5, 'rgba(3, 5, 8, 0.45)');
-    nightGrad.addColorStop(1, 'rgba(2, 3, 5, 0.82)');
+    if (isLight) {
+      nightGrad.addColorStop(0, 'rgba(13, 16, 23, 0)');
+      nightGrad.addColorStop(0.5, 'rgba(13, 16, 23, 0.12)');
+      nightGrad.addColorStop(1, 'rgba(13, 16, 23, 0.24)');
+    } else {
+      nightGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      nightGrad.addColorStop(0.5, 'rgba(3, 5, 8, 0.45)');
+      nightGrad.addColorStop(1, 'rgba(2, 3, 5, 0.82)');
+    }
     ctx.fillStyle = nightGrad;
     ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
 
@@ -432,8 +449,9 @@ export class PlanetaryIntroStage {
     const ry = cy + Math.sin(this.radarAngle) * R;
 
     const radarGrad = ctx.createLinearGradient(cx, cy, rx, ry);
-    radarGrad.addColorStop(0, 'rgba(255, 68, 0, 0.35)');
-    radarGrad.addColorStop(1, 'rgba(255, 68, 0, 0.0)');
+    const scanColor = isLight ? 'rgba(37, 99, 235,' : 'rgba(255, 87, 34,';
+    radarGrad.addColorStop(0, `${scanColor} 0.35)`);
+    radarGrad.addColorStop(1, `${scanColor} 0.0)`);
     ctx.strokeStyle = radarGrad;
     ctx.lineWidth = 2;
     ctx.beginPath();

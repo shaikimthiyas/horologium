@@ -1613,34 +1613,37 @@
         </div>
     </main>
 
-    <!-- 3. MECHANICAL 24-HOUR RULER SCRUBBER (Time Travel Scale) -->
+    <!-- 3. MECHANICAL 24-HOUR RULER SCRUBBER (Time Travel Scale — Unobstructed 00:00-24:00) -->
     <div class="scrubber-panel" id="scrubberPanel">
         <div class="scrubber-track-container" id="scrubberTrack">
             <div class="scrubber-scale" id="scrubberScale">
-                <!-- Generated dynamically: 15m, 30m, and hourly ticks -->
+                <!-- Generated dynamically: 15m, 30m, and hourly ticks across full 24h spectrum -->
             </div>
             <!-- High-Vis Vermilion Needle Marker -->
             <div class="scrubber-needle" id="scrubberNeedle">
                 <div class="scrubber-needle-head"></div>
             </div>
         </div>
-        <div class="scrubber-controls">
-            <button type="button" class="live-snap-btn is-live" id="liveSnapBtn" title="Snap to Atomic Live Time">
-                <span class="live-pulse-dot"></span>
-                <span>LIVE</span>
-            </button>
-        </div>
     </div>
 
-    <!-- 4. DOCKED PINNED CITIES / TIMEZONE MATRIX (Bento Grid) -->
+    <!-- 4. DOCKED PINNED CITIES / TIMEZONE MATRIX (Bento Grid with Relocated Transport Toolbar) -->
     <section class="telemetry-matrix-panel" id="telemetryMatrixPanel">
         <div class="matrix-header-bar">
             <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                 <span>PINNED TELEMETRY MATRIX // MULTI-ZONE HOROLOGY</span>
                 <span id="dstStatusLabel" class="dst-badge badge-dst-none">STANDARD TIME</span>
-                <span id="subsolarPosLabel" style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">☀️ SUN: +00.0° LAT | 00.0° LON</span>
+                <span id="subsolarPosLabel" style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary, var(--fg-2));">☀️ SUN: +00.0° LAT | 00.0° LON</span>
             </div>
-            <span id="simulatedOffsetLabel" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 11px;">OFFSET: ±00:00 (LIVE STRATUM-1)</span>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <!-- Dedicated Transport Controls Dock (Clears Ruler Collision) -->
+                <div class="matrix-transport-dock" id="matrixTransportDock">
+                    <button type="button" class="live-snap-btn is-live" id="liveSnapBtn" title="Snap to Atomic Live Time">
+                        <span class="live-pulse-dot"></span>
+                        <span>LIVE</span>
+                    </button>
+                </div>
+                <span id="simulatedOffsetLabel" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 11px;">OFFSET: ±00:00 (LIVE STRATUM-1)</span>
+            </div>
         </div>
         <div class="matrix-grid" id="matrixGrid">
             <!-- Pinned horology cells populated dynamically -->

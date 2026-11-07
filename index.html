@@ -44,6 +44,239 @@
             box-shadow: inset 0 1px 0 0 var(--border-specular);
         }
 
+                /* Enterprise Top Navigation & App Bar */
+        .brand-name {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            color: var(--text-primary);
+        }
+
+        .brand-calibre {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: var(--radius-xs);
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            letter-spacing: 0.06em;
+        }
+
+        .header-live-pulse-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            padding: 0 10px;
+            height: 26px;
+            border-radius: var(--radius-xs);
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .live-pulse-dot-nominal {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--status-nominal);
+            box-shadow: 0 0 6px var(--status-nominal);
+            animation: livePillPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes livePillPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.45; transform: scale(0.85); }
+        }
+
+        .pill-divider {
+            opacity: 0.35;
+            color: var(--text-secondary);
+        }
+
+        .pill-metric {
+            font-size: 10px;
+            color: var(--status-nominal);
+        }
+
+        /* Center Zone: Segmented View Track */
+        .segmented-view-track {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+            gap: 2px;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .segmented-tab {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: var(--radius-xs);
+            transition: all 120ms var(--ease-snappy);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .segmented-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .segmented-tab.active {
+            color: var(--text-primary);
+            background: var(--bg-surface-1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 0 var(--border-specular);
+            font-weight: 600;
+        }
+
+        /* Right Zone: Command & Utility Toggles */
+        .header-cmd-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 28px;
+            padding: 0 10px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 120ms ease;
+            white-space: nowrap;
+        }
+
+        .header-cmd-pill:hover {
+            border-color: var(--border-strong);
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .header-kbd {
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            border-radius: 3px;
+            padding: 1px 4px;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .utility-toggle-group {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .utility-btn {
+            height: 24px;
+            padding: 0 8px;
+            background: transparent;
+            border: none;
+            border-radius: 3px;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 120ms ease;
+            white-space: nowrap;
+        }
+
+        .utility-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .utility-ghost-btn {
+            height: 28px;
+            width: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--radius-xs);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 120ms ease;
+        }
+
+        .utility-ghost-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-2);
+            border-color: var(--border-subtle);
+        }
+
+        /* Architectural Hero Badges */
+        .telemetry-spec-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 24px;
+            padding: 0 10px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border-strong);
+            display: inline-block;
+        }
+
+        .telemetry-spec-pill.is-active .pill-dot {
+            background: var(--status-nominal);
+            box-shadow: 0 0 5px var(--status-nominal);
+        }
+
+        /* Diurnal Sensor Solar Bands */
+        .vernier-tick.tick-night {
+            background: var(--border-strong, #333A4D);
+            opacity: 0.5;
+        }
+
+        .vernier-tick.tick-twilight {
+            background: var(--accent-secondary, #38BDF8);
+            opacity: 0.85;
+        }
+
+        .vernier-tick.tick-daylight {
+            background: var(--accent-primary, #FF5722);
+            opacity: 1;
+        }
+
         .workbench-home {
             min-height: 100dvh;
             display: flex;
@@ -528,34 +761,59 @@
          2. TOP TELEMETRY BAR (48px Height Locked, 1px Structural Grid)
          ==================================================================== -->
     <header class="telemetry-bar">
+        <!-- Zone 1: Identity & Live Stratum-1 Telemetry Pulse -->
         <div class="telemetry-left">
-            <a href="/index.html" class="brand-monogram">
+            <a href="/" class="brand-monogram" title="Horologium Planetary Time Machine">
                 <span class="brand-dot"></span>
-                <span>HOROLOGIUM</span>
+                <span class="brand-name">HOROLOGIUM</span>
+                <span class="brand-calibre">CALIBRE-01</span>
             </a>
-            <span class="telemetry-title">CALIBRE-01 // Planetary Time & Meridian Atlas</span>
-        </div>
-
-        <div class="telemetry-center">
-            <div class="utc-master-clock">
-                <span class="utc-label">UTC MASTER</span>
-                <span id="homeUtcClock" class="font-mono">--:--:-- UTC</span>
-            </div>
-            <div class="solar-declination">
-                <span>SOLAR DEC:</span>
-                <span id="homeSolarDec" class="font-mono">CALCULATING...</span>
+            <div class="header-live-pulse-pill" title="Stratum-1 Truechimer Atomic Synchronization">
+                <span class="live-pulse-dot-nominal" aria-hidden="true"></span>
+                <span id="homeUtcClock" class="font-mono tabular-nums">--:--:-- UTC</span>
+                <span class="pill-divider">·</span>
+                <span id="homeDriftHeader" class="pill-metric">±0.0ms</span>
             </div>
         </div>
 
+        <!-- Zone 2: Unified Segmented View Tabs (Hick's Law Consolidated) -->
+        <nav class="telemetry-center" aria-label="Operational Views">
+            <div class="segmented-view-track" role="tablist">
+                <a href="/" class="segmented-tab active" role="tab" aria-selected="true">
+                    <span>Overview</span>
+                </a>
+                <a href="/flight-deck/" class="segmented-tab" role="tab">
+                    <span>Flight Deck</span>
+                </a>
+                <a href="/geodesic-registry/" class="segmented-tab" role="tab">
+                    <span>Directory</span>
+                </a>
+                <a href="/protocol-liaison/" class="segmented-tab" role="tab">
+                    <span>Registry</span>
+                </a>
+                <a href="/api-explorer/" class="segmented-tab" role="tab">
+                    <span>API Docs</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Zone 3: Global Command & Preferences Utilities -->
         <div class="telemetry-right">
-            <button type="button" class="telemetry-btn" id="homeReplayIntro" title="Replay 5-second cinematic calibration sequence">↺ REPLAY INTRO</button>
-            <button type="button" class="telemetry-btn" id="homeFormatToggle" title="Toggle 12H / 24H Military Format">24H</button>
-            <button type="button" class="telemetry-btn" id="homeThemeToggle" title="Toggle Obsidian Rhodium / Silvered Dial">OBSIDIAN</button>
-            <a href="/api-explorer/" class="nav-action-btn" style="border-color: var(--accent-counter); color: var(--accent-counter);">OPENAPI DOCS</a>
-            <a href="/flight-deck/" class="nav-action-btn">⊕ FLIGHT DECK</a>
-            <a href="/geodesic-registry/" class="nav-action-btn">DIRECTORY</a>
-            <a href="/protocol-liaison/" class="nav-action-btn">REGISTRY</a>
-            <a href="/operator-gateway/" class="nav-action-btn">OPERATOR</a>
+            <button type="button" class="header-cmd-pill" id="homeSearchTrigger" title="Quick Search 220+ Nations & Cities [⌘K / /]" aria-label="Search Timezones">
+                <span class="search-glyph">⌕</span>
+                <span class="search-label">Search</span>
+                <kbd class="header-kbd">⌘K</kbd>
+            </button>
+            <div class="utility-toggle-group">
+                <button type="button" class="utility-btn" id="homeFormatToggle" title="Toggle 12H / 24H Military Format" aria-label="Toggle 24 Hour Format">24H</button>
+                <button type="button" class="utility-btn" id="homeThemeToggle" title="Toggle Obsidian Dark / Silvered Light Theme" aria-label="Toggle Theme">
+                    <span class="theme-icon">◐</span>
+                    <span class="theme-text">OBSIDIAN</span>
+                </button>
+            </div>
+            <button type="button" class="utility-ghost-btn" id="homeReplayIntro" title="Replay 5-second cinematic calibration sequence" aria-label="Replay Intro">
+                <span>↺</span>
+            </button>
         </div>
     </header>
 
@@ -616,10 +874,22 @@
                     </div>
 
                     <div class="masthead-telemetry-pills">
-                        <span class="badge-semantic badge-semantic-success">● [LOCK] 0.00ms CLOCK SKEW</span>
-                        <span class="badge-semantic badge-semantic-counter">◆ [2026.10] IANA TIMEZONE REGISTRY</span>
-                        <span class="badge-semantic badge-semantic-vermilion">▲ [SUN] REAL-TIME SOLAR TERMINATOR</span>
-                        <span class="badge-semantic badge-semantic-success">✓ RFC-9557 COMPLIANT</span>
+                        <div class="telemetry-spec-pill is-active">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>[LOCK] 0.00ms CLOCK SKEW</span>
+                        </div>
+                        <div class="telemetry-spec-pill">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>IANA TIMEZONE REGISTRY</span>
+                        </div>
+                        <div class="telemetry-spec-pill">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>SOLAR TERMINATOR ALIGNED</span>
+                        </div>
+                        <div class="telemetry-spec-pill">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>RFC-9557 COMPLIANT</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -635,7 +905,7 @@
                     <div class="vernier-clock-large" id="homeDeviceClock">--:--:--</div>
 
                     <div style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); text-transform: uppercase;">
-                        24-HOUR BAND CAPACITY // RESOLUTION SENSOR
+                        24-HOUR SOLAR & MERIDIAN CYCLE // DIURNAL SENSOR
                     </div>
 
                     <div class="vernier-meter" id="homeVernierMeter">
@@ -734,7 +1004,7 @@
                                 <option value="Australia/Sydney">🇦🇺 Sydney (UTC+10)</option>
                             </select>
                         </div>
-                        <div class="station-time-display" id="stationBTime" style="color: var(--accent-counter);">--:--:--</div>
+                        <div class="station-time-display" id="stationBTime" style="color: var(--accent-secondary);">--:--:--</div>
                         <div style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-1);" id="stationBDate">
                             Delta Calculation...
                         </div>
@@ -810,15 +1080,26 @@
                         <rect width="1000" height="480" fill="var(--bg-0)" />
                         <rect width="1000" height="480" fill="url(#miniGrid)" />
 
-                        <!-- World Continents Simplified Vector Outlines -->
+                        <!-- High-Precision Geodesic Vector Continents -->
                         <g class="mini-continents-group" id="miniContinentsGroup">
-                            <!-- Populated with continent landmass paths -->
-                            <path class="mini-map-land" d="M120 70 L280 70 L310 130 L270 180 L220 220 L180 240 L160 210 L130 180 L110 130 Z" title="North America" />
-                            <path class="mini-map-land" d="M220 260 L290 280 L320 340 L310 420 L270 450 L240 380 L220 310 Z" title="South America" />
-                            <path class="mini-map-land" d="M460 80 L560 80 L550 150 L500 180 L460 170 L450 120 Z" title="Europe" />
-                            <path class="mini-map-land" d="M450 190 L560 190 L570 270 L550 360 L510 390 L470 340 L440 250 Z" title="Africa" />
-                            <path class="mini-map-land" d="M570 70 L860 60 L890 150 L840 240 L760 260 L680 280 L620 240 L570 170 Z" title="Asia" />
-                            <path class="mini-map-land" d="M780 300 L880 300 L890 380 L840 400 L790 380 Z" title="Australia" />
+                            <!-- North America -->
+                            <path class="mini-map-land" d="M33 66 L111 53 L222 40 L333 53 L347 106 L319 120 L291 146 L277 173 L250 186 L208 186 L166 154 L152 112 L111 80 Z" title="North America" />
+                            <!-- Greenland -->
+                            <path class="mini-map-land" d="M380 40 L430 45 L415 90 L370 75 Z" title="Greenland" />
+                            <!-- South America -->
+                            <path class="mini-map-land" d="M277 213 L333 208 L402 253 L402 280 L388 298 L347 333 L319 386 L291 373 L300 333 L277 253 Z" title="South America" />
+                            <!-- Europe & British Isles -->
+                            <path class="mini-map-land" d="M472 144 L500 128 L513 122 L541 133 L569 144 L583 120 L611 93 L583 66 L541 58 L513 74 L486 85 L472 120 Z" title="Europe" />
+                            <path class="mini-map-land" d="M480 100 L495 95 L490 115 L475 110 Z" title="United Kingdom" />
+                            <!-- Africa -->
+                            <path class="mini-map-land" d="M452 200 L486 144 L527 141 L588 157 L619 208 L641 213 L611 266 L597 306 L555 333 L541 320 L527 253 L500 226 L458 213 Z" title="Africa" />
+                            <!-- Asia / Eurasia -->
+                            <path class="mini-map-land" d="M583 133 L625 133 L652 173 L694 173 L708 213 L722 200 L750 181 L777 200 L791 226 L819 186 L838 160 L861 133 L888 120 L902 80 L972 66 L777 40 L666 53 L625 80 Z" title="Asia" />
+                            <path class="mini-map-land" d="M880 140 L895 160 L875 190 L865 170 Z" title="Japan" />
+                            <!-- Australia & Oceania -->
+                            <path class="mini-map-land" d="M819 298 L847 280 L888 272 L916 298 L925 320 L911 341 L875 333 L819 333 Z" title="Australia" />
+                            <!-- Antarctica -->
+                            <path class="mini-map-land" d="M100 450 L900 450 L850 435 L700 440 L500 430 L300 440 L150 435 Z" title="Antarctica" />
                         </g>
 
                         <!-- Dynamic Astronomical Solar Terminator Shadow Polygon -->
@@ -1030,12 +1311,19 @@
         const vernierContainer = document.getElementById('homeVernierMeter');
         if (vernierContainer) {
             vernierContainer.innerHTML = '';
-            for (let i = 1; i <= 24; i++) {
+            for (let h = 0; h < 24; h++) {
                 const tick = document.createElement('div');
                 tick.className = 'vernier-tick';
-                if (i <= 18) tick.classList.add('active-counter');
-                else if (i <= 21) tick.classList.add('active-warning');
-                else tick.classList.add('active-danger');
+                if ((h >= 0 && h < 6) || (h >= 20 && h < 24)) {
+                    tick.classList.add('tick-night');
+                    tick.title = `${String(h).padStart(2, '0')}:00 - Nocturnal Solar Arc`;
+                } else if ((h >= 6 && h < 8) || (h >= 18 && h < 20)) {
+                    tick.classList.add('tick-twilight');
+                    tick.title = `${String(h).padStart(2, '0')}:00 - Solar Twilight Horizon`;
+                } else {
+                    tick.classList.add('tick-daylight');
+                    tick.title = `${String(h).padStart(2, '0')}:00 - Peak Diurnal Overlap`;
+                }
                 vernierContainer.appendChild(tick);
             }
         }
@@ -1373,20 +1661,21 @@
                 }
 
                 card.innerHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <div style="font-weight: 500; font-size: 13px; color: var(--fg-0);">
+                    <div style="min-width: 0; flex: 1; padding-right: 12px; display: flex; flex-direction: column; gap: 2px;">
+                        <div style="font-weight: 500; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                             <span>${item.flag}</span> ${item.capital || item.country}
                         </div>
-                        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">
+                        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.country} · ${item.utc}">
                             ${item.country} · ${item.utc}
                         </div>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--fg-0); font-variant-numeric: tabular-nums;">
+                    <div style="flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                        <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; white-space: nowrap;">
                             ${cityTime}
                         </div>
-                        <a href="/flight-deck/?country=${encodeURIComponent(item.country)}" style="font-family: var(--font-mono); font-size: 9px; color: var(--accent-primary); text-decoration: none;">
-                            VIEW MAP ➔
+                        <a href="/flight-deck/?country=${encodeURIComponent(item.country)}" style="font-family: var(--font-mono); font-size: 9px; color: var(--accent-primary); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 2px;" title="View ${item.country} on Flight Deck">
+                            <span>VIEW MAP</span>
+                            <span>➔</span>
                         </a>
                     </div>
                 `;
@@ -1396,6 +1685,17 @@
         }
 
         renderSearchResults();
+
+        const searchTrigger = document.getElementById('homeSearchTrigger');
+        if (searchTrigger) {
+            searchTrigger.addEventListener('click', () => {
+                const searchInput = document.getElementById('benchSearchInput');
+                if (searchInput) {
+                    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    searchInput.focus();
+                }
+            });
+        }
 
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {

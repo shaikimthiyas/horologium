@@ -108,4 +108,37 @@ test('UI/UX & Cognitive Laws Compliance Suite (Sprint F / WCAG 2.2)', async (t) 
     assert.ok(CANONICAL_PAGES.some(p => p.href === '/protocol-liaison/'));
     assert.ok(CANONICAL_PAGES.some(p => p.href === '/api-explorer/'));
   });
+
+  await t.test('Enterprise Design System: Tokens enforce Tier-1 surface neutrality & semantic accents', () => {
+    const tokens = fs.readFileSync(path.join(REPO_ROOT, 'src/styles/tokens.css'), 'utf-8');
+    const requiredTokens = [
+      '--bg-canvas',
+      '--bg-surface-1',
+      '--bg-surface-2',
+      '--border-subtle',
+      '--text-primary',
+      '--text-secondary',
+      '--accent-primary',
+      '--accent-secondary',
+      '--status-nominal'
+    ];
+    for (const token of requiredTokens) {
+      assert.ok(tokens.includes(token), `tokens.css must declare ${token}`);
+    }
+  });
+
+  await t.test("Top Navigation Bar: 3-Zone Hick's Law architecture & segmented controls in index.html", () => {
+    const indexContent = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf-8');
+    assert.ok(indexContent.includes('telemetry-left'), 'Must declare Left Zone (Identity & Live Pulse)');
+    assert.ok(indexContent.includes('segmented-view-track'), 'Must declare Center Zone (Segmented View Track)');
+    assert.ok(indexContent.includes('telemetry-right'), 'Must declare Right Zone (Utilities & Global Command)');
+    assert.ok(indexContent.includes('homeSearchTrigger'), 'Must provide ⌘K search trigger in header');
+    assert.ok(indexContent.includes('homeThemeToggle'), 'Must provide Theme Toggle in header');
+  });
+
+  await t.test('Semantic Telemetry: Station B and Overlap Planner avoid false-alarm error colors', () => {
+    const indexContent = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf-8');
+    assert.ok(indexContent.includes('id="stationBTime" style="color: var(--accent-secondary);"'), 'Station B must use --accent-secondary (Cyan/Cobalt) instead of error red');
+    assert.ok(!indexContent.includes('badge-semantic-danger">◆ [2026.10] IANA TIMEZONE REGISTRY'), 'IANA registry badge must not be styled in error red');
+  });
 });

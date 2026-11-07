@@ -25,7 +25,7 @@
   margin: 6px 6px 0 6px;
   border-radius: var(--radius-lg);
   background-color: var(--bg-1);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   box-shadow: inset 0 1px 0 0 var(--border-specular), var(--shadow-recessed);
   overflow: hidden;
   display: flex;
@@ -527,7 +527,7 @@ svg path.allPaths.selected-country {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xs);
   background: var(--bg-0);
   color: var(--fg-1);
@@ -580,7 +580,7 @@ svg path.allPaths.selected-country {
 
 .badge-dst-none {
   background: var(--bg-2);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   color: var(--fg-2);
 }
 
@@ -637,8 +637,9 @@ svg path.allPaths.selected-country {
 }
 
 .horology-cell.is-focal {
-  background: var(--bg-2);
-  box-shadow: inset 0 0 0 1px var(--accent-primary);
+  background: var(--bg-surface-2, var(--bg-2));
+  border-top: 2px solid var(--accent-primary);
+  box-shadow: inset 0 1px 0 0 var(--border-specular);
 }
 
 .cell-top-row {
@@ -809,7 +810,7 @@ svg path.allPaths.selected-country {
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   background: var(--bg-0);
   border-radius: var(--radius-sm);
   margin-bottom: 6px;
@@ -892,7 +893,7 @@ svg path.allPaths.selected-country {
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background-color: #050608;
+  background-color: var(--bg-canvas, #090A0F);
   background-image: 
     radial-gradient(circle at 50% 40%, rgba(255, 68, 0, 0.08) 0%, rgba(0, 229, 184, 0.03) 40%, transparent 70%),
     repeating-linear-gradient(0deg, rgba(237, 239, 242, 0.012) 0px, rgba(237, 239, 242, 0.012) 1px, transparent 1px, transparent 32px),
@@ -970,7 +971,7 @@ svg path.allPaths.selected-country {
   color: var(--fg-1, #b4bac6);
   letter-spacing: 0.05em;
   background: var(--bg-1, #0e1014);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   padding: 2px 7px;
   border-radius: var(--radius-xs);
 }
@@ -1006,7 +1007,7 @@ svg path.allPaths.selected-country {
   padding: 0 12px;
   border-radius: var(--radius-sm);
   background: var(--bg-1, #0e1014);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   color: var(--fg-1, #b4bac6);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1043,7 +1044,7 @@ svg path.allPaths.selected-country {
 
 .btn-intro-skip kbd {
   background: var(--bg-0, #08090b);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 9px;
@@ -1145,8 +1146,8 @@ svg path.allPaths.selected-country {
 
 /* --- World Hubs Grid (Left Column) --- */
 .intro-world-hubs-panel {
-  background: rgba(14, 16, 20, 0.7);
-  border: 1px solid var(--border-hairline);
+  background: var(--bg-surface-1, #11131A);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 12px;
   backdrop-filter: blur(8px);
@@ -1178,7 +1179,7 @@ svg path.allPaths.selected-country {
 
 .intro-hub-card {
   background: var(--bg-1, #0e1014);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xs);
   padding: 8px 10px;
   display: flex;
@@ -1342,8 +1343,8 @@ svg path.allPaths.selected-country {
 }
 
 .slo-card {
-  background: rgba(14, 16, 20, 0.7);
-  border: 1px solid var(--border-hairline);
+  background: var(--bg-surface-1, #11131A);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 12px;
   display: flex;
@@ -1456,7 +1457,7 @@ svg path.allPaths.selected-country {
   padding: 1px 4px;
   border-radius: 2px;
   background: var(--bg-1);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   color: var(--fg-2);
 }
 
@@ -1535,7 +1536,7 @@ svg path.allPaths.selected-country {
    -------------------------------------------------------------------------- */
 .planner-card {
   background: var(--bg-1);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   box-shadow: inset 0 1px 0 0 var(--border-specular);
   padding: 24px 28px;
@@ -1568,7 +1569,7 @@ svg path.allPaths.selected-country {
 
 .station-box {
   background: var(--bg-2);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 16px 18px;
   display: flex;
@@ -1623,7 +1624,7 @@ svg path.allPaths.selected-country {
   gap: 2px;
   height: 38px;
   background: var(--bg-0);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 3px;
   overflow: hidden;
@@ -1654,9 +1655,9 @@ svg path.allPaths.selected-country {
 }
 
 .overlap-cell.golden {
-  background: rgba(0, 229, 184, 0.18);
-  border: 1px solid rgba(0, 229, 184, 0.4);
-  color: var(--accent-counter);
+  background: var(--status-nominal-bg, rgba(16, 185, 129, 0.14));
+  border-top: 2px solid var(--status-nominal, #10B981);
+  color: var(--status-nominal, #10B981);
   font-weight: 600;
 }
 
@@ -1689,7 +1690,7 @@ svg path.allPaths.selected-country {
    -------------------------------------------------------------------------- */
 .mini-map-card {
   background: var(--bg-1);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 20px 24px;
   display: flex;
@@ -1702,7 +1703,7 @@ svg path.allPaths.selected-country {
   width: 100%;
   height: 240px;
   background: var(--bg-0);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
@@ -1905,4 +1906,24 @@ svg path.allPaths.selected-country {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* Docked Matrix Transport Bar (Clears Ruler Collision Bugs) */
+.matrix-transport-dock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.matrix-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--bg-surface-1, var(--bg-1));
+  border-bottom: 1px solid var(--border-subtle, var(--border-hairline));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, var(--fg-1));
 }
