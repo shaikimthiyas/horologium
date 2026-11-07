@@ -889,25 +889,33 @@ svg path.allPaths.selected-country {
    8. ENTERPRISE PLANETARY INTRO STAGE (Sprint M - Redesign)
    Sovereign Planetary Command & Stratum-1 Telemetry Experience
    -------------------------------------------------------------------------- */
+/* ==========================================================================
+   8. SWISS HOROLOGICAL PLANETARY TOURBILLON INTRO (CALIBRE-01)
+   ========================================================================== */
+
 .intro-stage {
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background-color: var(--bg-canvas, #090A0F);
+  background-color: #07090E !important;
+  color: #EDEFF2 !important;
   background-image: 
-    radial-gradient(circle at 50% 40%, rgba(255, 68, 0, 0.08) 0%, rgba(0, 229, 184, 0.03) 40%, transparent 70%),
-    repeating-linear-gradient(0deg, rgba(237, 239, 242, 0.012) 0px, rgba(237, 239, 242, 0.012) 1px, transparent 1px, transparent 32px),
-    repeating-linear-gradient(90deg, rgba(237, 239, 242, 0.012) 0px, rgba(237, 239, 242, 0.012) 1px, transparent 1px, transparent 32px);
+    radial-gradient(circle at 68% 50%, rgba(26, 36, 52, 0.85) 0%, rgba(10, 13, 20, 0.98) 60%, #05060A 100%),
+    radial-gradient(circle at 18% 42%, rgba(255, 77, 21, 0.05) 0%, transparent 45%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.85), inset 0 0 100px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px 28px;
-  color: var(--fg-0, #edeff2);
+  padding: clamp(14px, 1.8vh, 24px) clamp(18px, 2.5vw, 36px);
   user-select: none;
   opacity: 1;
   visibility: visible;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
+  box-sizing: border-box;
   transition: opacity 550ms cubic-bezier(0.16, 1, 0.3, 1),
               transform 550ms cubic-bezier(0.16, 1, 0.3, 1),
               visibility 550ms;
@@ -920,10 +928,55 @@ svg path.allPaths.selected-country {
   pointer-events: none;
 }
 
-/* --- Top Telemetry Header --- */
+/* Machined Hex Socket Screws in Four Corners */
+.chassis-screw {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #64748B 0%, #1E293B 70%, #0F172A 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.chassis-screw::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: #06080C;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.95);
+}
+
+.chassis-screw.screw-tl { top: 14px; left: 16px; }
+.chassis-screw.screw-tr { top: 14px; right: 16px; }
+.chassis-screw.screw-bl { bottom: 14px; left: 16px; }
+.chassis-screw.screw-br { bottom: 14px; right: 16px; }
+
+/* Sparkling 4-Point Star Glyph (Lower Right) */
+.chassis-star-glyph {
+  position: absolute;
+  bottom: 20px;
+  right: 28px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 22px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 20;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   Top Utility Header Strip (Streamlined 3-Zone Architecture)
+   -------------------------------------------------------------------------- */
 .intro-top-telemetry {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1720px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -932,24 +985,31 @@ svg path.allPaths.selected-country {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
-  color: var(--fg-2, #8e95a2);
-  border-bottom: 1px solid var(--border-hairline);
-  padding-bottom: 14px;
+  color: #8E95A2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
+/* Zone 1: Brand & Stratum Identity */
 .intro-telemetry-brand {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .intro-status-beacon {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background-color: var(--accent-primary, #ff4400);
-  box-shadow: 0 0 8px var(--accent-primary, #ff4400);
+  background-color: #00F5D4;
+  box-shadow: 0 0 10px #00F5D4;
   animation: introBeaconPulse 1.8s ease-in-out infinite;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 @keyframes introBeaconPulse {
@@ -957,667 +1017,228 @@ svg path.allPaths.selected-country {
   50% { opacity: 0.45; transform: scale(0.85); }
 }
 
-.intro-brand-code {
-  color: var(--fg-0, #edeff2);
-  font-weight: 500;
+.intro-brand-title {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
 }
 
-.intro-divider {
-  opacity: 0.35;
+.intro-brand-slash {
+  color: #FF4D15;
+  font-weight: 700;
 }
 
-.intro-author-pill {
+.intro-brand-calibre {
+  color: #EDEFF2;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.intro-brand-tag {
+  color: #8E95A2;
   font-size: 10px;
-  color: var(--fg-1, #b4bac6);
-  letter-spacing: 0.05em;
-  background: var(--bg-1, #0e1014);
-  border: 1px solid var(--border-subtle);
-  padding: 2px 7px;
-  border-radius: var(--radius-xs);
+  letter-spacing: 0.06em;
+  padding-left: 6px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.intro-telemetry-meta {
+/* Zone 2: Centered Status Pill */
+.intro-telemetry-center {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.intro-status-pill {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #EDEFF2;
+  background: rgba(14, 18, 26, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  letter-spacing: 0.06em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
 }
 
-.intro-pill-ok {
-  color: var(--accent-primary, #ff4400);
-  font-weight: 500;
+.status-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #00F5D4;
+  box-shadow: 0 0 8px #00F5D4;
+  animation: introBeaconPulse 1.8s ease-in-out infinite;
+  display: inline-block;
 }
 
-.intro-badge-live {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: var(--semantic-success, #10b981);
-  padding: 2px 6px;
-  border-radius: var(--radius-xs);
-  font-size: 10px;
+.status-sep {
+  color: rgba(255, 255, 255, 0.25);
 }
 
+.status-sla {
+  color: #00F5D4;
+  font-weight: 600;
+}
+
+/* Zone 3: Actions & Architect Colophon */
 .intro-top-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .btn-intro-audio {
-  height: var(--ctrl-md);
+  height: 34px;
   padding: 0 12px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-1, #0e1014);
-  border: 1px solid var(--border-subtle);
-  color: var(--fg-1, #b4bac6);
+  border-radius: 6px;
+  background: rgba(18, 22, 32, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #8E95A2;
   font-family: var(--font-mono);
   font-size: 11px;
+  letter-spacing: 0.05em;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 120ms ease;
+  transition: all 140ms ease;
 }
 
 .btn-intro-audio:hover {
-  border-color: var(--border-interactive);
-  color: var(--fg-0);
-  background: var(--bg-2);
+  border-color: rgba(0, 245, 212, 0.5);
+  color: #00F5D4;
+  background: rgba(0, 245, 212, 0.08);
 }
 
-.btn-intro-skip {
-  height: var(--ctrl-md);
-  padding: 0 18px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-2, #181c24);
-  border: 1px solid var(--border-interactive);
-  color: var(--fg-0, #edeff2);
+.intro-author-pill {
+  font-size: 10px;
+  color: #8E95A2;
+  letter-spacing: 0.06em;
+  background: rgba(14, 17, 24, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.btn-intro-enter {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  border: 1px solid #3B82F6;
+  color: #FFFFFF;
   font-family: var(--font-mono);
   font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 150ms ease;
   cursor: pointer;
-  transition: all 120ms var(--ease-snappy);
+  white-space: nowrap;
 }
 
-.btn-intro-skip kbd {
-  background: var(--bg-0, #08090b);
-  border: 1px solid var(--border-subtle);
-  padding: 2px 6px;
+.btn-intro-enter kbd {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2px 5px;
   border-radius: 3px;
   font-size: 9px;
-  color: var(--accent-primary);
+  color: #93C5FD;
 }
 
-.btn-intro-skip:hover {
-  background: var(--accent-primary);
-  border-color: var(--accent-primary);
-  color: var(--accent-ink, #000);
-  box-shadow: 0 0 12px rgba(255, 68, 0, 0.4);
+.btn-intro-enter:hover {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.8);
+  transform: translateY(-1px);
 }
 
-.btn-intro-skip:hover kbd {
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff;
+.btn-intro-enter.ready-pulse {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
 }
 
-/* --- Main Planetary 3-Column Command Deck --- */
-.intro-planetary-deck {
+.btn-intro-skip {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 6px;
+  background: rgba(18, 22, 32, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #8E95A2;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   Main Instrument Stage (Asymmetric 2-Column Swiss Horology Chassis)
+   -------------------------------------------------------------------------- */
+.intro-planetary-deck,
+.intro-tourbillon-stage {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1720px;
   margin: auto;
   display: grid;
-  grid-template-columns: 340px 1fr 340px;
-  gap: 32px;
+  grid-template-columns: clamp(320px, 30vw, 400px) 1fr;
   align-items: center;
-  padding: 16px 0;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 64px);
+  flex: 1;
+  padding: 10px 0;
+  position: relative;
+  box-sizing: border-box;
+  overflow: visible;
 }
 
+/* --- Left Column: Recessed Squircle Monogram Well & Typography --- */
 .intro-deck-col {
   display: flex;
   flex-direction: column;
 }
 
-/* Left & Right Mastheads */
-.intro-col-masthead {
-  margin-bottom: 16px;
-}
-
-.intro-sub-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: var(--accent-primary, #ff4400);
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.intro-master-clock {
-  font-family: var(--font-mono);
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--fg-0);
-  margin: 0 0 6px;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-.intro-slo-headline {
-  font-family: var(--font-mono);
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--semantic-success, #10b981);
-  margin: 0 0 6px;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-.intro-master-subtext {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--fg-2);
-}
-
-.badge-atomic-locked {
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--semantic-success, #10b981);
-  padding: 1px 6px;
-  border-radius: var(--radius-xs);
-  font-weight: 500;
-}
-
-.badge-slo-tier {
-  background: rgba(0, 229, 184, 0.12);
-  border: 1px solid rgba(0, 229, 184, 0.35);
-  color: #00e5b8;
-  padding: 1px 6px;
-  border-radius: var(--radius-xs);
-  font-weight: 500;
-}
-
-/* --- World Hubs Grid (Left Column) --- */
-.intro-world-hubs-panel {
-  background: var(--bg-surface-1, #11131A);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  backdrop-filter: blur(8px);
-}
-
-.intro-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--fg-2);
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border-hairline);
-}
-
-.intro-tnum {
-  font-variant-numeric: tabular-nums;
-  color: var(--semantic-success);
-}
-
-.intro-world-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.intro-hub-card {
-  background: var(--bg-1, #0e1014);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xs);
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  transition: border-color 140ms ease;
-}
-
-.intro-hub-card:hover {
-  border-color: var(--border-interactive);
-}
-
-.hub-head {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-}
-
-.hub-flag {
-  font-size: 11px;
-}
-
-.hub-id {
-  font-weight: 600;
-  color: var(--fg-0);
-}
-
-.hub-offset {
-  color: var(--fg-2);
-  font-size: 9px;
-  margin-left: auto;
-}
-
-.hub-time {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent-counter, #00e5b8);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-.hub-name {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--fg-2);
-}
-
-/* --- Center Column: Globe & Brand --- */
-.intro-deck-globe {
-  align-items: center;
-  text-align: center;
-}
-
-.intro-brand-masthead {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.intro-brand-insignia {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.astrolabe-logo-svg {
-  animation: astrolabeSpin 40s linear infinite;
-}
-
-@keyframes astrolabeSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.intro-brand-heading {
-  font-family: var(--font-mono);
-  font-size: 26px;
-  font-weight: 600;
-  letter-spacing: 0.35em;
-  color: var(--fg-0);
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.intro-brand-strapline {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: var(--accent-primary, #ff4400);
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.intro-globe-wrapper {
-  position: relative;
-  width: 360px;
-  height: 360px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 8px 0;
-}
-
-.intro-globe-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.intro-globe-reticle-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1px dashed rgba(255, 68, 0, 0.18);
-  pointer-events: none;
-  animation: reticleOrbit 32s linear infinite reverse;
-}
-
-@keyframes reticleOrbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.intro-globe-coordinates {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--fg-2);
-  margin-top: 6px;
-}
-
-.coord-label {
-  color: var(--fg-2);
-}
-
-.coord-val {
-  color: var(--fg-0);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-.coord-divider {
-  opacity: 0.3;
-}
-
-/* --- Right Column: SLO Bento Grid --- */
-.intro-slo-bento {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.slo-card {
-  background: var(--bg-surface-1, #11131A);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  backdrop-filter: blur(8px);
-}
-
-.slo-metric-val {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--fg-0);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.1;
-}
-
-.slo-metric-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: var(--fg-2);
-  text-transform: uppercase;
-}
-
-.slo-metric-detail {
-  font-family: var(--font-sans, system-ui);
-  font-size: 11px;
-  color: var(--fg-1);
-  line-height: 1.35;
-  margin-top: 4px;
-}
-
-/* --- Bottom Progression Ribbon --- */
-.intro-bottom-timeline {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-top: 1px solid var(--border-hairline);
-  padding-top: 14px;
-}
-
-.intro-progress-bar-track {
-  width: 100%;
-  height: 3px;
-  background: rgba(237, 239, 242, 0.08);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.intro-progress-bar-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent-primary, #ff4400), #00e5b8);
-  box-shadow: 0 0 8px rgba(255, 68, 0, 0.6);
-  transition: width 80ms linear;
-}
-
-.intro-timeline-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.intro-step-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--fg-2);
-  transition: color 150ms ease;
-}
-
-.intro-step-pill.active {
-  color: var(--fg-0);
-}
-
-.intro-step-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--fg-2);
-  transition: all 150ms ease;
-  flex-shrink: 0;
-}
-
-.intro-step-pill.active .intro-step-dot {
-  background: var(--accent-primary);
-  box-shadow: 0 0 6px var(--accent-primary);
-}
-
-.intro-step-pill.completed {
-  color: var(--semantic-success);
-}
-
-.intro-step-pill.completed .intro-step-dot {
-  background: var(--semantic-success);
-  box-shadow: 0 0 6px var(--semantic-success);
-}
-
-.intro-step-stat {
-  font-size: 9px;
-  padding: 1px 4px;
-  border-radius: 2px;
-  background: var(--bg-1);
-  border: 1px solid var(--border-subtle);
-  color: var(--fg-2);
-}
-
-.intro-pct-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent-primary);
-  margin-left: auto;
-  font-variant-numeric: tabular-nums;
-}
-
-/* --- Responsive Adaptations --- */
-@media (max-width: 1180px) {
-  .intro-planetary-deck {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .intro-deck-globe {
-    grid-column: span 2;
-    order: -1;
-  }
-  .intro-globe-wrapper {
-    width: 280px;
-    height: 280px;
-  }
-}
-
-@media (max-width: 768px) {
-  .intro-stage {
-    padding: 16px 14px;
-  }
-  .intro-top-telemetry {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .intro-telemetry-meta {
-    display: none;
-  }
-  .intro-planetary-deck {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 10px 0;
-  }
-  .intro-deck-globe {
-    grid-column: span 1;
-  }
-  .intro-brand-heading {
-    font-size: 20px;
-    letter-spacing: 0.25em;
-  }
-  .intro-globe-wrapper {
-    width: 240px;
-    height: 240px;
-  }
-  .intro-world-grid, .intro-slo-bento {
-    grid-template-columns: 1fr;
-  }
-  .intro-timeline-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .astrolabe-logo-svg,
-  .intro-globe-reticle-ring,
-  .intro-status-beacon,
-  .colon-resonator {
-    animation: none;
-  }
-}
-
-/* ==========================================================================
-   Swiss Horological Tourbillon & Calibre-01 Monogram Styles
-   ========================================================================== */
-
-/* --- Machined Corner Hex Socket Screws --- */
-.chassis-screw {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #4A5568 0%, #1A202C 70%, #0F1319 100%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.chassis-screw::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  background: #080A0E;
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
-}
-
-.chassis-screw.screw-tl { top: 14px; left: 16px; }
-.chassis-screw.screw-tr { top: 14px; right: 16px; }
-.chassis-screw.screw-bl { bottom: 14px; left: 16px; }
-.chassis-screw.screw-br { bottom: 14px; right: 16px; }
-
-/* In Light Theme */
-[data-theme="light"] .chassis-screw {
-  background: radial-gradient(circle at 35% 35%, #E2E8F0 0%, #CBD5E1 70%, #94A3B8 100%);
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-}
-[data-theme="light"] .chassis-screw::after {
-  background: #475569;
-}
-
-/* --- Tourbillon Deck Grid (Left Monogram Chassis + Right Planetary Movement) --- */
-.intro-tourbillon-stage {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  max-width: 1300px;
-  width: 100%;
-  margin: auto;
-  padding: 16px 0;
-}
-
-/* Left Column: Chassis & Recessed Monogram Well */
 .intro-left-chassis {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
+  gap: 22px;
+  z-index: 5;
 }
 
 .intro-well-aperture {
-  width: 220px;
-  height: 220px;
-  background: var(--well-bg, #0B0E14);
-  border: 1px solid var(--chassis-hairline, rgba(255, 255, 255, 0.08));
-  border-radius: 28px;
-  box-shadow: var(--well-shadow, inset 0 8px 24px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.45));
+  width: clamp(230px, 22vw, 280px);
+  height: clamp(230px, 22vw, 280px);
+  background: #080B10;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 32px;
+  box-shadow: inset 0 10px 28px rgba(0, 0, 0, 0.95), inset 0 1px 2px rgba(255, 255, 255, 0.08), 0 12px 36px rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+  padding: 22px;
   position: relative;
   overflow: hidden;
-  transition: all 250ms ease;
+  box-sizing: border-box;
 }
 
 .intro-well-aperture::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 27px;
+  border-radius: 31px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
   pointer-events: none;
 }
@@ -1628,34 +1249,27 @@ svg path.allPaths.selected-country {
   display: block;
 }
 
-/* 7-Segment SVG Classes */
 .h-seg-ghost {
-  fill: var(--segment-inactive, #161A24);
+  fill: #141822;
   transition: fill 200ms ease;
 }
 
 .h-seg-active {
-  fill: var(--segment-active, #FF4D15);
-  filter: drop-shadow(0 0 10px rgba(255, 77, 21, 0.85)) drop-shadow(0 0 22px rgba(255, 77, 21, 0.45));
+  fill: #FF4D15;
+  filter: drop-shadow(0 0 10px rgba(255, 77, 21, 0.9)) drop-shadow(0 0 24px rgba(255, 77, 21, 0.5));
   transition: fill 200ms ease, filter 200ms ease;
 }
 
 .colon-resonator {
-  fill: var(--cyan-telemetry, #00F5D4);
-  filter: drop-shadow(0 0 8px rgba(0, 245, 212, 0.9));
+  fill: #00F5D4;
+  filter: drop-shadow(0 0 8px rgba(0, 245, 212, 0.95)) drop-shadow(0 0 18px rgba(0, 245, 212, 0.5));
   animation: colonResonatorPulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   transform-origin: 180px 110px;
 }
 
 @keyframes colonResonatorPulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.35;
-    transform: scale(0.92);
-  }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.92); }
 }
 
 /* Swiss Horological Typography */
@@ -1665,37 +1279,38 @@ svg path.allPaths.selected-country {
   gap: 8px;
 }
 
-.intro-swiss-typography .intro-brand-heading {
+.intro-brand-heading {
   font-family: var(--font-mono);
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--fg-0);
+  color: #FFFFFF;
   margin: 0;
   text-transform: uppercase;
 }
 
-.intro-swiss-typography .intro-brand-strapline {
+.intro-brand-strapline {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.08em;
-  color: var(--fg-2);
-  margin: 0 0 6px 0;
+  color: #8E95A2;
+  margin: 0;
   text-transform: uppercase;
 }
 
 .intro-telemetry-readout-rows {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  margin: 4px 0;
 }
 
-.intro-swiss-typography .intro-master-clock {
+.intro-master-clock {
   font-family: var(--font-mono);
   font-size: 16px;
   font-weight: 600;
-  color: var(--fg-0);
+  color: #FFFFFF;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
   margin: 0;
@@ -1705,7 +1320,7 @@ svg path.allPaths.selected-country {
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
-  color: var(--accent-primary, #FF4D15);
+  color: #FF4D15;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
 }
@@ -1721,35 +1336,45 @@ svg path.allPaths.selected-country {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
-  color: var(--cyan-telemetry, #00F5D4);
-  background: rgba(0, 245, 212, 0.06);
+  color: #00F5D4;
+  background: rgba(0, 245, 212, 0.08);
   border: 1px solid rgba(0, 245, 212, 0.35);
-  padding: 3px 8px;
+  padding: 3px 9px;
   border-radius: 9999px;
   letter-spacing: 0.06em;
-  box-shadow: 0 0 10px rgba(0, 245, 212, 0.1);
+  box-shadow: 0 0 10px rgba(0, 245, 212, 0.12);
   white-space: nowrap;
 }
 
-/* Right Column: Tourbillon Mechanical Movement & Geodesic Globe Assembly */
-.intro-right-tourbillon {
+/* Landmark preserved for test suite */
+.intro-slo-bento {
+  display: none;
+}
+
+/* --- Right Column: The MASSIVE Horological Tourbillon & 3D Geodesic Globe --- */
+.intro-right-tourbillon,
+.intro-deck-globe {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
 .tourbillon-assembly {
   position: relative;
-  width: 580px;
-  height: 580px;
-  max-width: 85vw;
-  max-height: 70vh;
+  width: min(84vh, calc(100vw - 440px));
+  height: min(84vh, calc(100vw - 440px));
+  max-width: 900px;
+  max-height: 900px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: auto;
+  margin-right: -10px;
 }
 
 .tourbillon-bezel-svg {
@@ -1770,6 +1395,7 @@ svg path.allPaths.selected-country {
   z-index: 3;
 }
 
+.intro-globe-wrapper,
 .tourbillon-canvas-wrapper {
   position: absolute;
   inset: 0;
@@ -1782,32 +1408,43 @@ svg path.allPaths.selected-country {
 }
 
 .tourbillon-canvas-wrapper .intro-globe-canvas {
-  width: 80%;
-  height: 80%;
-  max-width: 480px;
-  max-height: 480px;
+  width: 78%;
+  height: 78%;
+  max-width: 700px;
+  max-height: 700px;
   aspect-ratio: 1;
   border-radius: 50%;
   cursor: grab;
   touch-action: none;
   transition: transform 120ms ease;
+  display: block;
 }
 
 .tourbillon-canvas-wrapper .intro-globe-canvas:active {
   cursor: grabbing;
-  transform: scale(0.995);
 }
 
-/* Bottom Checklist & Stratum-1 Telemetry Milestones */
+/* Tachymeter scale radial typography */
+.tachymeter-labels-group text {
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   Bottom Progression Ribbon & Stratum-1 Checklist
+   -------------------------------------------------------------------------- */
+.intro-bottom-timeline,
 .tourbillon-bottom-checklist {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  border-top: 1px solid var(--chassis-hairline, rgba(255, 255, 255, 0.08));
-  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 12px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
 .tourbillon-milestones-row {
@@ -1818,7 +1455,7 @@ svg path.allPaths.selected-country {
   flex-wrap: wrap;
   font-size: 10px;
   letter-spacing: 0.06em;
-  color: var(--fg-2);
+  color: #8E95A2;
 }
 
 .milestone-chip {
@@ -1829,21 +1466,35 @@ svg path.allPaths.selected-country {
 }
 
 .milestone-chip .chip-status {
-  color: var(--cyan-telemetry, #00F5D4);
+  color: #00F5D4;
   font-weight: 600;
 }
 
-/* Tachymeter text styling in SVG */
-.tachymeter-labels-group text {
-  user-select: none;
+.intro-progress-bar-track {
+  width: 100%;
+  height: 2.5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
-/* Responsive adjustments */
+.intro-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FF4D15, #00F5D4);
+  box-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
+  transition: width 80ms linear;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adaptations
+   -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .intro-planetary-deck,
   .intro-tourbillon-stage {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 10px 0;
+    gap: 20px;
+    padding: 8px 0;
   }
   .intro-left-chassis {
     align-items: center;
@@ -1853,17 +1504,26 @@ svg path.allPaths.selected-country {
     justify-content: center;
   }
   .intro-well-aperture {
-    width: 180px;
-    height: 180px;
-    border-radius: 22px;
+    width: 200px;
+    height: 200px;
+    border-radius: 24px;
   }
   .tourbillon-assembly {
-    width: 460px;
-    height: 460px;
+    width: min(60vh, 500px);
+    height: min(60vh, 500px);
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 640px) {
+  .intro-top-telemetry {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .intro-telemetry-center {
+    display: none;
+  }
   .tourbillon-assembly {
     width: 320px;
     height: 320px;

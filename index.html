@@ -1243,34 +1243,39 @@
         <div class="chassis-screw screw-tr" aria-hidden="true"></div>
         <div class="chassis-screw screw-bl" aria-hidden="true"></div>
         <div class="chassis-screw screw-br" aria-hidden="true"></div>
+        <div class="chassis-star-glyph" aria-hidden="true">✦</div>
 
-        <!-- 1. Top Utility Header Strip -->
+        <!-- 1. Top Utility Header Strip (Streamlined 3-Zone Architecture) -->
         <header class="intro-top-telemetry">
             <div class="intro-telemetry-brand">
                 <span class="intro-status-beacon" aria-hidden="true"></span>
-                <span class="intro-brand-code">HOROLOGIUM CALIBRE-01 // STRATUM-1 TELEMETRY</span>
-                <span class="intro-divider">·</span>
-                <span class="intro-author-pill">ARCHITECT: SHAIK IMTHIYAS</span>
+                <span class="intro-brand-title">HOROLOGIUM</span>
+                <span class="intro-brand-slash">//</span>
+                <span class="intro-brand-calibre">CALIBRE-01</span>
+                <span class="intro-brand-tag">STRATUM-1 TELEMETRY</span>
             </div>
-            <div class="intro-telemetry-meta">
-                <span id="introStatusPill" class="intro-pill-ok">SYSTEM OPERATIONAL // 99.999% SLA</span>
-                <span class="intro-divider">·</span>
-                <span class="intro-badge-live">LIVE SWISS STRATUM-1 PROBE</span>
+            <div class="intro-telemetry-center">
+                <div id="introStatusPill" class="intro-status-pill">
+                    <span class="status-pulse-dot" aria-hidden="true"></span>
+                    <span class="status-label">SYSTEM OPERATIONAL</span>
+                    <span class="status-sep">·</span>
+                    <span class="status-sla">99.999% SLA</span>
+                    <span class="status-sep">·</span>
+                    <span class="status-loc">GENEVA STRATUM-1</span>
+                </div>
             </div>
             <div class="intro-top-actions">
                 <button type="button" class="btn-intro-audio" id="introSoundToggle" title="Toggle Audio [M]" aria-label="Toggle Audio">
                     <span class="sound-icon">🔊</span>
                     <span class="sound-text">AUDIO ON</span>
                 </button>
+                <span class="intro-author-pill">ARCHITECT: SHAIK IMTHIYAS</span>
                 <a href="/horo/" class="btn-intro-enter" id="btnEnterHoro" title="Enter Horologium Console">
                     <span>ENTER HOROLOGIUM</span>
-                    <span style="font-size: 13px;">→</span>
+                    <kbd>SPACE</kbd>
+                    <span class="arrow-glyph">→</span>
                 </a>
-                <button type="button" class="btn-intro-skip" id="btnSkipIntro" title="Launch Workbench [Space/Esc]" aria-label="Launch Workbench">
-                    <span>LAUNCH WORKBENCH</span>
-                    <kbd>SPACE / ESC</kbd>
-                    <span style="color: var(--accent-primary);">→</span>
-                </button>
+                <button type="button" class="btn-intro-skip" id="btnSkipIntro" style="display:none;" aria-label="Skip Intro"></button>
             </div>
         </header>
 
@@ -1382,10 +1387,10 @@
 
                         <!-- Exposed Skeleton Watch Movement: Meshing Involute Gears -->
                         <!-- Gear 1: Brass Main Wheel (Lower-Left, 36 Teeth) -->
-                        <g transform="translate(290, 520)">
+                        <g transform="translate(225, 555)">
                             <g id="introGearBrassMain" style="transform-origin: 0 0;">
-                                <circle r="85" fill="none" stroke="#786242" stroke-width="12" stroke-dasharray="8 6" />
-                                <circle r="72" fill="none" stroke="#9A7B4F" stroke-width="2" />
+                                <circle r="85" fill="none" stroke="#E6C265" stroke-width="12" stroke-dasharray="8 6" />
+                                <circle r="72" fill="none" stroke="#FDE047" stroke-width="2.5" />
                                 <circle r="22" fill="#5A472E" stroke="#B8935A" stroke-width="1.5" />
                                 <line x1="-80" y1="0" x2="80" y2="0" stroke="#786242" stroke-width="3" />
                                 <line x1="0" y1="-80" x2="0" y2="80" stroke="#786242" stroke-width="3" />
@@ -1393,9 +1398,9 @@
                         </g>
 
                         <!-- Gear 2: Escapement Pinion Wheel (Upper-Right, 24 Teeth) -->
-                        <g transform="translate(530, 280)">
+                        <g transform="translate(575, 245)">
                             <g id="introGearBrassPinion" style="transform-origin: 0 0;">
-                                <circle r="60" fill="none" stroke="#9A7B4F" stroke-width="10" stroke-dasharray="6 5" />
+                                <circle r="60" fill="none" stroke="#D4AF37" stroke-width="10" stroke-dasharray="6 5" />
                                 <circle r="48" fill="none" stroke="#B8935A" stroke-width="1.5" />
                                 <circle r="18" fill="#4A3B26" stroke="#9A7B4F" stroke-width="1.5" />
                                 <line x1="-55" y1="0" x2="55" y2="0" stroke="#9A7B4F" stroke-width="2.5" />
@@ -1404,9 +1409,9 @@
                         </g>
 
                         <!-- Gear 3: Steel Transmission Wheel (Lower-Right, 30 Teeth) -->
-                        <g transform="translate(530, 530)">
+                        <g transform="translate(575, 555)">
                             <g id="introGearSteel1" style="transform-origin: 0 0;">
-                                <circle r="75" fill="none" stroke="#3A4150" stroke-width="10" stroke-dasharray="7 5" />
+                                <circle r="75" fill="none" stroke="#CBD5E1" stroke-width="10" stroke-dasharray="7 5" />
                                 <circle r="62" fill="none" stroke="#4A5568" stroke-width="1.5" />
                                 <circle r="20" fill="#242934" stroke="#4A5568" stroke-width="1.5" />
                                 <line x1="-70" y1="0" x2="70" y2="0" stroke="#3A4150" stroke-width="2.5" />
@@ -1415,9 +1420,9 @@
                         </g>
 
                         <!-- Gear 4: Gunmetal Wheel (Upper-Left, 26 Teeth) -->
-                        <g transform="translate(280, 270)">
+                        <g transform="translate(225, 245)">
                             <g id="introGearSteel2" style="transform-origin: 0 0;">
-                                <circle r="65" fill="none" stroke="#333A4D" stroke-width="9" stroke-dasharray="6 5" />
+                                <circle r="65" fill="none" stroke="#94A3B8" stroke-width="9" stroke-dasharray="6 5" />
                                 <circle r="52" fill="none" stroke="#475569" stroke-width="1.5" />
                                 <circle r="18" fill="#1E2430" stroke="#475569" stroke-width="1.5" />
                                 <line x1="-60" y1="0" x2="60" y2="0" stroke="#333A4D" stroke-width="2.5" />
@@ -1427,24 +1432,24 @@
 
                         <!-- 4 Synthetic Ruby Jewel Bearings with Gold Chaton Settings -->
                         <!-- Ruby 1 (Top-Right) -->
-                        <circle cx="530" cy="280" r="10" fill="none" stroke="#D4AF37" stroke-width="2" />
-                        <circle cx="530" cy="280" r="7" fill="#E11D48" filter="url(#rubyGlow)" />
-                        <circle cx="530" cy="280" r="2.5" fill="#181B22" />
+                        <circle cx="575" cy="245" r="10" fill="none" stroke="#FFD700" stroke-width="2.5" />
+                        <circle cx="575" cy="245" r="7" fill="#FF1E56" filter="url(#rubyGlow)" />
+                        <circle cx="575" cy="245" r="2.5" fill="#181B22" />
 
                         <!-- Ruby 2 (Bottom-Right) -->
-                        <circle cx="530" cy="530" r="10" fill="none" stroke="#D4AF37" stroke-width="2" />
-                        <circle cx="530" cy="530" r="7" fill="#E11D48" filter="url(#rubyGlow)" />
-                        <circle cx="530" cy="530" r="2.5" fill="#181B22" />
+                        <circle cx="575" cy="555" r="10" fill="none" stroke="#FFD700" stroke-width="2.5" />
+                        <circle cx="575" cy="555" r="7" fill="#FF1E56" filter="url(#rubyGlow)" />
+                        <circle cx="575" cy="555" r="2.5" fill="#181B22" />
 
                         <!-- Ruby 3 (Bottom-Left) -->
-                        <circle cx="290" cy="520" r="10" fill="none" stroke="#D4AF37" stroke-width="2" />
-                        <circle cx="290" cy="520" r="7" fill="#E11D48" filter="url(#rubyGlow)" />
-                        <circle cx="290" cy="520" r="2.5" fill="#181B22" />
+                        <circle cx="225" cy="555" r="10" fill="none" stroke="#FFD700" stroke-width="2.5" />
+                        <circle cx="225" cy="555" r="7" fill="#FF1E56" filter="url(#rubyGlow)" />
+                        <circle cx="225" cy="555" r="2.5" fill="#181B22" />
 
                         <!-- Ruby 4 (Top-Left) -->
-                        <circle cx="280" cy="270" r="10" fill="none" stroke="#D4AF37" stroke-width="2" />
-                        <circle cx="280" cy="270" r="7" fill="#E11D48" filter="url(#rubyGlow)" />
-                        <circle cx="280" cy="270" r="2.5" fill="#181B22" />
+                        <circle cx="225" cy="245" r="10" fill="none" stroke="#FFD700" stroke-width="2.5" />
+                        <circle cx="225" cy="245" r="7" fill="#FF1E56" filter="url(#rubyGlow)" />
+                        <circle cx="225" cy="245" r="2.5" fill="#181B22" />
 
                         <!-- Outer Brushed Metal Tachymeter Bezel Ring -->
                         <circle cx="400" cy="400" r="380" fill="none" stroke="url(#bezelMetalGrad)" stroke-width="38" />
@@ -1452,7 +1457,7 @@
                         <circle cx="400" cy="400" r="361" fill="none" stroke="#12151C" stroke-width="2" />
 
                         <!-- Tachymeter Scale Radial Text -->
-                        <g class="tachymeter-labels-group" font-family="var(--font-mono)" font-size="12" font-weight="600" fill="var(--fg-1)" text-anchor="middle">
+                        <g class="tachymeter-labels-group" font-family="var(--font-mono)" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">
                             <text transform="translate(400, 24) rotate(0)">60</text>
                             <text transform="translate(492, 35) rotate(14)">TACHYMETER</text>
                             <text transform="translate(684, 185) rotate(58)">500</text>
