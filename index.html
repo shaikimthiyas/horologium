@@ -247,6 +247,7 @@
             display: grid;
             grid-template-columns: 8fr 4fr;
             gap: 16px;
+            align-items: stretch;
         }
 
         @media (max-width: 960px) {
@@ -259,21 +260,46 @@
             background-color: var(--bg-surface-1);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            padding: 36px 36px 32px 36px;
+            padding: 32px 36px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 28px;
+            gap: 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .hero-eyebrow-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            width: fit-content;
+        }
+
+        .hero-live-pip {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--status-nominal);
+            box-shadow: 0 0 6px var(--status-nominal);
         }
 
         .masthead-title {
             font-family: var(--font-display);
-            font-size: clamp(2rem, 3.2vw, 3rem);
+            font-size: clamp(2rem, 3.2vw, 2.85rem);
             font-weight: 600;
-            line-height: 1.1;
+            line-height: 1.12;
             letter-spacing: -0.03em;
             color: var(--text-primary);
-            margin: 0 0 12px 0;
+            margin: 0 0 10px 0;
             text-wrap: balance;
         }
 
@@ -284,6 +310,63 @@
             color: var(--text-secondary);
             max-width: 58ch;
             margin: 0;
+        }
+
+        .hero-feature-ribbon {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 2px 0;
+        }
+
+        .hero-feature-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .hero-quick-hubs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .quick-hubs-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .quick-hub-chip {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 120ms ease;
+        }
+
+        .quick-hub-chip:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
+            background: var(--bg-surface-hover);
         }
 
         .masthead-actions {
@@ -367,11 +450,12 @@
             background-color: var(--bg-surface-1);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            padding: 32px 28px;
+            padding: 26px 26px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 20px;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         }
 
         .local-time-header {
@@ -382,9 +466,9 @@
 
         .local-time-badge {
             font-family: var(--font-sans);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            letter-spacing: -0.01em;
+            letter-spacing: 0.04em;
             color: var(--text-secondary);
             text-transform: uppercase;
         }
@@ -408,7 +492,7 @@
 
         .local-clock-large {
             font-family: var(--font-mono);
-            font-size: clamp(2.5rem, 4vw, 3.25rem);
+            font-size: clamp(2.3rem, 3.6vw, 2.95rem);
             font-weight: 600;
             color: var(--text-primary);
             letter-spacing: -0.03em;
@@ -419,8 +503,8 @@
         .local-time-details {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding-top: 16px;
+            gap: 4px;
+            padding-top: 10px;
             border-top: 1px solid var(--border-subtle);
         }
 
@@ -444,6 +528,77 @@
             color: var(--text-secondary);
         }
 
+        /* Solar Daylight Horizon Widget */
+        .local-solar-card {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .local-solar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .solar-status-label {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .solar-hours-badge {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent-primary);
+        }
+
+        .solar-progress-bar-wrap {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            background: var(--bg-surface-3);
+            border-radius: 9999px;
+            overflow: visible;
+        }
+
+        .solar-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #F59E0B, var(--accent-primary));
+            border-radius: 9999px;
+            transition: width 300ms ease;
+        }
+
+        .solar-sun-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            line-height: 1;
+            pointer-events: none;
+            transition: left 300ms ease;
+            filter: drop-shadow(0 1px 3px rgba(245, 158, 11, 0.5));
+        }
+
+        .solar-times-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .solar-times-row span.time-label {
+            color: var(--text-secondary);
+            margin-right: 2px;
+        }
+
         /* ------------------------------------------------------------------
            Bento Card Symmetry: Planner & Map Cards
            ------------------------------------------------------------------ */
@@ -451,6 +606,7 @@
             display: grid;
             grid-template-columns: 7fr 5fr;
             gap: 16px;
+            align-items: stretch;
         }
 
         @media (max-width: 1040px) {
@@ -467,7 +623,9 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            justify-content: space-between;
+            gap: 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         }
 
         .card-header-bar {
@@ -714,18 +872,26 @@
 
         .mini-map-viewport {
             width: 100%;
-            height: 220px;
+            height: 236px;
             background: var(--map-water);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.12);
         }
 
         .mini-map-svg {
             width: 100%;
             height: 100%;
             display: block;
+            object-fit: cover;
+        }
+
+        .mini-map-graticule {
+            stroke: var(--border-subtle);
+            stroke-width: 0.6;
+            opacity: 0.6;
         }
 
         .mini-map-land {
@@ -751,10 +917,29 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-family: var(--font-sans);
-            font-size: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 8px 12px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        .telemetry-stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .telemetry-stat-label {
             color: var(--text-secondary);
-            padding-top: 4px;
+        }
+
+        .telemetry-stat-val {
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
         /* ------------------------------------------------------------------
@@ -819,28 +1004,31 @@
 
         /* Clickable Directory City Card */
         .directory-city-card {
-            background: var(--bg-surface-1);
+            background: var(--bg-surface-2);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
-            padding: 12px 14px;
+            padding: 13px 15px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 7px;
             cursor: pointer;
-            transition: all 120ms ease;
+            transition: all 140ms cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
             outline: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            position: relative;
         }
 
         .directory-city-card:hover {
-            border-color: var(--border-strong);
+            border-color: var(--accent-primary);
             background: var(--bg-surface-hover);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
         }
 
         .dir-row-top {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             justify-content: space-between;
             gap: 8px;
         }
@@ -848,7 +1036,7 @@
         .dir-city {
             font-family: var(--font-sans);
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-primary);
             white-space: nowrap;
             overflow: hidden;
@@ -858,13 +1046,34 @@
             gap: 6px;
         }
 
-        .dir-time {
-            font-family: var(--font-mono);
+        .dir-flag-pill {
             font-size: 14px;
+            line-height: 1;
+        }
+
+        .dir-city-name {
+            font-weight: 600;
+        }
+
+        .dir-time-badge {
+            font-family: var(--font-mono);
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-primary);
             flex-shrink: 0;
             font-variant-numeric: tabular-nums;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+        }
+
+        .dir-solar-pip {
+            font-size: 11px;
+            line-height: 1;
         }
 
         .dir-row-bottom {
@@ -874,7 +1083,7 @@
             gap: 8px;
         }
 
-        .dir-country {
+        .dir-country-name {
             font-family: var(--font-sans);
             font-size: 11px;
             color: var(--text-secondary);
@@ -886,27 +1095,26 @@
         .dir-meta {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             flex-shrink: 0;
         }
 
-        .dir-offset {
+        .dir-utc-chip {
             font-family: var(--font-mono);
             font-size: 10px;
+            font-weight: 500;
             color: var(--text-muted);
         }
 
-        .dir-arrow {
+        .dir-arrow-icon {
             font-size: 11px;
-            color: var(--accent-primary);
-            opacity: 0;
-            transform: translateX(-4px);
-            transition: all 120ms ease;
+            color: var(--text-muted);
+            transition: transform 120ms ease, color 120ms ease;
         }
 
-        .directory-city-card:hover .dir-arrow {
-            opacity: 1;
-            transform: translateX(0);
+        .directory-city-card:hover .dir-arrow-icon {
+            transform: translateX(2px);
+            color: var(--accent-primary);
         }
 
         /* ------------------------------------------------------------------
@@ -1344,20 +1552,45 @@
         <section class="bento-masthead">
             <!-- Left 8-Column Primary Stage -->
             <div class="masthead-primary-cell">
-                <div>
+                <div class="hero-eyebrow-pill">
+                    <span class="hero-live-pip"></span>
+                    <span>CALIBRE-01 TELEMETRY // REAL-TIME MERIDIAN ATLAS</span>
+                </div>
+
+                <div class="masthead-copy-wrap">
                     <h1 class="masthead-title">The world's time, mapped to the second.</h1>
                     <p class="masthead-subtitle">
-                        Compare global time zones, find overlapping business hours, and track live daylight across 220 regions.
+                        Compare global time zones, find overlapping business hours, and track live solar illumination across 220 sovereign territories.
                     </p>
+                </div>
+
+                <div class="hero-feature-ribbon">
+                    <span class="hero-feature-pill">
+                        <span>🌐</span> 220 Sovereign Nations
+                    </span>
+                    <span class="hero-feature-pill">
+                        <span>⏱</span> Stratum-1 Atomic Precision
+                    </span>
+                    <span class="hero-feature-pill">
+                        <span>☀️</span> Real-time Solar Terminator
+                    </span>
                 </div>
 
                 <div class="masthead-actions">
                     <a href="/flight-deck/" class="btn-primary" id="btnLaunchMap">
-                        Open World Map
+                        Open World Map →
                     </a>
                     <a href="#overlapPlannerSection" class="btn-secondary">
-                        Compare Time Zones
+                        Compare Time Zones ↓
                     </a>
+                </div>
+
+                <div class="hero-quick-hubs">
+                    <span class="quick-hubs-label">POPULAR HUBS:</span>
+                    <button type="button" class="quick-hub-chip" data-tz="Europe/London">🇬🇧 London (UTC+0)</button>
+                    <button type="button" class="quick-hub-chip" data-tz="America/New_York">🇺🇸 New York (UTC-5)</button>
+                    <button type="button" class="quick-hub-chip" data-tz="Asia/Tokyo">🇯🇵 Tokyo (UTC+9)</button>
+                    <button type="button" class="quick-hub-chip" data-tz="Asia/Kolkata">🇮🇳 Mumbai (UTC+5:30)</button>
                 </div>
             </div>
 
@@ -1380,6 +1613,23 @@
                         <span id="homeLocalOffset" class="font-mono">UTC+00:00</span>
                     </div>
                     <div class="local-date-row" id="homeLocalDate">Loading current date...</div>
+                </div>
+
+                <!-- 24-Hour Solar Daylight Arc & Horizon Tracker -->
+                <div class="local-solar-card">
+                    <div class="local-solar-header">
+                        <span class="solar-status-label">☀️ Daylight Horizon</span>
+                        <span class="solar-hours-badge font-mono" id="solarDaylightHours">11h 40m Daylight</span>
+                    </div>
+                    <div class="solar-progress-bar-wrap" title="Daylight progression: Sunrise to Sunset">
+                        <div class="solar-progress-bar-fill" id="solarProgressBarFill" style="width: 58%;"></div>
+                        <div class="solar-sun-indicator" id="solarSunIndicator" style="left: 58%;">☀️</div>
+                    </div>
+                    <div class="solar-times-row font-mono">
+                        <div><span class="time-label">Sunrise</span> <span id="solarSunriseTime">06:15</span></div>
+                        <div><span class="time-label">Solar Noon</span> <span id="solarNoonTime">12:05</span></div>
+                        <div><span class="time-label">Sunset</span> <span id="solarSunsetTime">17:55</span></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1509,6 +1759,12 @@
                     <svg class="mini-map-svg" id="miniMapSvg2D" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
                         <rect width="1000" height="480" fill="var(--map-water)" />
 
+                        <!-- Coordinate Graticule Guidelines -->
+                        <line x1="500" y1="0" x2="500" y2="480" class="mini-map-graticule" />
+                        <line x1="0" y1="240" x2="1000" y2="240" class="mini-map-graticule" />
+                        <line x1="0" y1="178" x2="1000" y2="178" class="mini-map-graticule" stroke-dasharray="2, 4" />
+                        <line x1="0" y1="302" x2="1000" y2="302" class="mini-map-graticule" stroke-dasharray="2, 4" />
+
                         <!-- High-Precision Geodesic Vector Continents -->
                         <g class="mini-continents-group" id="miniContinentsGroup">
                             <path class="mini-map-land" d="M33 66 L111 53 L222 40 L333 53 L347 106 L319 120 L291 146 L277 173 L250 186 L208 186 L166 154 L152 112 L111 80 Z" title="North America" />
@@ -1536,13 +1792,17 @@
 
                 <!-- Sun Position Readout -->
                 <div class="map-readout-row font-mono">
-                    <div>
-                        <span style="color: var(--text-secondary);">Sun Zenith:</span>
-                        <span id="miniSunDec" style="color: var(--text-primary); margin-left: 4px;">--.-°</span>
+                    <div class="telemetry-stat-pill">
+                        <span class="telemetry-stat-label">Zenith:</span>
+                        <span id="miniSunDec" class="telemetry-stat-val">--.-°</span>
                     </div>
-                    <div>
-                        <span style="color: var(--text-secondary);">Subsolar Meridian:</span>
-                        <span id="miniSubsolarLon" style="color: var(--accent-primary); margin-left: 4px;">--.-°</span>
+                    <div class="telemetry-stat-pill">
+                        <span class="telemetry-stat-label">Subsolar Lon:</span>
+                        <span id="miniSubsolarLon" class="telemetry-stat-val" style="color: var(--accent-primary);">--.-°</span>
+                    </div>
+                    <div class="telemetry-stat-pill">
+                        <span class="telemetry-stat-label">Solar Noon:</span>
+                        <span id="miniSolarNoonGmt" class="telemetry-stat-val">12:00 UTC</span>
                     </div>
                 </div>
             </div>
@@ -1748,6 +2008,25 @@
                     day: 'numeric'
                 });
             }
+
+            // Local Solar Daylight Horizon Progression
+            const localMinutes = now.getHours() * 60 + now.getMinutes();
+            const sunriseMin = 6 * 60 + 15;
+            const sunsetMin = 18 * 60 - 5;
+            const daylightDurationMin = sunsetMin - sunriseMin;
+            let daylightPct = 0;
+            if (localMinutes <= sunriseMin) {
+                daylightPct = 0;
+            } else if (localMinutes >= sunsetMin) {
+                daylightPct = 100;
+            } else {
+                daylightPct = Math.round(((localMinutes - sunriseMin) / daylightDurationMin) * 100);
+            }
+
+            const solarBar = document.getElementById('solarProgressBarFill');
+            const solarPip = document.getElementById('solarSunIndicator');
+            if (solarBar) solarBar.style.width = daylightPct + '%';
+            if (solarPip) solarPip.style.left = daylightPct + '%';
 
             // Astronomical Solar Declination Calculation
             const dec = calculateSolarDeclination(now);
@@ -2014,7 +2293,15 @@
                 card.title = `Open ${item.capital || item.country} on World Map`;
 
                 let cityTime = '--:--';
+                let cityHour = 12;
                 try {
+                    const d = new Intl.DateTimeFormat('en-US', {
+                        timeZone: item.tz,
+                        hour12: false,
+                        hour: 'numeric'
+                    }).format(now);
+                    cityHour = parseInt(d, 10);
+
                     cityTime = new Intl.DateTimeFormat('en-US', {
                         timeZone: item.tz,
                         hour12: !is24h,
@@ -2025,19 +2312,24 @@
                     cityTime = item.utc;
                 }
 
+                const isDay = cityHour >= 6 && cityHour < 18;
+
                 card.innerHTML = `
                     <div class="dir-row-top">
                         <div class="dir-city">
-                            <span>${item.flag}</span>
-                            <span style="font-weight: 500;">${item.capital || item.country}</span>
+                            <span class="dir-flag-pill">${item.flag}</span>
+                            <span class="dir-city-name">${item.capital || item.country}</span>
                         </div>
-                        <div class="dir-time font-mono tabular-nums">${cityTime}</div>
+                        <div class="dir-time-badge font-mono tabular-nums">
+                            <span class="dir-solar-pip" title="${isDay ? 'Daytime' : 'Nighttime'}">${isDay ? '☀️' : '🌙'}</span>
+                            <span>${cityTime}</span>
+                        </div>
                     </div>
                     <div class="dir-row-bottom">
-                        <div class="dir-country">${item.country}</div>
+                        <div class="dir-country-name">${item.country}</div>
                         <div class="dir-meta">
-                            <span class="dir-offset font-mono">${item.utc}</span>
-                            <span class="dir-arrow" aria-hidden="true">→</span>
+                            <span class="dir-utc-chip font-mono">${item.utc}</span>
+                            <span class="dir-arrow-icon" aria-hidden="true">→</span>
                         </div>
                     </div>
                 `;
@@ -2047,6 +2339,20 @@
         }
 
         renderSearchResults();
+
+        // Quick-jump Hub chips
+        document.querySelectorAll('.quick-hub-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const tz = chip.getAttribute('data-tz');
+                const stationB = document.getElementById('stationBSelect');
+                if (stationB && tz) {
+                    stationB.value = tz;
+                    stationB.dispatchEvent(new Event('change'));
+                    document.getElementById('overlapPlannerSection')?.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
 
         const searchTrigger = document.getElementById('homeSearchTrigger');
         if (searchTrigger) {

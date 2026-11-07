@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOROLOGIUM // Geodesic Country & Timezone Directory</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <style>
+        .directory-page {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background-color: var(--bg-0);
+        }
+
+        .directory-container {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .directory-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .directory-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .directory-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--fg-0);
+        }
+
+        .directory-header p {
+            font-size: 13px;
+            color: var(--fg-1);
+            max-width: 70ch;
+        }
+
+        /* Filter Controls */
+        .directory-filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-counter {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--fg-2);
+            padding: 0 12px;
+            height: var(--ctrl-md);
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg-1);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-sm);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .filter-counter strong {
+            color: var(--fg-0);
+            margin: 0 4px;
+        }
+
+        /* Subpixel Data Grid */
+        .table-wrap {
+            border: 1px solid var(--border-hairline);
+            background: var(--border-hairline);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: inset 0 1px 0 0 var(--border-specular);
+        }
+
+        .geodesic-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 12px;
+            background: var(--bg-1);
+        }
+
+        .geodesic-table th {
+            height: 30px;
+            padding: 0 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--fg-1);
+            background: var(--bg-2);
+            border-bottom: 1px solid var(--border-hairline);
+            user-select: none;
+        }
+
+        .geodesic-table td {
+            height: 34px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-hairline);
+            color: var(--fg-0);
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        .geodesic-table tr:hover td {
+            background-color: var(--bg-2);
+        }
+
+        .country-title-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .country-name {
+            font-weight: 500;
+            color: var(--fg-0);
+        }
+
+        .country-capital-editorial {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--fg-2);
+        }
+
+        .table-clock-val {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-primary);
+            font-variant-numeric: tabular-nums slashed-zero;
+        }
+
+        .action-cell {
+            text-align: right;
+        }
+
+        .action-cell a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--fg-1);
+            text-decoration: none;
+            padding: 2px 8px;
+            border: 1px solid var(--border-interactive);
+            border-radius: var(--radius-xs);
+            background: var(--bg-1);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition-property: background-color, border-color, color;
+            transition-duration: 80ms;
+            transition-timing-function: var(--ease-snappy);
+        }
+
+        .action-cell a:hover {
+            color: var(--fg-0);
+            border-color: var(--accent-primary);
+            background: var(--bg-3);
+        }
+    </style>
+</head>
+<body class="directory-page">
+
+    <!-- Top Telemetry Bar -->
+    <header class="telemetry-bar">
+        <div class="telemetry-left">
+            <a href="/index.html" class="brand-monogram">
+                <span class="brand-dot"></span>
+                <span>HOROLOGIUM</span>
+            </a>
+            <span class="telemetry-title">Geodesic Country & Timezone Directory</span>
+        </div>
+
+        <div class="telemetry-center">
+            <div class="utc-master-clock">
+                <span class="utc-label">UTC MASTER</span>
+                <span id="dirUtcClock" class="font-mono">--:--:-- UTC</span>
+            </div>
+        </div>
+
+        <div class="telemetry-right">
+            <button type="button" class="telemetry-btn" id="dirThemeToggle" title="Toggle Theme">OBSIDIAN</button>
+            <a href="/flight-deck/" class="nav-action-btn">⊕ FLIGHT DECK</a>
+            <a href="/" class="nav-action-btn">OVERVIEW</a>
+        </div>
+    </header>
+
+    <div class="directory-container">
+        <div class="directory-header">
+            <div class="directory-tag">
+                <span class="badge-semantic badge-semantic-counter">● IANA 2026.10</span>
+                <span>GLOBAL GEODESIC & MERIDIAN REGISTRY</span>
+            </div>
+            <h1>Universal Geodesic Directory</h1>
+            <p>Comprehensive institutional reference catalog indexing standard meridians, civil daylight times, ISO-3166 territory codes, and atomic offsets across 220 sovereign territories.</p>
+        </div>
+
+        <div class="directory-filter-bar">
+            <!-- Recessed Instrument Input with Monospace Prefix Slot -->
+            <div class="input-recessed-group" style="flex: 1; max-width: 580px;">
+                <span class="input-slot-prefix">GEO://</span>
+                <input type="text" id="dirSearchInput" class="input-recessed" placeholder="Filter by nation, capital, ISO code, or UTC offset (e.g. Japan, Paris, UTC+5)..." />
+            </div>
+
+            <div class="filter-counter">
+                INDEXED: <strong id="dirCounter">0</strong> SOVEREIGN TERRITORIES
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="geodesic-table">
+                <thead>
+                    <tr>
+                        <th>SOVEREIGN NATION & CAPITAL</th>
+                        <th style="width: 80px;">ISO</th>
+                        <th>IANA TIMEZONE KEY</th>
+                        <th style="width: 120px;">OFFSET</th>
+                        <th style="width: 140px;">LIVE CIVIL TIME</th>
+                        <th style="width: 100px; text-align: right;">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="directoryTableBody">
+                    <!-- Populated dynamically via ES module -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 24px Fixed Bottom Telemetry Ribbon -->
+    <footer class="telemetry-ribbon-bottom">
+        <div class="telemetry-ribbon-item">
+            <span class="badge-semantic badge-semantic-success">● [SYNC]</span>
+            <span>DIRECTORY INDEX ACTIVE</span>
+            <span>·</span>
+            <span>LATENCY: <span class="tnum">12ms</span></span>
+        </div>
+        <div class="telemetry-ribbon-item">
+            <span>UTC MASTER:</span>
+            <span id="dirBottomUtc" class="tnum" style="color: var(--fg-0); font-weight: 500;">--:--:-- UTC</span>
+            <span>·</span>
+            <span class="badge-semantic badge-semantic-counter">CALIBRE-01</span>
+        </div>
+        <div class="telemetry-ribbon-item">
+            <span>SHORTCUTS:</span>
+            <kbd>M</kbd> <span>MAP</span>
+            <kbd>T</kbd> <span>THEME</span>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { COUNTRIES_DATA, getCountryLiveTime } from '/src/data/countries.data.js';
+
+        const tbody = document.getElementById('directoryTableBody');
+        const searchInput = document.getElementById('dirSearchInput');
+        const counterEl = document.getElementById('dirCounter');
+        const themeBtn = document.getElementById('dirThemeToggle');
+        const utcClockEl = document.getElementById('dirUtcClock');
+        const bottomUtcEl = document.getElementById('dirBottomUtc');
+
+        const allCountries = Object.keys(COUNTRIES_DATA).sort().map(name => {
+            return { name, ...COUNTRIES_DATA[name] };
+        });
+
+        function renderDirectory(items) {
+            tbody.innerHTML = '';
+            counterEl.textContent = items.length;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 32px; color: var(--fg-2); font-family: var(--font-mono);">NO MATCHING GEODESIC RECORDS FOUND</td></tr>`;
+                return;
+            }
+
+            items.forEach(c => {
+                const live = getCountryLiveTime(c.name);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="country-title-box">
+                            <span style="font-size: 14px;">${c.flag || '🌐'}</span>
+                            <span class="country-name">${c.name}</span>
+                            <span class="country-capital-editorial">${c.capital ? '// ' + c.capital : ''}</span>
+                        </div>
+                    </td>
+                    <td class="font-mono" style="color: var(--fg-2);">${c.code || '--'}</td>
+                    <td class="font-mono selectable-token" style="font-size: 11px; color: var(--fg-1);">${c.tz}</td>
+                    <td class="font-mono" style="color: var(--fg-0); font-weight: 500;">${c.utc}</td>
+                    <td>
+                        <span class="table-clock-val">
+                            <span class="dir-live-clock" data-country="${c.name}">${live.time}</span>
+                            <span style="font-size: 10px; color: var(--fg-2); margin-left: 4px;">${live.dayPart}</span>
+                        </span>
+                    </td>
+                    <td class="action-cell">
+                        <a href="/flight-deck/?country=${encodeURIComponent(c.name)}">TRACK ➔</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        renderDirectory(allCountries);
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const filtered = allCountries.filter(c => {
+                return c.name.toLowerCase().includes(query) ||
+                       (c.capital && c.capital.toLowerCase().includes(query)) ||
+                       (c.utc && c.utc.toLowerCase().includes(query)) ||
+                       (c.tz && c.tz.toLowerCase().includes(query)) ||
+                       (c.code && c.code.toLowerCase().includes(query));
+            });
+            renderDirectory(filtered);
+        });
+
+        // UTC Tick
+        function updateClocks() {
+            const now = new Date();
+            const utcHours = String(now.getUTCHours()).padStart(2, '0');
+            const utcMins = String(now.getUTCMinutes()).padStart(2, '0');
+            const utcSecs = String(now.getUTCSeconds()).padStart(2, '0');
+            const str = `${utcHours}:${utcMins}:${utcSecs} UTC`;
+            if (utcClockEl) utcClockEl.textContent = str;
+            if (bottomUtcEl) bottomUtcEl.textContent = str;
+
+            document.querySelectorAll('.dir-live-clock').forEach(el => {
+                const country = el.getAttribute('data-country');
+                if (country) {
+                    const live = getCountryLiveTime(country);
+                    el.textContent = live.time;
+                }
+            });
+        }
+
+        updateClocks();
+        setInterval(updateClocks, 1000);
+
+        // Theme Toggle
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.setAttribute('data-theme', 'obsidian');
+                if (themeBtn) themeBtn.textContent = 'OBSIDIAN';
+                localStorage.setItem('horologium_theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.setAttribute('data-theme', 'silvered');
+                if (themeBtn) themeBtn.textContent = 'SILVERED';
+                localStorage.setItem('horologium_theme', 'light');
+            }
+        }
+
+        const savedTheme = localStorage.getItem('horologium_theme') || localStorage.getItem('chronos_theme');
+        applyTheme(savedTheme !== 'light');
+
+        if (themeBtn) {
+            themeBtn.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
+                applyTheme(!isCurrentlyDark);
+            });
+        }
+
+        window.addEventListener('keydown', (e) => {
+            const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea') return;
+
+            if (e.key === 'm' || e.key === 'M') {
+                window.location.href = '/flight-deck/';
+            } else if (e.key === 't' || e.key === 'T') {
+                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
+                applyTheme(!isCurrentlyDark);
+            }
+        });
+    </script>
+</body>
+</html>
