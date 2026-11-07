@@ -1526,8 +1526,357 @@ svg path.allPaths.selected-country {
 @media (prefers-reduced-motion: reduce) {
   .astrolabe-logo-svg,
   .intro-globe-reticle-ring,
-  .intro-status-beacon {
+  .intro-status-beacon,
+  .colon-resonator {
     animation: none;
+  }
+}
+
+/* ==========================================================================
+   Swiss Horological Tourbillon & Calibre-01 Monogram Styles
+   ========================================================================== */
+
+/* --- Machined Corner Hex Socket Screws --- */
+.chassis-screw {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #4A5568 0%, #1A202C 70%, #0F1319 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.chassis-screw::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: #080A0E;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.chassis-screw.screw-tl { top: 14px; left: 16px; }
+.chassis-screw.screw-tr { top: 14px; right: 16px; }
+.chassis-screw.screw-bl { bottom: 14px; left: 16px; }
+.chassis-screw.screw-br { bottom: 14px; right: 16px; }
+
+/* In Light Theme */
+[data-theme="light"] .chassis-screw {
+  background: radial-gradient(circle at 35% 35%, #E2E8F0 0%, #CBD5E1 70%, #94A3B8 100%);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+[data-theme="light"] .chassis-screw::after {
+  background: #475569;
+}
+
+/* --- Tourbillon Deck Grid (Left Monogram Chassis + Right Planetary Movement) --- */
+.intro-tourbillon-stage {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1300px;
+  width: 100%;
+  margin: auto;
+  padding: 16px 0;
+}
+
+/* Left Column: Chassis & Recessed Monogram Well */
+.intro-left-chassis {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.intro-well-aperture {
+  width: 220px;
+  height: 220px;
+  background: var(--well-bg, #0B0E14);
+  border: 1px solid var(--chassis-hairline, rgba(255, 255, 255, 0.08));
+  border-radius: 28px;
+  box-shadow: var(--well-shadow, inset 0 8px 24px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.45));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all 250ms ease;
+}
+
+.intro-well-aperture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 27px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.h-monogram-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 7-Segment SVG Classes */
+.h-seg-ghost {
+  fill: var(--segment-inactive, #161A24);
+  transition: fill 200ms ease;
+}
+
+.h-seg-active {
+  fill: var(--segment-active, #FF4D15);
+  filter: drop-shadow(0 0 10px rgba(255, 77, 21, 0.85)) drop-shadow(0 0 22px rgba(255, 77, 21, 0.45));
+  transition: fill 200ms ease, filter 200ms ease;
+}
+
+.colon-resonator {
+  fill: var(--cyan-telemetry, #00F5D4);
+  filter: drop-shadow(0 0 8px rgba(0, 245, 212, 0.9));
+  animation: colonResonatorPulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: 180px 110px;
+}
+
+@keyframes colonResonatorPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+}
+
+/* Swiss Horological Typography */
+.intro-swiss-typography {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intro-swiss-typography .intro-brand-heading {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--fg-0);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.intro-swiss-typography .intro-brand-strapline {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fg-2);
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+}
+
+.intro-telemetry-readout-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.intro-swiss-typography .intro-master-clock {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fg-0);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.intro-coordinate-readout {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-primary, #FF4D15);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.intro-cyan-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.intro-cyan-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--cyan-telemetry, #00F5D4);
+  background: rgba(0, 245, 212, 0.06);
+  border: 1px solid rgba(0, 245, 212, 0.35);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 10px rgba(0, 245, 212, 0.1);
+  white-space: nowrap;
+}
+
+/* Right Column: Tourbillon Mechanical Movement & Geodesic Globe Assembly */
+.intro-right-tourbillon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.tourbillon-assembly {
+  position: relative;
+  width: 580px;
+  height: 580px;
+  max-width: 85vw;
+  max-height: 70vh;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tourbillon-bezel-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cyan-orbital-ring-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.tourbillon-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.tourbillon-canvas-wrapper .intro-globe-canvas {
+  width: 80%;
+  height: 80%;
+  max-width: 480px;
+  max-height: 480px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+  transition: transform 120ms ease;
+}
+
+.tourbillon-canvas-wrapper .intro-globe-canvas:active {
+  cursor: grabbing;
+  transform: scale(0.995);
+}
+
+/* Bottom Checklist & Stratum-1 Telemetry Milestones */
+.tourbillon-bottom-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid var(--chassis-hairline, rgba(255, 255, 255, 0.08));
+  padding-top: 14px;
+}
+
+.tourbillon-milestones-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--fg-2);
+}
+
+.milestone-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.milestone-chip .chip-status {
+  color: var(--cyan-telemetry, #00F5D4);
+  font-weight: 600;
+}
+
+/* Tachymeter text styling in SVG */
+.tachymeter-labels-group text {
+  user-select: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .intro-tourbillon-stage {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 10px 0;
+  }
+  .intro-left-chassis {
+    align-items: center;
+    text-align: center;
+  }
+  .intro-cyan-pills-row {
+    justify-content: center;
+  }
+  .intro-well-aperture {
+    width: 180px;
+    height: 180px;
+    border-radius: 22px;
+  }
+  .tourbillon-assembly {
+    width: 460px;
+    height: 460px;
+  }
+}
+
+@media (max-width: 640px) {
+  .tourbillon-assembly {
+    width: 320px;
+    height: 320px;
+  }
+  .intro-well-aperture {
+    width: 140px;
+    height: 140px;
+    border-radius: 18px;
+    padding: 12px;
+  }
+  .tourbillon-milestones-row {
+    justify-content: center;
+    gap: 6px;
   }
 }
 

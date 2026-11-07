@@ -46,6 +46,28 @@
   --status-critical-bg: rgba(239, 68, 68, 0.14);
 
   /* ========================================================================
+     SWISS HOROLOGICAL PLANETARY TOURBILLON TOKENS (Obsidian PVD)
+     ======================================================================== */
+  --chassis-bg: #111318;
+  --chassis-panel: #161920;
+  --chassis-hairline: #262A36;
+  --well-bg: #0A0C10;
+  --well-shadow: inset 0 8px 24px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.06);
+  --segment-active: #FF4D15;
+  --segment-glow: rgba(255, 77, 21, 0.65);
+  --segment-inactive: #1E222B;
+  --cyan-telemetry: #00F5D4;
+  --cyan-glow: rgba(0, 245, 212, 0.45);
+  --bezel-outer: #2A2F3A;
+  --bezel-track: #12151C;
+  --gear-brass: #786242;
+  --gear-steel: #3A4150;
+  --ruby-jewel: #E11D48;
+  --globe-core: #07090E;
+  --globe-mesh: rgba(248, 250, 252, 0.78);
+  --globe-meridian-laser: #FF5722;
+
+  /* ========================================================================
      CARTOGRAPHIC & ASTRONOMICAL TOKENS (Deep Space Observatory)
      ======================================================================== */
   --map-ocean-day: #0D1526;
@@ -170,6 +192,28 @@
   --status-warning-bg: rgba(217, 119, 6, 0.12);
   --status-critical: #DC2626;
   --status-critical-bg: rgba(220, 38, 38, 0.12);
+
+  /* ========================================================================
+     SWISS HOROLOGICAL PLANETARY TOURBILLON TOKENS (Silvered Ceramic)
+     ======================================================================== */
+  --chassis-bg: #ECEFF4;
+  --chassis-panel: #F8FAFC;
+  --chassis-hairline: #CBD5E1;
+  --well-bg: #0F141C;
+  --well-shadow: inset 0 6px 18px rgba(0, 0, 0, 0.75), 0 2px 4px rgba(255, 255, 255, 0.9);
+  --segment-active: #FF4D15;
+  --segment-glow: rgba(255, 77, 21, 0.55);
+  --segment-inactive: #1E2530;
+  --cyan-telemetry: #00E5C3;
+  --cyan-glow: rgba(0, 229, 195, 0.35);
+  --bezel-outer: #CBD5E1;
+  --bezel-track: #1E293B;
+  --gear-brass: #9A7B4F;
+  --gear-steel: #64748B;
+  --ruby-jewel: #E11D48;
+  --globe-core: #0B111E;
+  --globe-mesh: rgba(248, 250, 252, 0.88);
+  --globe-meridian-laser: #FF5722;
 
   /* ========================================================================
      CARTOGRAPHIC & ASTRONOMICAL TOKENS (Architectural Relief Atlas)
