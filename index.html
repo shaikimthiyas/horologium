@@ -1,67 +1,100 @@
 <!DOCTYPE html>
-<html lang="en" class="dark" data-theme="obsidian">
+<html lang="en" class="dark" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // The Planetary Time Machine & Meridian Telemetry</title>
-    <meta name="description" content="A precision astronomical clock, live solar terminator atlas, and global meeting overlap engine. Handcrafted for distributed engineers, flight operators, and cross-border teams." />
-    <meta property="og:title" content="HOROLOGIUM // Planetary Temporal & Meridian Telemetry" />
-    <meta property="og:description" content="A precision astronomical clock, live solar terminator atlas, and global meeting overlap engine engineered with Swiss horological precision." />
+    <title>Horologium // Planetary Time & World Clock</title>
+    <meta name="description" content="Compare global time zones, find overlapping business hours, and track live daylight across 220 regions with sub-second precision." />
+    <meta property="og:title" content="Horologium // Planetary Time & World Clock" />
+    <meta property="og:description" content="Compare global time zones, find overlapping business hours, and track live daylight across 220 regions with sub-second precision." />
     <meta property="og:image" content="/cover.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/cover.jpg" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#FF4400" />
+    <meta name="theme-color" content="#3B82F6" />
     <link rel="stylesheet" href="/src/styles/main.css"/>
     <style>
-        .projection-switch-dock {
-            display: inline-flex;
-            background: var(--bg-0);
-            border: 1px solid var(--border-interactive);
-            border-radius: var(--radius-xs);
-            padding: 2px;
-            gap: 2px;
-        }
-        .proj-btn {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.06em;
-            padding: 3px 8px;
-            border-radius: 2px;
-            border: none;
-            background: transparent;
-            color: var(--fg-1);
-            cursor: pointer;
-            transition: all 100ms ease;
-        }
-        .proj-btn:hover {
-            color: var(--fg-0);
-        }
-        .proj-btn.active {
-            background: var(--bg-2);
-            color: var(--accent-primary);
-            box-shadow: inset 0 1px 0 0 var(--border-specular);
+        /* Base App Shell */
+        .workbench-home {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
-                /* Enterprise Top Navigation & App Bar */
+        .home-main-scroll {
+            flex: 1;
+            padding: 24px 24px 40px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-sizing: border-box;
+        }
+
+        /* ------------------------------------------------------------------
+           Top App Bar (56px Height, 3-Zone Clean Header)
+           ------------------------------------------------------------------ */
+        .telemetry-bar {
+            height: 56px;
+            min-height: 56px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            user-select: none;
+            position: sticky;
+            top: 0;
+        }
+
+        .telemetry-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .brand-monogram {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-primary);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--accent-primary);
+        }
+
         .brand-name {
-            font-family: var(--font-mono);
+            font-family: var(--font-sans);
             font-weight: 600;
-            font-size: 11px;
-            letter-spacing: 0.14em;
+            font-size: 15px;
+            letter-spacing: -0.02em;
             color: var(--text-primary);
         }
 
-        .brand-calibre {
-            font-family: var(--font-mono);
-            font-size: 9px;
-            padding: 2px 6px;
-            border-radius: var(--radius-xs);
-            background: var(--bg-surface-2);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
-            letter-spacing: 0.06em;
+        .header-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-subtle);
+            display: inline-block;
         }
 
         .header-live-pulse-pill {
@@ -69,13 +102,8 @@
             align-items: center;
             gap: 6px;
             font-family: var(--font-mono);
-            font-size: 11px;
-            padding: 0 10px;
-            height: 26px;
-            border-radius: var(--radius-xs);
-            background: var(--bg-surface-2);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
+            font-size: 12px;
+            color: var(--text-secondary);
             white-space: nowrap;
         }
 
@@ -93,38 +121,33 @@
             50% { opacity: 0.45; transform: scale(0.85); }
         }
 
-        .pill-divider {
-            opacity: 0.35;
-            color: var(--text-secondary);
+        /* Center Segmented View Switcher */
+        .telemetry-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .pill-metric {
-            font-size: 10px;
-            color: var(--status-nominal);
-        }
-
-        /* Center Zone: Segmented View Track */
         .segmented-view-track {
             display: inline-flex;
             align-items: center;
             background: var(--bg-surface-2);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 2px;
+            border-radius: var(--radius-md);
+            padding: 3px;
             gap: 2px;
             user-select: none;
             white-space: nowrap;
         }
 
         .segmented-tab {
-            font-family: var(--font-mono);
-            font-size: 11px;
+            font-family: var(--font-sans);
+            font-size: 12px;
             font-weight: 500;
-            letter-spacing: 0.04em;
             color: var(--text-secondary);
             text-decoration: none;
-            padding: 4px 12px;
-            border-radius: var(--radius-xs);
+            padding: 4px 14px;
+            border-radius: var(--radius-sm);
             transition: all 120ms var(--ease-snappy);
             white-space: nowrap;
             display: inline-flex;
@@ -133,29 +156,36 @@
 
         .segmented-tab:hover {
             color: var(--text-primary);
-            background: var(--bg-surface-hover);
         }
 
         .segmented-tab.active {
             color: var(--text-primary);
             background: var(--bg-surface-1);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 0 var(--border-specular);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
             font-weight: 600;
         }
 
-        /* Right Zone: Command & Utility Toggles */
+        /* Right Utilities */
+        .telemetry-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
         .header-cmd-pill {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            height: 28px;
-            padding: 0 10px;
+            gap: 8px;
+            height: 32px;
+            padding: 0 12px;
             background: var(--bg-surface-2);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-xs);
+            border-radius: var(--radius-md);
             color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 11px;
+            font-family: var(--font-sans);
+            font-size: 12px;
             cursor: pointer;
             transition: all 120ms ease;
             white-space: nowrap;
@@ -170,9 +200,10 @@
         .header-kbd {
             background: var(--bg-canvas);
             border: 1px solid var(--border-subtle);
-            border-radius: 3px;
-            padding: 1px 4px;
-            font-size: 9px;
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-family: var(--font-mono);
+            font-size: 10px;
             color: var(--text-muted);
         }
 
@@ -181,25 +212,25 @@
             align-items: center;
             background: var(--bg-surface-2);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-xs);
+            border-radius: var(--radius-md);
             padding: 2px;
             gap: 2px;
         }
 
         .utility-btn {
-            height: 24px;
-            padding: 0 8px;
+            height: 28px;
+            padding: 0 10px;
             background: transparent;
             border: none;
-            border-radius: 3px;
+            border-radius: var(--radius-xs);
             color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 10px;
+            font-family: var(--font-sans);
+            font-size: 11px;
             font-weight: 500;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             transition: all 120ms ease;
             white-space: nowrap;
         }
@@ -209,104 +240,13 @@
             background: var(--bg-surface-hover);
         }
 
-        .utility-ghost-btn {
-            height: 28px;
-            width: 28px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: var(--radius-xs);
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 120ms ease;
-        }
-
-        .utility-ghost-btn:hover {
-            color: var(--text-primary);
-            background: var(--bg-surface-2);
-            border-color: var(--border-subtle);
-        }
-
-        /* Architectural Hero Badges */
-        .telemetry-spec-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            height: 24px;
-            padding: 0 10px;
-            background: var(--bg-surface-2);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-xs);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
-
-        .pill-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--border-strong);
-            display: inline-block;
-        }
-
-        .telemetry-spec-pill.is-active .pill-dot {
-            background: var(--status-nominal);
-            box-shadow: 0 0 5px var(--status-nominal);
-        }
-
-        /* Diurnal Sensor Solar Bands */
-        .vernier-tick.tick-night {
-            background: var(--border-strong, #333A4D);
-            opacity: 0.5;
-        }
-
-        .vernier-tick.tick-twilight {
-            background: var(--accent-secondary, #38BDF8);
-            opacity: 0.85;
-        }
-
-        .vernier-tick.tick-daylight {
-            background: var(--accent-primary, #FF5722);
-            opacity: 1;
-        }
-
-        .workbench-home {
-            min-height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--bg-0);
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        .home-main-scroll {
-            flex: 1;
-            padding: 16px 20px 32px 20px;
-            max-width: 1440px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* 8:4 Asymmetric Masthead Bento */
+        /* ------------------------------------------------------------------
+           Hero Bento Grid (8:4 Asymmetric Layout)
+           ------------------------------------------------------------------ */
         .bento-masthead {
             display: grid;
             grid-template-columns: 8fr 4fr;
-            gap: 1px;
-            background-color: var(--border-hairline);
-            border: 1px solid var(--border-hairline);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            gap: 16px;
         }
 
         @media (max-width: 960px) {
@@ -316,59 +256,34 @@
         }
 
         .masthead-primary-cell {
-            background-color: var(--bg-1);
-            padding: 28px 32px 32px 32px;
+            background-color: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 36px 36px 32px 36px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
-        }
-
-        .masthead-secondary-cell {
-            background-color: var(--bg-1);
-            padding: 28px 24px 32px 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-image: repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 4px,
-                rgba(237, 239, 242, 0.02) 4px,
-                rgba(237, 239, 242, 0.02) 5px
-            );
-        }
-
-        .masthead-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            color: var(--accent-primary);
-            margin-bottom: 14px;
-            text-transform: uppercase;
+            gap: 28px;
         }
 
         .masthead-title {
             font-family: var(--font-display);
-            font-size: clamp(2.1rem, 3.4vw, 3.4rem);
-            font-weight: 500;
-            line-height: 1.05;
+            font-size: clamp(2rem, 3.2vw, 3rem);
+            font-weight: 600;
+            line-height: 1.1;
             letter-spacing: -0.03em;
-            color: var(--fg-0);
-            margin-bottom: 14px;
+            color: var(--text-primary);
+            margin: 0 0 12px 0;
             text-wrap: balance;
         }
 
         .masthead-subtitle {
             font-family: var(--font-sans);
-            font-size: 14px;
-            line-height: 1.55;
-            color: var(--fg-1);
-            max-width: 66ch;
-            margin-bottom: 24px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            max-width: 58ch;
+            margin: 0;
         }
 
         .masthead-actions {
@@ -376,450 +291,848 @@
             gap: 12px;
             flex-wrap: wrap;
             align-items: center;
-            margin-bottom: 20px;
         }
 
-        .masthead-telemetry-pills {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        /* Vernier Telemetry Cell */
-        .vernier-stat-block {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .vernier-header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--fg-2);
-        }
-
-        .vernier-clock-large {
-            font-family: var(--font-mono);
-            font-size: 34px;
+        .btn-primary {
+            height: 40px;
+            padding: 0 18px;
+            background: var(--accent-primary);
+            color: #FFFFFF;
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: 13px;
             font-weight: 500;
-            color: var(--fg-0);
-            letter-spacing: -0.02em;
-            font-variant-numeric: tabular-nums slashed-zero;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: opacity 120ms ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
         }
 
-        .telemetry-meta-list {
+        .btn-primary:hover {
+            opacity: 0.92;
+        }
+
+        .btn-secondary {
+            height: 40px;
+            padding: 0 18px;
+            background: var(--bg-surface-2);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 120ms ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-strong);
+            background: var(--bg-surface-hover);
+        }
+
+        .btn-secondary-sm {
+            height: 32px;
+            padding: 0 12px;
+            background: var(--bg-surface-2);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 120ms ease;
+        }
+
+        .btn-secondary-sm:hover {
+            border-color: var(--border-strong);
+            background: var(--bg-surface-hover);
+        }
+
+        /* Local Time Card (Right Hero Cell) */
+        .masthead-secondary-cell {
+            background-color: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--fg-1);
-            border-top: 1px solid var(--border-hairline);
-            padding-top: 14px;
-        }
-
-        .telemetry-meta-row {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
+            gap: 20px;
         }
 
-        .procedural-ruler {
-            width: 100%;
-            height: 16px;
+        .local-time-header {
             display: flex;
-            align-items: flex-end;
-            margin-bottom: 14px;
-            overflow: hidden;
-            opacity: 0.6;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        /* 2-Column Workstage Split (Overlap Planner + Mini Vector Map) */
+        .local-time-badge {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-sans);
+            font-size: 11px;
+            color: var(--status-nominal);
+        }
+
+        .sync-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--status-nominal);
+            box-shadow: 0 0 6px var(--status-nominal);
+        }
+
+        .local-clock-large {
+            font-family: var(--font-mono);
+            font-size: clamp(2.5rem, 4vw, 3.25rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .local-time-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .local-tz-row {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot-separator {
+            color: var(--text-muted);
+        }
+
+        .local-date-row {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ------------------------------------------------------------------
+           Bento Card Symmetry: Planner & Map Cards
+           ------------------------------------------------------------------ */
         .workstage-split {
             display: grid;
             grid-template-columns: 7fr 5fr;
             gap: 16px;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1040px) {
             .workstage-split {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Instant Search Bench */
-        .search-bench-card {
-            background: var(--bg-1);
-            border: 1px solid var(--border-hairline);
-            border-radius: var(--radius-md);
-            padding: 20px 24px;
+        .planner-card,
+        .mini-map-card {
+            background-color: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            box-shadow: inset 0 1px 0 0 var(--border-specular);
+            gap: 20px;
         }
 
-        .search-bench-input-wrap {
+        .card-header-bar {
             display: flex;
-            gap: 10px;
-            align-items: center;
-            background: var(--bg-0);
-            border: 1px solid var(--border-interactive);
-            border-radius: var(--radius-sm);
-            padding: 8px 14px;
-            transition: border-color 120ms ease;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
         }
 
-        .search-bench-input-wrap:focus-within {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 1px var(--accent-primary);
+        .card-title {
+            font-family: var(--font-sans);
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+            margin: 0;
         }
 
-        .search-bench-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--fg-0);
+        .card-subtitle {
             font-family: var(--font-sans);
             font-size: 13px;
+            color: var(--text-secondary);
+            margin: 4px 0 0 0;
         }
 
-        .search-bench-results-grid {
+        .card-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Station Boxes */
+        .planner-stations-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 10px;
-            max-height: 280px;
-            overflow-y: auto;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        .bench-city-card {
-            background: var(--bg-2);
-            border: 1px solid var(--border-hairline);
-            border-radius: var(--radius-xs);
-            padding: 10px 14px;
+        @media (max-width: 640px) {
+            .planner-stations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .station-box {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .station-title-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: all 120ms ease;
+            gap: 8px;
         }
 
-        .bench-city-card:hover {
-            border-color: var(--border-interactive);
-            background: var(--bg-3);
+        .station-label {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
         }
 
-        .copy-pill-btn {
+        .station-select {
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: var(--radius-xs);
+            outline: none;
+            cursor: pointer;
+            max-width: 170px;
+        }
+
+        .station-select:focus {
+            border-color: var(--border-focus);
+        }
+
+        .station-time-display {
+            font-family: var(--font-mono);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+            margin: 4px 0 2px 0;
+        }
+
+        .station-meta-info {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* 24-Hour Timeline Bar */
+        .overlap-timeline-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+        }
+
+        .overlap-timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .overlap-ribbon {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 2px;
+            height: 38px;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+            user-select: none;
+        }
+
+        .overlap-cell {
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             font-family: var(--font-mono);
             font-size: 10px;
-            letter-spacing: 0.06em;
-            color: var(--accent-counter);
-            background: rgba(0, 229, 184, 0.08);
-            border: 1px solid rgba(0, 229, 184, 0.25);
-            padding: 4px 10px;
-            border-radius: var(--radius-xs);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 100ms ease;
+            color: var(--text-muted);
+            background: transparent;
+        }
+
+        .overlap-cell:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .overlap-cell.golden {
+            background: var(--status-nominal-bg);
+            border-top: 2px solid var(--status-nominal);
+            color: var(--status-nominal);
+            font-weight: 600;
+        }
+
+        .overlap-cell.active-hour {
+            box-shadow: inset 0 0 0 1.5px var(--accent-primary);
+            background: var(--bg-surface-3);
+            color: var(--text-primary);
+        }
+
+        .overlap-legend-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .overlap-legend-items {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .legend-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot-emerald {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            background: var(--status-nominal);
+        }
+
+        .legend-dot-muted {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            background: var(--border-strong);
+        }
+
+        /* ------------------------------------------------------------------
+           Day & Night Map Viewport
+           ------------------------------------------------------------------ */
+        .projection-switch-dock {
+            display: inline-flex;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .proj-btn {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 100ms ease;
         }
 
-        .copy-pill-btn:hover {
-            background: rgba(0, 229, 184, 0.16);
+        .proj-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .proj-btn.active {
+            background: var(--bg-surface-1);
+            color: var(--text-primary);
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .mini-map-viewport {
+            width: 100%;
+            height: 220px;
+            background: var(--map-water);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mini-map-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .mini-map-land {
+            fill: var(--map-land);
+            stroke: var(--map-land-stroke);
+            stroke-width: 0.8;
+            transition: fill 120ms ease;
+        }
+
+        .mini-map-terminator {
+            fill: var(--map-terminator-shadow);
+            pointer-events: none;
+        }
+
+        .mini-subsolar-pip {
+            fill: #F59E0B;
+            stroke: #FFFFFF;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 4px #F59E0B);
+        }
+
+        .map-readout-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding-top: 4px;
+        }
+
+        /* ------------------------------------------------------------------
+           World Clock Directory
+           ------------------------------------------------------------------ */
+        .search-bench-card {
+            background-color: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .directory-count-badge {
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .search-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0 14px;
+            height: 40px;
+            transition: border-color 120ms ease;
+        }
+
+        .search-input-wrap:focus-within {
+            border-color: var(--border-focus);
+        }
+
+        .search-input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .search-input-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-bench-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+            max-height: 340px;
+            overflow-y: auto;
+        }
+
+        /* Clickable Directory City Card */
+        .directory-city-card {
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 120ms ease;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .directory-city-card:hover {
+            border-color: var(--border-strong);
+            background: var(--bg-surface-hover);
             transform: translateY(-1px);
+        }
+
+        .dir-row-top {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .dir-city {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dir-time {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .dir-row-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .dir-country {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dir-meta {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .dir-offset {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .dir-arrow {
+            font-size: 11px;
+            color: var(--accent-primary);
+            opacity: 0;
+            transform: translateX(-4px);
+            transition: all 120ms ease;
+        }
+
+        .directory-city-card:hover .dir-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ------------------------------------------------------------------
+           Clean Footer Ribbon
+           ------------------------------------------------------------------ */
+        .telemetry-ribbon-bottom {
+            height: 32px;
+            min-height: 32px;
+            background: var(--bg-surface-1);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        .telemetry-ribbon-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 120ms ease;
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 11px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: var(--radius-xs);
+        }
+
+        .footer-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-2);
         }
     </style>
 </head>
 <body class="workbench-home">
 
-<!-- ====================================================================
-         1. ENTERPRISE PLANETARY INTRO STAGE (Sprint M - Redesign)
-         Sovereign Planetary Command & Stratum-1 Telemetry Experience
+    <!-- ====================================================================
+         1. OPTIONAL PLANETARY INTRO STAGE (Dismissed by default for instant productivity)
          ==================================================================== -->
-    <div class="intro-stage" id="introStage" role="dialog" aria-modal="true" aria-label="Horologium Planetary Chronometry Initialization">
-        <!-- Top HUD Telemetry Bar -->
+    <div class="intro-stage dismissed" id="introStage" role="dialog" aria-modal="true" aria-label="Horologium Planetary Chronometry Initialization">
         <header class="intro-top-telemetry">
             <div class="intro-telemetry-brand">
                 <span class="intro-status-beacon" aria-hidden="true"></span>
-                <span class="intro-brand-code">HOROLOGIUM CALIBRE-01 // STRATUM-1 TELEMETRY</span>
+                <span class="intro-brand-code">HOROLOGIUM CALIBRE-01</span>
                 <span class="intro-divider">·</span>
                 <span class="intro-author-pill">ARCHITECT: SHAIK IMTHIYAS</span>
             </div>
             <div class="intro-telemetry-meta">
-                <span id="introStatusPill" class="intro-pill-ok">ENGAGING ATOMIC REFERENCE</span>
+                <span id="introStatusPill" class="intro-pill-ok">SYSTEM OPERATIONAL</span>
                 <span class="intro-divider">·</span>
                 <span class="intro-badge-live">LIVE UTC PROBE</span>
             </div>
             <div class="intro-top-actions">
-                <button type="button" class="btn-intro-audio" id="introSoundToggle" title="Toggle Mechanical Escapement Audio [M]" aria-label="Toggle Audio">
+                <button type="button" class="btn-intro-audio" id="introSoundToggle" title="Toggle Audio [M]" aria-label="Toggle Audio">
                     <span class="sound-icon">🔊</span>
                     <span class="sound-text">AUDIO ON</span>
                 </button>
-                <button type="button" class="btn-intro-skip" id="btnSkipIntro" title="Skip to Workbench [Space/Esc]" aria-label="Launch Workbench">
-                    <span>LAUNCH WORKBENCH</span>
-                    <kbd>SPACE / ESC</kbd>
-                    <span>➔</span>
+                <button type="button" class="btn-intro-skip" id="btnSkipIntro" title="Close [Space/Esc]" aria-label="Close Intro">
+                    <span>CLOSE</span>
+                    <kbd>ESC</kbd>
                 </button>
             </div>
         </header>
 
-        <!-- Main Planetary Command Deck (3-Column Grid) -->
         <div class="intro-planetary-deck">
-            
-            <!-- Left Column: Master UTC Atomic Chronometer & World Clocks Array -->
             <div class="intro-deck-col intro-deck-time">
                 <div class="intro-col-masthead">
-                    <span class="intro-sub-label">STRATUM-1 MASTER CHRONOMETER</span>
+                    <span class="intro-sub-label">MASTER CHRONOMETER</span>
                     <h2 class="intro-master-clock" id="introMasterUtc">--:--:--.-- UTC</h2>
                     <div class="intro-master-subtext">
                         <span class="badge-atomic-locked">● LOCKED</span>
-                        <span>GREENWICH MERIDIAN (0°00'00") · ±120ns JITTER</span>
+                        <span>GREENWICH MERIDIAN (0°00'00")</span>
                     </div>
                 </div>
 
-                <!-- Synchronized Global Time Hubs -->
                 <div class="intro-world-hubs-panel">
                     <div class="intro-panel-header">
-                        <span>PLANETARY FINANCIAL & AEROSPACE HUBS</span>
+                        <span>GLOBAL HUBS</span>
                         <span class="intro-tnum">7/7 SYNC</span>
                     </div>
                     <div class="intro-world-grid">
                         <div class="intro-hub-card">
-                            <div class="hub-head">
-                                <span class="hub-flag">🇬🇧</span>
-                                <span class="hub-id">LON</span>
-                                <span class="hub-offset">UTC+0</span>
-                            </div>
+                            <div class="hub-head"><span class="hub-flag">🇬🇧</span><span class="hub-id">LON</span></div>
                             <div class="hub-time" id="clockHub_LON">--:--:--</div>
-                            <div class="hub-name">London Prime</div>
                         </div>
                         <div class="intro-hub-card">
-                            <div class="hub-head">
-                                <span class="hub-flag">🇺🇸</span>
-                                <span class="hub-id">NYC</span>
-                                <span class="hub-offset">UTC-5</span>
-                            </div>
+                            <div class="hub-head"><span class="hub-flag">🇺🇸</span><span class="hub-id">NYC</span></div>
                             <div class="hub-time" id="clockHub_NYC">--:--:--</div>
-                            <div class="hub-name">New York EST</div>
                         </div>
                         <div class="intro-hub-card">
-                            <div class="hub-head">
-                                <span class="hub-flag">🇨🇭</span>
-                                <span class="hub-id">ZRH</span>
-                                <span class="hub-offset">UTC+1</span>
-                            </div>
+                            <div class="hub-head"><span class="hub-flag">🇨🇭</span><span class="hub-id">ZRH</span></div>
                             <div class="hub-time" id="clockHub_ZRH">--:--:--</div>
-                            <div class="hub-name">Zurich CET</div>
                         </div>
                         <div class="intro-hub-card">
-                            <div class="hub-head">
-                                <span class="hub-flag">🇦🇪</span>
-                                <span class="hub-id">DXB</span>
-                                <span class="hub-offset">UTC+4</span>
-                            </div>
+                            <div class="hub-head"><span class="hub-flag">🇦🇪</span><span class="hub-id">DXB</span></div>
                             <div class="hub-time" id="clockHub_DXB">--:--:--</div>
-                            <div class="hub-name">Dubai GST</div>
                         </div>
                         <div class="intro-hub-card">
-                            <div class="hub-head">
-                                <span class="hub-flag">🇮🇳</span>
-                                <span class="hub-id">DEL</span>
-                                <span class="hub-offset">UTC+5:30</span>
-                            </div>
+                            <div class="hub-head"><span class="hub-flag">🇮🇳</span><span class="hub-id">DEL</span></div>
                             <div class="hub-time" id="clockHub_DEL">--:--:--</div>
-                            <div class="hub-name">New Delhi IST</div>
                         </div>
                         <div class="intro-hub-card">
-                            <div class="hub-head">
-                                <span class="hub-flag">🇯🇵</span>
-                                <span class="hub-id">TYO</span>
-                                <span class="hub-offset">UTC+9</span>
-                            </div>
+                            <div class="hub-head"><span class="hub-flag">🇯🇵</span><span class="hub-id">TYO</span></div>
                             <div class="hub-time" id="clockHub_TYO">--:--:--</div>
-                            <div class="hub-name">Tokyo JST</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Center Column: 3D Planetary Vector Globe & Brand Masthead -->
             <div class="intro-deck-col intro-deck-globe">
-                <!-- Brand Title & Astrolabe Insignia -->
                 <div class="intro-brand-masthead">
                     <div class="intro-brand-insignia">
                         <svg class="astrolabe-logo-svg" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
-                            <circle cx="22" cy="22" r="20" fill="none" stroke="var(--border-interactive, #3b4252)" stroke-width="1.5" stroke-dasharray="2 3"/>
-                            <circle cx="22" cy="22" r="14" fill="none" stroke="var(--accent-primary, #ff4400)" stroke-width="1.2"/>
-                            <circle cx="22" cy="22" r="4" fill="var(--accent-primary, #ff4400)"/>
-                            <line x1="22" y1="2" x2="22" y2="42" stroke="var(--accent-primary, #ff4400)" stroke-width="1" stroke-dasharray="1 2"/>
-                            <line x1="2" y1="22" x2="42" y2="22" stroke="var(--accent-primary, #ff4400)" stroke-width="1" stroke-dasharray="1 2"/>
-                            <line x1="22" y1="22" x2="34" y2="10" stroke="#00e5b8" stroke-width="1.5"/>
+                            <circle cx="22" cy="22" r="20" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
+                            <circle cx="22" cy="22" r="14" fill="none" stroke="var(--accent-primary)" stroke-width="1.2"/>
+                            <circle cx="22" cy="22" r="4" fill="var(--accent-primary)"/>
                         </svg>
                     </div>
                     <div class="intro-brand-text-block">
-                        <h1 class="intro-brand-heading">H O R O L O G I U M</h1>
-                        <p class="intro-brand-strapline">PLANETARY CHRONOMETRY & MERIDIAN TELEMETRY SYSTEM</p>
+                        <h1 class="intro-brand-heading">HOROLOGIUM</h1>
+                        <p class="intro-brand-strapline">PLANETARY TIME & MERIDIAN SYSTEM</p>
                     </div>
                 </div>
 
-                <!-- 3D Orthographic Canvas Globe Container -->
                 <div class="intro-globe-wrapper">
                     <canvas id="introGlobeCanvas" class="intro-globe-canvas" width="360" height="360" aria-label="3D Rotating Planetary Map and Solar Terminator"></canvas>
-                    <div class="intro-globe-reticle-ring"></div>
                 </div>
 
-                <!-- Real-time Astronomical Zenith Coordinates Readout -->
                 <div class="intro-globe-coordinates">
-                    <div class="coord-item">
-                        <span class="coord-label">SOLAR DECLINATION:</span>
-                        <span id="introSolarDec" class="coord-val">CALCULATING...</span>
-                    </div>
+                    <span>DEC: <span id="introSolarDec" class="coord-val">--</span></span>
                     <span class="coord-divider">·</span>
-                    <div class="coord-item">
-                        <span class="coord-label">SUBSOLAR ZENITH:</span>
-                        <span id="introSubsolarLon" class="coord-val">CALCULATING...</span>
-                    </div>
+                    <span>ZENITH: <span id="introSubsolarLon" class="coord-val">--</span></span>
                 </div>
             </div>
 
-            <!-- Right Column: Enterprise SLO & System Verification Matrix -->
             <div class="intro-deck-col intro-deck-slo">
                 <div class="intro-col-masthead">
-                    <span class="intro-sub-label">ENTERPRISE DISTRIBUTED SYSTEMS SLO</span>
+                    <span class="intro-sub-label">SERVICE LEVEL OBJECTIVE</span>
                     <h3 class="intro-slo-headline">99.999% SLA</h3>
-                    <div class="intro-master-subtext">
-                        <span class="badge-slo-tier">TIER-1 CHRONOMETRY</span>
-                        <span>FIVE NINES CONTINUOUS DRIFT TARGET</span>
-                    </div>
                 </div>
-
-                <!-- SLO Metrics Bento Grid -->
                 <div class="intro-slo-bento">
                     <div class="slo-card">
-                        <div class="slo-metric-val" style="color: var(--semantic-success, #10b981);">99.999%</div>
-                        <div class="slo-metric-label">UPTIME COMMITMENT (SLA)</div>
-                        <div class="slo-metric-detail">High-availability multi-region LibSQL replication</div>
+                        <div class="slo-metric-val">99.999%</div>
+                        <div class="slo-metric-label">UPTIME</div>
                     </div>
                     <div class="slo-card">
-                        <div class="slo-metric-val" style="color: #00e5b8;">&lt; 0.12ms</div>
-                        <div class="slo-metric-label">MARZULLO JITTER TOLERANCE</div>
-                        <div class="slo-metric-detail">Stratum-1 Truechimer consensus lock (4/4 sources)</div>
-                    </div>
-                    <div class="slo-card">
-                        <div class="slo-metric-val">220 ZONES</div>
-                        <div class="slo-metric-label">GEODESIC COVERAGE</div>
-                        <div class="slo-metric-detail">IANA TZDB 2024b & RFC 9557 compliant timestamps</div>
-                    </div>
-                    <div class="slo-card">
-                        <div class="slo-metric-val" style="color: var(--accent-primary, #ff4400);">0 COOKIES</div>
-                        <div class="slo-metric-label">DATA SOVEREIGNTY</div>
-                        <div class="slo-metric-detail">Zero-knowledge client-side computation architecture</div>
+                        <div class="slo-metric-val">220</div>
+                        <div class="slo-metric-label">REGIONS</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Telemetry Timeline Progression Ribbon -->
         <footer class="intro-bottom-timeline">
-            <!-- Calibrated Progress Bar -->
             <div class="intro-progress-bar-track">
                 <div class="intro-progress-bar-fill" id="introProgressBar"></div>
-            </div>
-
-            <div class="intro-timeline-row">
-                <div class="intro-step-pill active completed" id="introStep1">
-                    <span class="intro-step-dot"></span>
-                    <span class="intro-step-text">[01/04] STRATUM-1 UTC REFERENCE SYNCED</span>
-                    <span class="intro-step-stat" id="step1Stat">LOCKED</span>
-                </div>
-                <div class="intro-step-pill" id="introStep2">
-                    <span class="intro-step-dot"></span>
-                    <span class="intro-step-text">[02/04] 220 SOVEREIGN GEODESIC BOUNDARIES</span>
-                    <span class="intro-step-stat" id="step2Stat">PENDING</span>
-                </div>
-                <div class="intro-step-pill" id="introStep3">
-                    <span class="intro-step-dot"></span>
-                    <span class="intro-step-text">[03/04] ASTRONOMICAL SOLAR TERMINATOR</span>
-                    <span class="intro-step-stat" id="step3Stat">PENDING</span>
-                </div>
-                <div class="intro-step-pill" id="introStep4">
-                    <span class="intro-step-dot"></span>
-                    <span class="intro-step-text">[04/04] MARZULLO 99.999% SLO NOMINAL</span>
-                    <span class="intro-step-stat" id="step4Stat">ARMING</span>
-                </div>
-                <div class="intro-pct-tag" id="introProgressPct">0%</div>
             </div>
         </footer>
     </div>
 
 
     <!-- ====================================================================
-         2. TOP TELEMETRY BAR (48px Height Locked, 1px Structural Grid)
+         2. TOP NAVBAR (Clean 3-Zone Architecture)
          ==================================================================== -->
     <header class="telemetry-bar">
-        <!-- Zone 1: Identity & Live Stratum-1 Telemetry Pulse -->
+        <!-- Zone 1: Brand & UTC Pulse -->
         <div class="telemetry-left">
-            <a href="/" class="brand-monogram" title="Horologium Planetary Time Machine">
+            <a href="/" class="brand-monogram" title="Horologium">
                 <span class="brand-dot"></span>
-                <span class="brand-name">HOROLOGIUM</span>
-                <span class="brand-calibre">CALIBRE-01</span>
+                <span class="brand-name">Horologium</span>
             </a>
-            <div class="header-live-pulse-pill" title="Stratum-1 Truechimer Atomic Synchronization">
+            <span class="header-divider" aria-hidden="true"></span>
+            <div class="header-live-pulse-pill" title="Synchronized with Stratum-1 UTC Reference">
                 <span class="live-pulse-dot-nominal" aria-hidden="true"></span>
                 <span id="homeUtcClock" class="font-mono tabular-nums">--:--:-- UTC</span>
-                <span class="pill-divider">·</span>
-                <span id="homeDriftHeader" class="pill-metric">±0.0ms</span>
             </div>
         </div>
 
-        <!-- Zone 2: Unified Segmented View Tabs (Hick's Law Consolidated) -->
-        <nav class="telemetry-center" aria-label="Operational Views">
+        <!-- Zone 2: Segmented View Tabs (Hick's Law Consolidated) -->
+        <nav class="telemetry-center" aria-label="Views">
             <div class="segmented-view-track" role="tablist">
-                <a href="/" class="segmented-tab active" role="tab" aria-selected="true">
-                    <span>Overview</span>
-                </a>
-                <a href="/flight-deck/" class="segmented-tab" role="tab">
-                    <span>Flight Deck</span>
-                </a>
-                <a href="/geodesic-registry/" class="segmented-tab" role="tab">
-                    <span>Directory</span>
-                </a>
-                <a href="/protocol-liaison/" class="segmented-tab" role="tab">
-                    <span>Registry</span>
-                </a>
-                <a href="/api-explorer/" class="segmented-tab" role="tab">
-                    <span>API Docs</span>
-                </a>
+                <a href="/" class="segmented-tab active" role="tab" aria-selected="true">Overview</a>
+                <a href="/flight-deck/" class="segmented-tab" role="tab">World Map</a>
+                <a href="/geodesic-registry/" class="segmented-tab" role="tab">Directory</a>
             </div>
         </nav>
 
-        <!-- Zone 3: Global Command & Preferences Utilities -->
+        <!-- Zone 3: Global Search & Utilities -->
         <div class="telemetry-right">
-            <button type="button" class="header-cmd-pill" id="homeSearchTrigger" title="Quick Search 220+ Nations & Cities [⌘K / /]" aria-label="Search Timezones">
-                <span class="search-glyph">⌕</span>
-                <span class="search-label">Search</span>
+            <button type="button" class="header-cmd-pill" id="homeSearchTrigger" title="Search cities & countries [⌘K / /]" aria-label="Search Timezones">
+                <span>⌕</span>
+                <span>Search cities...</span>
                 <kbd class="header-kbd">⌘K</kbd>
             </button>
             <div class="utility-toggle-group">
                 <button type="button" class="utility-btn" id="homeFormatToggle" title="Toggle 12H / 24H Military Format" aria-label="Toggle 24 Hour Format">24H</button>
-                <button type="button" class="utility-btn" id="homeThemeToggle" title="Toggle Obsidian Dark / Silvered Light Theme" aria-label="Toggle Theme">
+                <button type="button" class="utility-btn" id="homeThemeToggle" title="Toggle Dark / Light Theme" aria-label="Toggle Theme">
                     <span class="theme-icon">◐</span>
-                    <span class="theme-text">OBSIDIAN</span>
+                    <span class="theme-text">Dark</span>
                 </button>
             </div>
-            <button type="button" class="utility-ghost-btn" id="homeReplayIntro" title="Replay 5-second cinematic calibration sequence" aria-label="Replay Intro">
-                <span>↺</span>
-            </button>
         </div>
     </header>
 
 
     <!-- ====================================================================
-         3. MAIN SCROLLABLE WORKBENCH STAGE
+         3. MAIN WORKBENCH
          ==================================================================== -->
     <main class="home-main-scroll">
 
@@ -828,140 +1141,64 @@
             <!-- Left 8-Column Primary Stage -->
             <div class="masthead-primary-cell">
                 <div>
-                    <div class="masthead-tag">
-                        <span class="badge-semantic badge-semantic-vermilion">● CALIBRE-01</span>
-                        <span>HUMAN-CRAFTED TEMPORAL ARCHITECTURE</span>
-                    </div>
-
-                    <!-- Horological SVG Tick Ruler -->
-                    <div class="procedural-ruler">
-                        <svg width="100%" height="16" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <pattern id="tickPattern" width="50" height="16" patternUnits="userSpaceOnUse">
-                                    <line x1="0" y1="8" x2="0" y2="16" stroke="var(--border-interactive)" stroke-width="1" />
-                                    <line x1="10" y1="12" x2="10" y2="16" stroke="var(--border-hairline)" stroke-width="1" />
-                                    <line x1="20" y1="12" x2="20" y2="16" stroke="var(--border-hairline)" stroke-width="1" />
-                                    <line x1="30" y1="12" x2="30" y2="16" stroke="var(--border-hairline)" stroke-width="1" />
-                                    <line x1="40" y1="12" x2="40" y2="16" stroke="var(--border-hairline)" stroke-width="1" />
-                                    <text x="3" y="7" font-family="var(--font-mono)" font-size="8" fill="var(--fg-2)">|</text>
-                                </pattern>
-                            </defs>
-                            <rect width="100%" height="16" fill="url(#tickPattern)" />
-                        </svg>
-                    </div>
-
                     <h1 class="masthead-title">The world's time, mapped to the second.</h1>
                     <p class="masthead-subtitle">
-                        A mechanical-grade astronomical clock, live solar terminator atlas, and global meeting overlap engine. Handcrafted for distributed engineering teams, flight dispatchers, and global builders with sub-millisecond local precision, zero AI buzzwords, and 220 sovereign territories.
+                        Compare global time zones, find overlapping business hours, and track live daylight across 220 regions.
                     </p>
                 </div>
 
-                <div>
-                    <div class="masthead-actions">
-                        <a href="/flight-deck/" class="btn-machined" id="btnLaunchMap">
-                            <span class="label">
-                                <span>⊕</span> LAUNCH INTERACTIVE FLIGHT DECK (MAP)
-                            </span>
-                        </a>
-
-                        <a href="#overlapPlannerSection" class="btn-ghost">
-                            <span>⚡</span> TEST OVERLAP PLANNER
-                        </a>
-
-                        <a href="/geodesic-registry/" class="btn-ghost">
-                            <span>≡</span> 220 NATIONS DIRECTORY
-                        </a>
-                    </div>
-
-                    <div class="masthead-telemetry-pills">
-                        <div class="telemetry-spec-pill is-active">
-                            <span class="pill-dot" aria-hidden="true"></span>
-                            <span>[LOCK] 0.00ms CLOCK SKEW</span>
-                        </div>
-                        <div class="telemetry-spec-pill">
-                            <span class="pill-dot" aria-hidden="true"></span>
-                            <span>IANA TIMEZONE REGISTRY</span>
-                        </div>
-                        <div class="telemetry-spec-pill">
-                            <span class="pill-dot" aria-hidden="true"></span>
-                            <span>SOLAR TERMINATOR ALIGNED</span>
-                        </div>
-                        <div class="telemetry-spec-pill">
-                            <span class="pill-dot" aria-hidden="true"></span>
-                            <span>RFC-9557 COMPLIANT</span>
-                        </div>
-                    </div>
+                <div class="masthead-actions">
+                    <a href="/flight-deck/" class="btn-primary" id="btnLaunchMap">
+                        Open World Map
+                    </a>
+                    <a href="#overlapPlannerSection" class="btn-secondary">
+                        Compare Time Zones
+                    </a>
                 </div>
             </div>
 
-            <!-- Right 4-Column Vernier Dial & Live Telemetry -->
-            <div class="masthead-secondary-cell">
-                <div class="vernier-stat-block">
-                    <div class="vernier-header-row">
-                        <span>ATOMIC REFERENCE SENSOR</span>
-                        <span>01 // SYNC</span>
-                    </div>
-
-                    <div class="vernier-clock-large" id="homeDeviceClock">--:--:--</div>
-
-                    <div style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); text-transform: uppercase;">
-                        24-HOUR SOLAR & MERIDIAN CYCLE // DIURNAL SENSOR
-                    </div>
-
-                    <div class="vernier-meter" id="homeVernierMeter">
-                        <!-- Populated procedurally -->
-                    </div>
+            <!-- Right 4-Column Local Time Card -->
+            <div class="masthead-secondary-cell local-time-card">
+                <div class="local-time-header">
+                    <span class="local-time-badge">Your Local Time</span>
+                    <span class="sync-indicator">
+                        <span class="sync-dot"></span>
+                        <span>Synced with UTC</span>
+                    </span>
                 </div>
 
-                <div class="telemetry-meta-list">
-                    <div class="telemetry-meta-row">
-                        <span>LOCAL EPOCH MS:</span>
-                        <span class="tnum" id="homeEpochVal" style="color: var(--accent-counter);">0</span>
+                <div class="local-clock-large font-mono tabular-nums" id="homeDeviceClock">--:--:--</div>
+
+                <div class="local-time-details">
+                    <div class="local-tz-row">
+                        <span id="homeLocalTz">Local Timezone</span>
+                        <span class="dot-separator">·</span>
+                        <span id="homeLocalOffset" class="font-mono">UTC+00:00</span>
                     </div>
-                    <div class="telemetry-meta-row">
-                        <span>SYSTEM LATENCY:</span>
-                        <span class="tnum" id="homeLatencyVal" style="color: var(--semantic-success);">12ms (SNTP CONNECTING)</span>
-                    </div>
-                    <div class="telemetry-meta-row">
-                        <span>CLIENT DRIFT:</span>
-                        <span class="tnum" id="homeDriftVal" style="color: var(--fg-0);">±0.00ms</span>
-                    </div>
-                    <div class="telemetry-meta-row">
-                        <span>SOLAR SUB-MERIDIAN:</span>
-                        <span class="tnum" id="homeSolarSubMeridian" style="color: var(--accent-primary);">--° LON</span>
-                    </div>
-                    <div class="telemetry-meta-row">
-                        <span>OPERATOR REGIME:</span>
-                        <span class="badge-semantic badge-semantic-counter">STANDALONE INTL</span>
-                    </div>
+                    <div class="local-date-row" id="homeLocalDate">Loading current date...</div>
                 </div>
             </div>
         </section>
 
 
         <!-- ====================================================================
-             4. WORKSTAGE SPLIT: OVERLAP PLANNER + MINI DAYLIGHT VECTOR ATLAS
-             Deeply workable, interactive tools directly on the page
+             4. WORKSTAGE SPLIT: OVERLAP PLANNER + MINI WORLD MAP
              ==================================================================== -->
         <section class="workstage-split" id="overlapPlannerSection">
             
-            <!-- Left 7-Col: Interactive 24-Hour Overlap & Delta Planner -->
+            <!-- Left 7-Col: Meeting Overlap Planner -->
             <div class="planner-card">
-                <div class="planner-header">
+                <div class="card-header-bar">
                     <div>
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                            <span class="badge-semantic badge-semantic-vermilion">● DELTA ENGINE</span>
-                            <span style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-2);">CROSS-BORDER WORKING OVERLAP</span>
-                        </div>
-                        <h2 style="font-size: 20px; font-weight: 500; color: var(--fg-0);">Global Meeting & Overlap Planner</h2>
-                        <p style="font-size: 13px; color: var(--fg-1); margin-top: 4px;">
-                            Drag the scrubber across 24 hours to inspect corresponding local times and identify the shared business window between any two global hubs.
-                        </p>
+                        <h2 class="card-title">Meeting Overlap Planner</h2>
+                        <p class="card-subtitle">Drag or select an hour to check working overlap between two locations.</p>
                     </div>
 
-                    <button type="button" class="copy-pill-btn" id="btnCopyInviteTimestamp" title="Copy meeting timestamp in RFC-9557 / ISO-8601 format">
-                        📋 COPY TIMESTAMP
-                    </button>
+                    <div class="card-header-actions">
+                        <button type="button" class="btn-secondary-sm" id="btnCopyInviteTimestamp" title="Copy meeting timestamp in RFC-9557 format">
+                            📋 Copy Time
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Station Selectors & Clocks Grid -->
@@ -969,7 +1206,7 @@
                     <!-- Station A (Base Station) -->
                     <div class="station-box">
                         <div class="station-title-row">
-                            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); text-transform: uppercase;">STATION A (BASE)</span>
+                            <span class="station-label">Station A (Base)</span>
                             <select id="stationASelect" class="station-select">
                                 <option value="Europe/London" selected>🇬🇧 London (UTC+0)</option>
                                 <option value="America/New_York">🇺🇸 New York (UTC-5)</option>
@@ -982,16 +1219,16 @@
                                 <option value="Australia/Sydney">🇦🇺 Sydney (UTC+10)</option>
                             </select>
                         </div>
-                        <div class="station-time-display" id="stationATime">--:--:--</div>
-                        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-1);" id="stationADate">
-                            Today · Business Hours: 09:00 - 18:00
+                        <div class="station-time-display font-mono" id="stationATime">--:--:--</div>
+                        <div class="station-meta-info" id="stationADate">
+                            Business Hours: 09:00 – 18:00
                         </div>
                     </div>
 
                     <!-- Station B (Remote Station) -->
                     <div class="station-box">
                         <div class="station-title-row">
-                            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); text-transform: uppercase;">STATION B (REMOTE)</span>
+                            <span class="station-label">Station B (Remote)</span>
                             <select id="stationBSelect" class="station-select">
                                 <option value="Asia/Tokyo" selected>🇯🇵 Tokyo (UTC+9)</option>
                                 <option value="Europe/London">🇬🇧 London (UTC+0)</option>
@@ -1004,66 +1241,61 @@
                                 <option value="Australia/Sydney">🇦🇺 Sydney (UTC+10)</option>
                             </select>
                         </div>
-                        <div class="station-time-display" id="stationBTime" style="color: var(--accent-secondary);">--:--:--</div>
-                        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-1);" id="stationBDate">
+                        <div class="station-time-display font-mono" id="stationBTime" style="color: var(--accent-secondary);">--:--:--</div>
+                        <div class="station-meta-info" id="stationBDate">
                             Delta Calculation...
                         </div>
                     </div>
                 </div>
 
-                <!-- 24-Hour Scrubber Ribbon -->
-                <div class="overlap-scrubber-container">
-                    <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); text-transform: uppercase;">
-                        <span>24-HOUR MERIDIAN SCRUBBER</span>
-                        <span id="scrubCurrentHourLabel" style="color: var(--fg-0);">SCRUBBED HOUR: 12:00</span>
+                <!-- 24-Hour Interactive Timeline Bar (Unified single control) -->
+                <div class="overlap-timeline-wrap">
+                    <div class="overlap-timeline-header">
+                        <span>24-Hour Timeline</span>
+                        <span id="scrubCurrentHourLabel" class="font-mono" style="color: var(--text-primary); font-weight: 500;">Scrubbed Hour: 12:00</span>
                     </div>
 
                     <!-- Ribbon Cells 00 to 23 -->
                     <div class="overlap-ribbon" id="overlapRibbon">
-                        <!-- Populated dynamically with daylight / business / sleep hours -->
+                        <!-- Populated dynamically -->
                     </div>
 
-                    <input type="range" id="overlapSlider" class="overlap-slider-bar" min="0" max="23" value="12" step="1" />
-                </div>
+                    <!-- Summary & Legend -->
+                    <div class="overlap-legend-row">
+                        <div>
+                            <span style="color: var(--text-secondary);">Difference:</span>
+                            <strong id="deltaReadout" style="color: var(--text-primary); margin-left: 4px;">--</strong>
+                        </div>
 
-                <!-- Overlap Summary & Delta Readout -->
-                <div class="overlap-summary-row">
-                    <div>
-                        <span style="color: var(--fg-2);">DELTA:</span>
-                        <strong id="deltaReadout" style="color: var(--fg-0); margin-left: 4px;">--</strong>
-                    </div>
-
-                    <div style="display: flex; gap: 12px; align-items: center;">
-                        <span style="display: inline-flex; align-items: center; gap: 4px;">
-                            <span style="width: 8px; height: 8px; background: rgba(0, 229, 184, 0.4); border-radius: 2px;"></span>
-                            <span style="color: var(--accent-counter);">SHARED OVERLAP (GOLDEN WINDOW)</span>
-                        </span>
-                        <span style="display: inline-flex; align-items: center; gap: 4px;">
-                            <span style="width: 8px; height: 8px; background: rgba(237, 239, 242, 0.1); border-radius: 2px;"></span>
-                            <span style="color: var(--fg-2);">ONE-SIDED</span>
-                        </span>
+                        <div class="overlap-legend-items">
+                            <span class="legend-chip">
+                                <span class="legend-dot-emerald"></span>
+                                <span>Shared Overlap (09:00–17:00)</span>
+                            </span>
+                            <span class="legend-chip">
+                                <span class="legend-dot-muted"></span>
+                                <span>Off-hours</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right 5-Col: Live Mini Vector World Atlas & Solar Terminator -->
+            <!-- Right 5-Col: Day & Night Map -->
             <div class="mini-map-card">
-                <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                <div class="card-header-bar">
                     <div>
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                            <span class="badge-semantic badge-semantic-counter">● CARTOGRAPHY</span>
-                            <span style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-2);">ASTRONOMICAL TERMINATOR</span>
-                        </div>
-                        <h2 style="font-size: 18px; font-weight: 500; color: var(--fg-0);">Live Sunlight & Shadow Atlas</h2>
+                        <h2 class="card-title">Day & Night Map</h2>
+                        <p class="card-subtitle">Real-time sunlight and terminator shadow across the globe.</p>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="card-header-actions">
                         <div class="projection-switch-dock">
-                            <button type="button" class="proj-btn active" id="btnProj2D" title="2D Equirectangular Cartography">2D ATLAS</button>
-                            <button type="button" class="proj-btn" id="btnProj3D" title="3D WebGL Orthographic Sphere with Twilight Penumbra">3D GLOBE</button>
+                            <button type="button" class="proj-btn active" id="btnProj2D" title="2D Map">2D Map</button>
+                            <button type="button" class="proj-btn" id="btnProj3D" title="3D Globe">3D Globe</button>
                         </div>
-                        <a href="/flight-deck/" class="nav-action-btn" style="border-color: var(--accent-primary); color: var(--accent-primary);">
-                            OPEN DECK ➔
+                        <a href="/flight-deck/" class="btn-secondary-sm" title="Open World Map View">
+                            Open Map →
                         </a>
                     </div>
                 </div>
@@ -1071,34 +1303,19 @@
                 <!-- SVG Equirectangular Canvas Preview / 3D WebGL Canvas -->
                 <div class="mini-map-viewport">
                     <svg class="mini-map-svg" id="miniMapSvg2D" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <pattern id="miniGrid" width="41.66" height="40" patternUnits="userSpaceOnUse">
-                                <line x1="0" y1="0" x2="0" y2="40" stroke="rgba(237, 239, 242, 0.04)" stroke-width="0.5" />
-                                <line x1="0" y1="0" x2="41.66" y2="0" stroke="rgba(237, 239, 242, 0.04)" stroke-width="0.5" />
-                            </pattern>
-                        </defs>
-                        <rect width="1000" height="480" fill="var(--bg-0)" />
-                        <rect width="1000" height="480" fill="url(#miniGrid)" />
+                        <rect width="1000" height="480" fill="var(--map-water)" />
 
                         <!-- High-Precision Geodesic Vector Continents -->
                         <g class="mini-continents-group" id="miniContinentsGroup">
-                            <!-- North America -->
                             <path class="mini-map-land" d="M33 66 L111 53 L222 40 L333 53 L347 106 L319 120 L291 146 L277 173 L250 186 L208 186 L166 154 L152 112 L111 80 Z" title="North America" />
-                            <!-- Greenland -->
                             <path class="mini-map-land" d="M380 40 L430 45 L415 90 L370 75 Z" title="Greenland" />
-                            <!-- South America -->
                             <path class="mini-map-land" d="M277 213 L333 208 L402 253 L402 280 L388 298 L347 333 L319 386 L291 373 L300 333 L277 253 Z" title="South America" />
-                            <!-- Europe & British Isles -->
                             <path class="mini-map-land" d="M472 144 L500 128 L513 122 L541 133 L569 144 L583 120 L611 93 L583 66 L541 58 L513 74 L486 85 L472 120 Z" title="Europe" />
                             <path class="mini-map-land" d="M480 100 L495 95 L490 115 L475 110 Z" title="United Kingdom" />
-                            <!-- Africa -->
                             <path class="mini-map-land" d="M452 200 L486 144 L527 141 L588 157 L619 208 L641 213 L611 266 L597 306 L555 333 L541 320 L527 253 L500 226 L458 213 Z" title="Africa" />
-                            <!-- Asia / Eurasia -->
                             <path class="mini-map-land" d="M583 133 L625 133 L652 173 L694 173 L708 213 L722 200 L750 181 L777 200 L791 226 L819 186 L838 160 L861 133 L888 120 L902 80 L972 66 L777 40 L666 53 L625 80 Z" title="Asia" />
                             <path class="mini-map-land" d="M880 140 L895 160 L875 190 L865 170 Z" title="Japan" />
-                            <!-- Australia & Oceania -->
                             <path class="mini-map-land" d="M819 298 L847 280 L888 272 L916 298 L925 320 L911 341 L875 333 L819 333 Z" title="Australia" />
-                            <!-- Antarctica -->
                             <path class="mini-map-land" d="M100 450 L900 450 L850 435 L700 440 L500 430 L300 440 L150 435 Z" title="Antarctica" />
                         </g>
 
@@ -1113,15 +1330,15 @@
                     <canvas id="miniGlobeCanvas3D" style="display: none; width: 100%; height: 100%; position: absolute; inset: 0;"></canvas>
                 </div>
 
-                <!-- Live Solar Readout Bar -->
-                <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; border-top: 1px solid var(--border-hairline); padding-top: 12px;">
+                <!-- Sun Position Readout -->
+                <div class="map-readout-row font-mono">
                     <div>
-                        <span style="color: var(--fg-2);">SUN ZENITH:</span>
-                        <span id="miniSunDec" style="color: var(--accent-counter); margin-left: 4px;">--.-° DEC</span>
+                        <span style="color: var(--text-secondary);">Sun Zenith:</span>
+                        <span id="miniSunDec" style="color: var(--text-primary); margin-left: 4px;">--.-°</span>
                     </div>
                     <div>
-                        <span style="color: var(--fg-2);">SUBSOLAR MERIDIAN:</span>
-                        <span id="miniSubsolarLon" style="color: var(--accent-primary); margin-left: 4px;">--.-° LON</span>
+                        <span style="color: var(--text-secondary);">Subsolar Meridian:</span>
+                        <span id="miniSubsolarLon" style="color: var(--accent-primary); margin-left: 4px;">--.-°</span>
                     </div>
                 </div>
             </div>
@@ -1129,28 +1346,24 @@
 
 
         <!-- ====================================================================
-             5. INSTANT CITY SEARCH & PINNING BENCH
-             Search any city, capital or timezone with zero delay
+             5. WORLD CLOCK DIRECTORY
              ==================================================================== -->
         <section class="search-bench-card">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div class="card-header-bar">
                 <div>
-                    <div style="display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); letter-spacing: 0.08em; text-transform: uppercase;">
-                        <span>INSTANT LOOKUP // 220 SOVEREIGN NATIONS & 470 CITIES</span>
-                    </div>
-                    <h2 style="font-size: 18px; font-weight: 500; color: var(--fg-0); margin-top: 2px;">Search Global Timezones & Pin Stations</h2>
+                    <h2 class="card-title">World Clock Directory</h2>
+                    <p class="card-subtitle">Search 220 sovereign nations and 470 global cities.</p>
                 </div>
 
-                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">
-                    <kbd>⌘K</kbd> / <kbd>/</kbd> TO FOCUS
+                <div class="card-header-actions">
+                    <span id="benchMatchCount" class="directory-count-badge font-mono">220 READY</span>
                 </div>
             </div>
 
             <!-- Search Field -->
-            <div class="search-bench-input-wrap">
-                <span style="font-family: var(--font-mono); color: var(--fg-2);">🔍</span>
-                <input type="text" id="benchSearchInput" class="search-bench-input" placeholder="Type city or nation (e.g. Tokyo, Paris, Iceland, Nairobi, Singapore)..." autocomplete="off" />
-                <span id="benchMatchCount" style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">220 READY</span>
+            <div class="search-input-wrap">
+                <span style="font-size: 14px; color: var(--text-muted);">🔍</span>
+                <input type="text" id="benchSearchInput" class="search-input-field" placeholder="Search cities or countries (e.g. Tokyo, London, Singapore)..." autocomplete="off" />
             </div>
 
             <!-- Results Grid -->
@@ -1163,27 +1376,27 @@
 
 
     <!-- ====================================================================
-         6. 24px FIXED BOTTOM TELEMETRY RIBBON
+         6. CLEAN FOOTER RIBBON
          ==================================================================== -->
     <footer class="telemetry-ribbon-bottom">
         <div class="telemetry-ribbon-item">
-            <span class="badge-semantic badge-semantic-success">● [SYNC]</span>
-            <span>SYSTEM OPERATIONAL</span>
-            <span>·</span>
-            <span>LATENCY: <span class="tnum">12ms</span></span>
+            <span class="live-pulse-dot-nominal" aria-hidden="true" style="width: 5px; height: 5px;"></span>
+            <span>Operational · Synced with UTC</span>
         </div>
         <div class="telemetry-ribbon-item">
-            <span>UTC MASTER:</span>
-            <span id="homeBottomUtc" class="tnum" style="color: var(--fg-0); font-weight: 500;">--:--:-- UTC</span>
+            <span>Horologium</span>
             <span>·</span>
-            <button type="button" id="btnReplayIntroBottom" style="background: transparent; border: none; color: var(--fg-2); cursor: pointer; font-family: var(--font-mono); font-size: 11px;">[REPLAY INTRO]</button>
+            <span>Handcrafted by Shaik Imthiyas</span>
+            <span>·</span>
+            <a href="/api-explorer/" class="footer-link">API</a>
+            <span>·</span>
+            <a href="/about/" class="footer-link">About</a>
+            <span>·</span>
+            <a href="/privacy/" class="footer-link">Privacy</a>
         </div>
         <div class="telemetry-ribbon-item">
-            <span>SHORTCUTS:</span>
-            <kbd>M</kbd> <span>MAP</span>
-            <kbd>D</kbd> <span>DIRECTORY</span>
-            <kbd>T</kbd> <span>THEME</span>
-            <kbd>SPACE</kbd> <span>SKIP INTRO</span>
+            <button type="button" id="btnReplayIntroBottom" class="footer-btn">View Intro</button>
+            <span id="homeBottomUtc" class="font-mono tabular-nums" style="display: none;">--:--:-- UTC</span>
         </div>
     </footer>
 
@@ -1203,45 +1416,24 @@
         import { ClockFSM, ClockEvent } from '/src/utils/clockFSM.js';
         import { ErrorBoundary } from '/src/utils/errorBoundary.js';
 
-        // Deterministic Chronometer State Engine & Global Safe Mode Boundary (FE-08, FE-09)
+        // Deterministic Chronometer State Engine
         const clockFsm = new ClockFSM();
         const errorBoundary = new ErrorBoundary({ fsm: clockFsm });
         window.__HOROLOGIUM_FSM__ = clockFsm;
         window.__HOROLOGIUM_ERROR_BOUNDARY__ = errorBoundary;
 
-        clockFsm.subscribe((from, to, reason) => {
-          console.info(`[ClockFSM] ${from} -> ${to} (${reason})`);
-        });
         clockFsm.dispatch(ClockEvent.BOOT);
 
         window.addEventListener('offline', () => clockFsm.dispatch(ClockEvent.CONNECTION_LOST));
         window.addEventListener('online', () => clockFsm.dispatch(ClockEvent.CONNECTION_RESTORED));
 
-        // Listen for WebSocket SNTP metrics
-        window.addEventListener('sntp:metrics', (e) => {
-            const m = e.detail;
-            const latEl = document.getElementById('homeLatencyVal');
-            if (latEl) latEl.textContent = `${m.roundTripDelayMs}ms (${m.oneWayDelayMs}ms ONE-WAY)`;
-            const driftEl = document.getElementById('homeDriftVal');
-            if (driftEl) {
-                const sign = m.clockOffsetMs >= 0 ? '+' : '';
-                driftEl.textContent = `${sign}${m.clockOffsetMs}ms (STRATUM-${m.stratum})`;
-            }
-        });
-
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').then((reg) => {
-                console.info('[Horologium PWA] Service Worker registered in scope:', reg.scope);
-            }).catch((err) => {
-                console.warn('[Horologium PWA] Service worker registration failed:', err);
-            });
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
         }
 
-        // Initialize IndexedDB Cache with 220 sovereign countries
-        offlineStorage.saveCountries(COUNTRIES_DATA).then(() => {
-            console.info('[Horologium IndexedDB] Seeded 220 sovereign territories for offline flight operations.');
-        }).catch(() => {});
+        // Initialize IndexedDB Cache
+        offlineStorage.saveCountries(COUNTRIES_DATA).catch(() => {});
 
         // 3D WebGL Globe Projection State
         let globe3dInstance = null;
@@ -1258,7 +1450,6 @@
                 miniGlobeCanvas3D.style.display = 'none';
                 if (globe3dInstance) globe3dInstance.stop();
                 haptics.playMechanicalClick();
-                a11y.announce('Switched to 2D Equirectangular Cartography view.');
             });
 
             btnProj3D.addEventListener('click', () => {
@@ -1277,56 +1468,26 @@
                     globe3dInstance.resize();
                     globe3dInstance.start();
                 }
-                a11y.announce('Switched to 3D WebGL Orthographic Globe with astronomical twilight penumbra.');
             });
         }
 
-        // --------------------------------------------------------------------
-        // A. ENTERPRISE PLANETARY INTRO STAGE (Sprint M - Redesign)
-        // --------------------------------------------------------------------
+        // Optional Planetary Intro (Dismissed by default)
         const planetaryIntro = initPlanetaryIntro({
             durationMs: 3800,
-            onComplete: () => {
-                console.info('[Horologium] Planetary intro sequence nominal. Calibre-01 workbench engaged.');
-            }
+            autoStart: false
         });
         window.__HOROLOGIUM_INTRO__ = planetaryIntro;
 
-        const homeReplayIntro = document.getElementById('homeReplayIntro');
         const btnReplayIntroBottom = document.getElementById('btnReplayIntroBottom');
-
-        if (homeReplayIntro) {
-            homeReplayIntro.addEventListener('click', () => planetaryIntro.replay());
-        }
         if (btnReplayIntroBottom) {
             btnReplayIntroBottom.addEventListener('click', () => planetaryIntro.replay());
         }
 
         // --------------------------------------------------------------------
-        // B. LIVE TELEMETRY, 12H/24H & THEME MANAGEMENT
+        // LIVE TIME & DETECTED REGION
         // --------------------------------------------------------------------
         let is24h = localStorage.getItem('horologium_time_format') !== '12h';
-
-        // Vernier Meter Generator (24 ticks)
-        const vernierContainer = document.getElementById('homeVernierMeter');
-        if (vernierContainer) {
-            vernierContainer.innerHTML = '';
-            for (let h = 0; h < 24; h++) {
-                const tick = document.createElement('div');
-                tick.className = 'vernier-tick';
-                if ((h >= 0 && h < 6) || (h >= 20 && h < 24)) {
-                    tick.classList.add('tick-night');
-                    tick.title = `${String(h).padStart(2, '0')}:00 - Nocturnal Solar Arc`;
-                } else if ((h >= 6 && h < 8) || (h >= 18 && h < 20)) {
-                    tick.classList.add('tick-twilight');
-                    tick.title = `${String(h).padStart(2, '0')}:00 - Solar Twilight Horizon`;
-                } else {
-                    tick.classList.add('tick-daylight');
-                    tick.title = `${String(h).padStart(2, '0')}:00 - Peak Diurnal Overlap`;
-                }
-                vernierContainer.appendChild(tick);
-            }
-        }
+        let currentScrubHour = 12;
 
         function updateLiveClocks() {
             const now = sntpClient.getAtomicTime();
@@ -1341,9 +1502,7 @@
             const homeBottomUtc = document.getElementById('homeBottomUtc');
             if (homeBottomUtc) homeBottomUtc.textContent = utcString;
 
-            const introUtc = document.getElementById('introUtcRealtime');
-            if (introUtc) introUtc.textContent = utcString;
-
+            // Local Clock
             let devHours = now.getHours();
             let ampm = '';
             if (!is24h) {
@@ -1356,32 +1515,49 @@
             const devClock = document.getElementById('homeDeviceClock');
             if (devClock) devClock.textContent = `${devHoursStr}:${devMins}:${devSecs}${ampm}`;
 
-            const epochEl = document.getElementById('homeEpochVal');
-            if (epochEl) epochEl.textContent = Date.now();
+            // Detected Timezone & Offset
+            const localTzEl = document.getElementById('homeLocalTz');
+            const localOffsetEl = document.getElementById('homeLocalOffset');
+            const localDateEl = document.getElementById('homeLocalDate');
+
+            if (localTzEl) {
+                try {
+                    localTzEl.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local Time';
+                } catch (_) {
+                    localTzEl.textContent = 'Local Time';
+                }
+            }
+
+            if (localOffsetEl) {
+                const offsetMin = -now.getTimezoneOffset();
+                const sign = offsetMin >= 0 ? '+' : '-';
+                const absH = String(Math.floor(Math.abs(offsetMin) / 60)).padStart(2, '0');
+                const absM = String(Math.abs(offsetMin) % 60).padStart(2, '0');
+                localOffsetEl.textContent = `UTC${sign}${absH}:${absM}`;
+            }
+
+            if (localDateEl) {
+                localDateEl.textContent = now.toLocaleDateString(undefined, {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
 
             // Astronomical Solar Declination Calculation
             const dec = calculateSolarDeclination(now);
             const sign = dec >= 0 ? '+' : '';
-            const decFormatted = `DEC ${sign}${dec.toFixed(2)}°`;
-
-            const decEl = document.getElementById('homeSolarDec');
-            if (decEl) decEl.textContent = decFormatted;
 
             const miniDecEl = document.getElementById('miniSunDec');
-            if (miniDecEl) miniDecEl.textContent = `${sign}${dec.toFixed(2)}° DEC`;
+            if (miniDecEl) miniDecEl.textContent = `${sign}${dec.toFixed(2)}°`;
 
             // Subsolar Longitude Meridian
             const subsolarLon = getSubsolarLongitude(now);
-            const subsolarLonEl = document.getElementById('homeSolarSubMeridian');
-            if (subsolarLonEl) {
-                const lonSign = subsolarLon >= 0 ? '+' : '';
-                subsolarLonEl.textContent = `${lonSign}${subsolarLon.toFixed(1)}° LON`;
-            }
-
             const miniSubsolarLonEl = document.getElementById('miniSubsolarLon');
             if (miniSubsolarLonEl) {
                 const lonSign = subsolarLon >= 0 ? '+' : '';
-                miniSubsolarLonEl.textContent = `${lonSign}${subsolarLon.toFixed(1)}° LON`;
+                miniSubsolarLonEl.textContent = `${lonSign}${subsolarLon.toFixed(1)}°`;
             }
 
             // Mini World Map Solar Terminator & Sun Position
@@ -1405,18 +1581,24 @@
         updateLiveClocks();
         setInterval(updateLiveClocks, 1000);
 
-        // Theme Toggle
+        // Theme Toggle (Dark / Light)
         const themeBtn = document.getElementById('homeThemeToggle');
         function applyTheme(isDark) {
             if (isDark) {
                 document.documentElement.classList.add('dark');
-                document.documentElement.setAttribute('data-theme', 'obsidian');
-                if (themeBtn) themeBtn.textContent = 'OBSIDIAN';
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeBtn) {
+                    const textEl = themeBtn.querySelector('.theme-text') || themeBtn;
+                    textEl.textContent = 'Dark';
+                }
                 localStorage.setItem('horologium_theme', 'dark');
             } else {
                 document.documentElement.classList.remove('dark');
-                document.documentElement.setAttribute('data-theme', 'silvered');
-                if (themeBtn) themeBtn.textContent = 'SILVERED';
+                document.documentElement.setAttribute('data-theme', 'light');
+                if (themeBtn) {
+                    const textEl = themeBtn.querySelector('.theme-text') || themeBtn;
+                    textEl.textContent = 'Light';
+                }
                 localStorage.setItem('horologium_theme', 'light');
             }
         }
@@ -1425,12 +1607,11 @@
         applyTheme(savedTheme !== 'light');
 
         if (themeBtn) {
-            themeBtn.addEventListener('pointerdown', (e) => {
+            themeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 haptics.playMechanicalClick();
-                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
+                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.classList.contains('dark');
                 applyTheme(!isCurrentlyDark);
-                a11y.announce(!isCurrentlyDark ? 'Obsidian Rhodium Dark dial activated.' : 'Silvered Dial Light theme activated.');
             });
         }
 
@@ -1438,7 +1619,7 @@
         const formatBtn = document.getElementById('homeFormatToggle');
         if (formatBtn) {
             formatBtn.textContent = is24h ? '24H' : '12H';
-            formatBtn.addEventListener('pointerdown', (e) => {
+            formatBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 haptics.playMechanicalClick();
                 is24h = !is24h;
@@ -1446,12 +1627,11 @@
                 localStorage.setItem('horologium_time_format', is24h ? '24h' : '12h');
                 updateLiveClocks();
                 updateOverlapPlanner();
-                a11y.announce(is24h ? '24-hour military time format enabled.' : '12-hour civil AM PM time format enabled.');
             });
         }
 
         // --------------------------------------------------------------------
-        // C. INTERACTIVE 24-HOUR OVERLAP & DELTA PLANNER
+        // MEETING OVERLAP PLANNER
         // --------------------------------------------------------------------
         const stationASelect = document.getElementById('stationASelect');
         const stationBSelect = document.getElementById('stationBSelect');
@@ -1461,7 +1641,6 @@
         const stationBDateEl = document.getElementById('stationBDate');
         const deltaReadoutEl = document.getElementById('deltaReadout');
         const overlapRibbon = document.getElementById('overlapRibbon');
-        const overlapSlider = document.getElementById('overlapSlider');
         const scrubCurrentHourLabel = document.getElementById('scrubCurrentHourLabel');
         const btnCopyInviteTimestamp = document.getElementById('btnCopyInviteTimestamp');
 
@@ -1505,19 +1684,18 @@
 
             const sign = diffHours >= 0 ? '+' : '';
             if (deltaReadoutEl) {
-                deltaReadoutEl.textContent = `${sign}${diffHours} HOURS DELTA (Station B relative to A)`;
+                const aheadBehind = diffHours >= 0 ? 'ahead of' : 'behind';
+                deltaReadoutEl.textContent = `${sign}${diffHours} hours (${Math.abs(diffHours)}h ${aheadBehind} Station A)`;
             }
 
             if (stationADateEl) {
-                stationADateEl.textContent = `Local Timezone: ${tzA} · Standard Business 09:00 - 18:00`;
+                stationADateEl.textContent = `Business Hours: 09:00 – 18:00 (${tzA.split('/')[1] || tzA})`;
             }
             if (stationBDateEl) {
-                const aheadBehind = diffHours >= 0 ? 'ahead' : 'behind';
-                stationBDateEl.textContent = `${Math.abs(diffHours)} hours ${aheadBehind} · Local Timezone: ${tzB}`;
+                stationBDateEl.textContent = `Business Hours: 09:00 – 18:00 (${tzB.split('/')[1] || tzB})`;
             }
 
-            // Render 24-Hour Ribbon
-            renderOverlapRibbon(tzA, tzB, parseInt(overlapSlider.value, 10));
+            renderOverlapRibbon(tzA, tzB, currentScrubHour);
         }
 
         function renderOverlapRibbon(tzA, tzB, scrubHour) {
@@ -1530,11 +1708,7 @@
                 const hourFormatted = String(h).padStart(2, '0');
                 cell.textContent = hourFormatted;
 
-                // Test if hour is in working window for Station A (09 to 18)
                 const isWorkingA = h >= 9 && h <= 18;
-                // Calculate corresponding hour in Station B
-                const tzA = stationASelect.value;
-                const tzB = stationBSelect.value;
                 const now = new Date();
                 const diff = getHourInTz(tzB, now) - getHourInTz(tzA, now);
                 const hourB = (h + diff + 24) % 24;
@@ -1542,57 +1716,46 @@
 
                 if (isWorkingA && isWorkingB) {
                     cell.classList.add('golden');
-                    cell.title = `Hour ${hourFormatted}:00 - GOLDEN OVERLAP WINDOW (Both stations working)`;
+                    cell.title = `${hourFormatted}:00 - Shared Working Window (Both stations active)`;
                 } else if (isWorkingA || isWorkingB) {
                     cell.classList.add('awake');
-                    cell.title = `Hour ${hourFormatted}:00 - Single station working`;
+                    cell.title = `${hourFormatted}:00 - One station active`;
                 } else {
                     cell.classList.add('sleep');
-                    cell.title = `Hour ${hourFormatted}:00 - Off-hours`;
+                    cell.title = `${hourFormatted}:00 - Off-hours`;
                 }
 
                 if (h === scrubHour) {
                     cell.classList.add('active-hour');
                 }
 
-                cell.addEventListener('pointerdown', () => {
+                cell.addEventListener('click', () => {
                     haptics.playTick();
-                    overlapSlider.value = h;
-                    handleSliderScrub(h);
+                    currentScrubHour = h;
+                    if (scrubCurrentHourLabel) {
+                        scrubCurrentHourLabel.textContent = `Scrubbed Hour: ${hourFormatted}:00`;
+                    }
+                    renderOverlapRibbon(tzA, tzB, h);
                 });
 
                 overlapRibbon.appendChild(cell);
             }
         }
 
-        function handleSliderScrub(val) {
-            const scrubHour = parseInt(val, 10);
-            if (scrubCurrentHourLabel) {
-                scrubCurrentHourLabel.textContent = `SCRUBBED HOUR: ${String(scrubHour).padStart(2, '0')}:00`;
-            }
-            const tzA = stationASelect.value;
-            const tzB = stationBSelect.value;
-            renderOverlapRibbon(tzA, tzB, scrubHour);
-            a11y.announce(`Scrubbed time to ${String(scrubHour).padStart(2, '0')}:00 UTC.`);
-        }
-
         if (stationASelect) stationASelect.addEventListener('change', () => {
             haptics.playMechanicalClick();
             updateOverlapPlanner();
-            a11y.announce(`Base station updated to ${stationASelect.options[stationASelect.selectedIndex].text}`);
         });
         if (stationBSelect) stationBSelect.addEventListener('change', () => {
             haptics.playMechanicalClick();
             updateOverlapPlanner();
-            a11y.announce(`Remote counterpart updated to ${stationBSelect.options[stationBSelect.selectedIndex].text}`);
         });
-        if (overlapSlider) overlapSlider.addEventListener('input', (e) => handleSliderScrub(e.target.value));
 
         updateOverlapPlanner();
 
         // Copy Timestamp in RFC-9557 format
         if (btnCopyInviteTimestamp) {
-            btnCopyInviteTimestamp.addEventListener('pointerdown', (e) => {
+            btnCopyInviteTimestamp.addEventListener('click', (e) => {
                 e.preventDefault();
                 haptics.playMechanicalClick();
                 const now = new Date();
@@ -1600,16 +1763,16 @@
                 const tzA = stationASelect.value;
                 const rfc9557 = `${iso}[${tzA}]`;
                 navigator.clipboard.writeText(rfc9557).then(() => {
-                    btnCopyInviteTimestamp.textContent = '✓ COPIED [RFC-9557]';
+                    btnCopyInviteTimestamp.textContent = '✓ Copied';
                     setTimeout(() => {
-                        btnCopyInviteTimestamp.textContent = '📋 COPY TIMESTAMP';
+                        btnCopyInviteTimestamp.textContent = '📋 Copy Time';
                     }, 2000);
                 });
             });
         }
 
         // --------------------------------------------------------------------
-        // D. INSTANT SEARCH & PINNING BENCH
+        // WORLD CLOCK DIRECTORY (Clickable Cards with Clean Hover Chevron)
         // --------------------------------------------------------------------
         const searchInput = document.getElementById('benchSearchInput');
         const matchCount = document.getElementById('benchMatchCount');
@@ -1635,18 +1798,16 @@
                 : countriesList.slice(0, 8);
 
             if (matchCount) {
-                matchCount.textContent = `${filtered.length} MATCHES`;
-            }
-
-            if (q) {
-                a11y.announceSearchResults(filtered.length, q);
+                matchCount.textContent = `${filtered.length} READY`;
             }
 
             const now = new Date();
 
             filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'bench-city-card';
+                const card = document.createElement('a');
+                card.className = 'directory-city-card';
+                card.href = `/flight-deck/?country=${encodeURIComponent(item.country)}`;
+                card.title = `Open ${item.capital || item.country} on World Map`;
 
                 let cityTime = '--:--';
                 try {
@@ -1661,22 +1822,19 @@
                 }
 
                 card.innerHTML = `
-                    <div style="min-width: 0; flex: 1; padding-right: 12px; display: flex; flex-direction: column; gap: 2px;">
-                        <div style="font-weight: 500; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            <span>${item.flag}</span> ${item.capital || item.country}
+                    <div class="dir-row-top">
+                        <div class="dir-city">
+                            <span>${item.flag}</span>
+                            <span style="font-weight: 500;">${item.capital || item.country}</span>
                         </div>
-                        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.country} · ${item.utc}">
-                            ${item.country} · ${item.utc}
-                        </div>
+                        <div class="dir-time font-mono tabular-nums">${cityTime}</div>
                     </div>
-                    <div style="flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
-                        <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; white-space: nowrap;">
-                            ${cityTime}
+                    <div class="dir-row-bottom">
+                        <div class="dir-country">${item.country}</div>
+                        <div class="dir-meta">
+                            <span class="dir-offset font-mono">${item.utc}</span>
+                            <span class="dir-arrow" aria-hidden="true">→</span>
                         </div>
-                        <a href="/flight-deck/?country=${encodeURIComponent(item.country)}" style="font-family: var(--font-mono); font-size: 9px; color: var(--accent-primary); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 2px;" title="View ${item.country} on Flight Deck">
-                            <span>VIEW MAP</span>
-                            <span>➔</span>
-                        </a>
                     </div>
                 `;
 
@@ -1689,7 +1847,6 @@
         const searchTrigger = document.getElementById('homeSearchTrigger');
         if (searchTrigger) {
             searchTrigger.addEventListener('click', () => {
-                const searchInput = document.getElementById('benchSearchInput');
                 if (searchInput) {
                     searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     searchInput.focus();
@@ -1703,22 +1860,17 @@
             });
         }
 
-        // Keyboard Shortcuts
+        // Global Keyboard Shortcuts
         window.addEventListener('keydown', (e) => {
             const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
             if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
 
-            if (e.code === 'Space' || e.key === 'Escape') {
-                if (window.__HOROLOGIUM_INTRO__ && window.__HOROLOGIUM_INTRO__.isActive) {
-                    e.preventDefault();
-                    window.__HOROLOGIUM_INTRO__.dismiss();
-                }
-            } else if (e.key === 'm' || e.key === 'M') {
+            if (e.key === 'm' || e.key === 'M') {
                 window.location.href = '/flight-deck/';
             } else if (e.key === 'd' || e.key === 'D') {
                 window.location.href = '/geodesic-registry/';
             } else if (e.key === 't' || e.key === 'T') {
-                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
+                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.classList.contains('dark');
                 applyTheme(!isCurrentlyDark);
             } else if (e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key === 'k')) {
                 e.preventDefault();

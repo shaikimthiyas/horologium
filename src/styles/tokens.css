@@ -1,8 +1,8 @@
 /* ==========================================================================
    HOROLOGIUM DESIGN SYSTEM (v1.0.0-PRO) — ENTERPRISE TOKEN ARCHITECTURE
    Codename: Calibre-01
-   Dual-Theme Engine: Obsidian Rhodium (Dark) & Silvered Dial (Light)
-   Adheres to Google Cloud / Linear / Atlassian 90-8-2 Surface Discipline
+   Dual-Theme Engine: Dark Mode (Calm Obsidian) & Light Mode (Pure Silvered)
+   Adheres to Google / Linear / Notion / Atlassian Enterprise Surface Standards
    ========================================================================== */
 
 :root,
@@ -10,16 +10,16 @@
 [data-theme="dark"],
 .dark {
   /* ========================================================================
-     ENTERPRISE ARCHITECTURAL TOKENS (Obsidian Dark / Precision Instrument)
+     ENTERPRISE ARCHITECTURAL TOKENS (Dark Mode / Calm Enterprise Palette)
      ======================================================================== */
-  --bg-canvas: #090A0F;
-  --bg-surface-1: #11131A;
-  --bg-surface-2: #181B24;
-  --bg-surface-3: #222634;
-  --bg-surface-hover: #202532;
-  --bg-glass: rgba(17, 19, 26, 0.85);
+  --bg-canvas: #0B0D13;
+  --bg-surface-1: #12151E;
+  --bg-surface-2: #181C28;
+  --bg-surface-3: #232838;
+  --bg-surface-hover: #1F2433;
+  --bg-glass: rgba(18, 21, 30, 0.88);
 
-  --border-subtle: #222634;
+  --border-subtle: #232838;
   --border-strong: #333A4D;
   --border-focus: #3B82F6;
   --border-specular: rgba(255, 255, 255, 0.08);
@@ -29,10 +29,11 @@
   --text-tertiary: #64748B;
   --text-muted: #64748B;
 
-  --accent-primary: #FF5722;
-  --accent-hover: #FF7043;
-  --accent-ink: #090A0F;
-  --accent-primary-muted: rgba(255, 87, 34, 0.12);
+  /* Calm Enterprise Blue (Replaces visual noise) */
+  --accent-primary: #3B82F6;
+  --accent-hover: #60A5FA;
+  --accent-ink: #FFFFFF;
+  --accent-primary-muted: rgba(59, 130, 246, 0.12);
 
   --accent-secondary: #38BDF8;
   --accent-secondary-muted: rgba(56, 189, 248, 0.12);
@@ -46,13 +47,13 @@
 
   /* MAP SURFACE TOKENS (HIGH-CONTRAST NIGHT VISIBILITY) */
   --map-water: var(--bg-canvas);
-  --map-land: #181D27;
-  --map-land-stroke: rgba(237, 239, 242, 0.12);
-  --map-land-hover: #232A39;
-  --map-land-selected: #2D374A;
+  --map-land: #181D29;
+  --map-land-stroke: rgba(237, 239, 242, 0.10);
+  --map-land-hover: #22293A;
+  --map-land-selected: #2B354C;
   --map-land-selected-stroke: var(--accent-primary);
-  --map-graticule: rgba(237, 239, 242, 0.05);
-  --map-terminator-shadow: rgba(4, 7, 14, 0.52);
+  --map-graticule: rgba(237, 239, 242, 0.04);
+  --map-terminator-shadow: rgba(4, 7, 14, 0.50);
 
   /* BACKWARD COMPATIBILITY BRIDGE (Preserves Legacy Engine Bindings & Tests) */
   --bg-0: var(--bg-canvas);
@@ -70,56 +71,44 @@
   --semantic-warning: var(--status-warning);
   --semantic-danger: var(--status-critical);
 
-  /* HARDWARE ELEVATION & SPECULAR LIGHT */
-  --shadow-primary-btn: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 0 rgba(0, 0, 0, 0.32),
-    0 1px 2px 0 rgba(0, 0, 0, 0.24);
-  --shadow-secondary-btn:
-    inset 0 1px 0 0 var(--border-specular),
-    0 1px 2px 0 rgba(0, 0, 0, 0.16);
-  --shadow-recessed:
-    inset 0 1.5px 3px 0 rgba(0, 0, 0, 0.28),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.12);
-  --shadow-popover:
-    inset 0 1px 0 0 var(--border-specular),
-    0 0 0 1px var(--border-interactive),
-    0 12px 32px -4px rgba(0, 0, 0, 0.55);
+  /* HARDWARE ELEVATION & SHADOWS */
+  --shadow-primary-btn: 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  --shadow-secondary-btn: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
+  --shadow-recessed: inset 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+  --shadow-popover: 0 10px 25px -5px rgba(0, 0, 0, 0.50);
 
-  /* FOCUS DOUBLE-RING */
+  /* FOCUS RING */
   --focus-ring: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--accent-primary);
 
-  /* CRITICALLY DAMPED EASING */
+  /* TRANSITIONS & EASING */
   --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: 120ms var(--ease-snappy);
-  --transition-medium: 220ms var(--ease-out-expo);
-  --transition-snappy: 120ms var(--ease-snappy);
-  --transition-expo: 220ms var(--ease-out-expo);
+  --transition-medium: 200ms var(--ease-out-expo);
 
   /* TYPOGRAPHY STACKS */
-  --font-display: 'Switzer', 'Neue Haas Grotesk Display Pro', 'Uncut Sans', -apple-system, sans-serif;
-  --font-sans: 'General Sans', 'Suisse Intl', 'Instrument Sans', -apple-system, sans-serif;
-  --font-mono: 'Commit Mono', 'Berkeley Mono', 'JetBrains Mono', monospace;
+  --font-display: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Commit Mono', monospace;
   --font-primary: var(--font-sans);
   --font-editorial: var(--font-display);
 
-  /* FLUID MATHEMATICAL TYPE SCALE & TRACKING INVERSION */
+  /* TYPE SCALE */
   --font-micro: 0.6875rem; /* 11px */
   --font-xs: 0.75rem;     /* 12px */
   --font-sm: 0.8125rem;   /* 13px */
   --font-base: 0.9375rem; /* 15px */
-  --font-lg: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
-  --font-xl: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
-  --font-display-size: clamp(2.25rem, 1.8rem + 2.2vw, 3.75rem);
+  --font-lg: 1.125rem;    /* 18px */
+  --font-xl: 1.5rem;      /* 24px */
+  --font-display-size: clamp(2rem, 1.8rem + 1.8vw, 3rem);
 
-  /* CONTROL CADENCE (Desktop Pointer: Fine Default) */
-  --ctrl-xs: 22px;
-  --ctrl-sm: 28px;
-  --ctrl-md: 32px;
+  /* BUTTON & CONTROL CADENCE */
+  --ctrl-xs: 24px;
+  --ctrl-sm: 32px;
+  --ctrl-md: 36px;
   --ctrl-lg: 40px;
 
-  /* CONCENTRIC RADII */
+  /* RADII */
   --radius-none: 0px;
   --radius-xs: 4px;
   --radius-sm: 6px;
@@ -130,14 +119,14 @@
 [data-theme="silvered"],
 [data-theme="light"] {
   /* ========================================================================
-     ENTERPRISE ARCHITECTURAL TOKENS (Silvered Light / Precision Instrument)
+     ENTERPRISE ARCHITECTURAL TOKENS (Light Mode / Calm Enterprise Palette)
      ======================================================================== */
   --bg-canvas: #F8FAFC;
   --bg-surface-1: #FFFFFF;
   --bg-surface-2: #F1F5F9;
   --bg-surface-3: #E2E8F0;
   --bg-surface-hover: #E2E8F0;
-  --bg-glass: rgba(255, 255, 255, 0.88);
+  --bg-glass: rgba(255, 255, 255, 0.92);
 
   --border-subtle: #E2E8F0;
   --border-strong: #CBD5E1;
@@ -154,7 +143,7 @@
   --accent-ink: #FFFFFF;
   --accent-primary-muted: rgba(37, 99, 235, 0.10);
 
-  --accent-secondary: #0284C7; /* Cobalt Telemetry (replaces false alarm red) */
+  --accent-secondary: #0284C7;
   --accent-secondary-muted: rgba(2, 132, 199, 0.10);
 
   --status-nominal: #059669;
@@ -167,12 +156,12 @@
   /* MAP SURFACE TOKENS (SILVERED DIAL) */
   --map-water: #EAECEF;
   --map-land: #FFFFFF;
-  --map-land-stroke: rgba(13, 16, 23, 0.10);
+  --map-land-stroke: rgba(13, 16, 23, 0.08);
   --map-land-hover: #F1F5F9;
   --map-land-selected: #DCE3EE;
   --map-land-selected-stroke: var(--accent-primary);
-  --map-graticule: rgba(13, 16, 23, 0.06);
-  --map-terminator-shadow: rgba(13, 16, 23, 0.16);
+  --map-graticule: rgba(13, 16, 23, 0.05);
+  --map-terminator-shadow: rgba(13, 16, 23, 0.15);
 
   /* BACKWARD COMPATIBILITY BRIDGE */
   --bg-0: var(--bg-canvas);
@@ -190,21 +179,11 @@
   --semantic-warning: var(--status-warning);
   --semantic-danger: var(--status-critical);
 
-  /* ELEVATION IN DAYLIGHT */
-  --shadow-primary-btn: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0 0 rgba(0, 0, 0, 0.15),
-    0 1px 2px 0 rgba(13, 16, 23, 0.12);
-  --shadow-secondary-btn:
-    inset 0 1px 0 0 var(--border-specular),
-    0 1px 2px 0 rgba(13, 16, 23, 0.06);
-  --shadow-recessed:
-    inset 0 1.5px 3px 0 rgba(13, 16, 23, 0.08),
-    inset 0 0 0 1px rgba(13, 16, 23, 0.06);
-  --shadow-popover:
-    inset 0 1px 0 0 var(--border-specular),
-    0 0 0 1px var(--border-interactive),
-    0 12px 32px -4px rgba(13, 16, 23, 0.15);
+  /* HARDWARE ELEVATION & SHADOWS */
+  --shadow-primary-btn: 0 1px 2px 0 rgba(13, 16, 23, 0.10);
+  --shadow-secondary-btn: 0 1px 2px 0 rgba(13, 16, 23, 0.05);
+  --shadow-recessed: inset 0 1px 2px 0 rgba(13, 16, 23, 0.05);
+  --shadow-popover: 0 10px 25px -5px rgba(13, 16, 23, 0.12);
 }
 
 /* TOUCH POINTER DENSITY ADAPTATION (Fitts's Law Target Size >= 44px) */
