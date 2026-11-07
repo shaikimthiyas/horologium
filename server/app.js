@@ -76,11 +76,11 @@ const redirectWithTrailingSlash = (targetPath) => (req, res, next) => {
   res.redirect(301, `${targetPath}${qs}`);
 };
 
-app.get(['/flight-deck', '/map', '/src/pages/map.html'], redirectWithTrailingSlash('/flight-deck/'));
-app.get(['/geodesic-registry', '/registry', '/directory', '/country', '/src/pages/country.html'], redirectWithTrailingSlash('/geodesic-registry/'));
-app.get(['/operator-gateway', '/operator', '/security', '/auth', '/src/pages/auth.html'], redirectWithTrailingSlash('/operator-gateway/'));
-app.get(['/protocol-liaison', '/liaison', '/inquiry', '/contact', '/src/pages/contact.html'], redirectWithTrailingSlash('/protocol-liaison/'));
-app.get(['/docs', '/api/docs', '/src/pages/docs.html'], redirectWithTrailingSlash('/api-explorer/'));
+app.get(['/flight-deck', '/map'], redirectWithTrailingSlash('/flight-deck/'));
+app.get(['/geodesic-registry', '/registry', '/directory', '/country'], redirectWithTrailingSlash('/geodesic-registry/'));
+app.get(['/operator-gateway', '/operator', '/security', '/auth'], redirectWithTrailingSlash('/operator-gateway/'));
+app.get(['/protocol-liaison', '/liaison', '/inquiry', '/contact'], redirectWithTrailingSlash('/protocol-liaison/'));
+app.get(['/docs', '/api/docs', '/api-explorer'], redirectWithTrailingSlash('/api-explorer/'));
 app.get(['/about', '/colophon', '/author'], redirectWithTrailingSlash('/about/'));
 app.get(['/status', '/telemetry', '/uptime'], redirectWithTrailingSlash('/status/'));
 app.get(['/privacy', '/legal', '/terms'], redirectWithTrailingSlash('/privacy/'));
