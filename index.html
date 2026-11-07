@@ -44,6 +44,239 @@
             box-shadow: inset 0 1px 0 0 var(--border-specular);
         }
 
+                /* Enterprise Top Navigation & App Bar */
+        .brand-name {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            color: var(--text-primary);
+        }
+
+        .brand-calibre {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: var(--radius-xs);
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            letter-spacing: 0.06em;
+        }
+
+        .header-live-pulse-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            padding: 0 10px;
+            height: 26px;
+            border-radius: var(--radius-xs);
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .live-pulse-dot-nominal {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--status-nominal);
+            box-shadow: 0 0 6px var(--status-nominal);
+            animation: livePillPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes livePillPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.45; transform: scale(0.85); }
+        }
+
+        .pill-divider {
+            opacity: 0.35;
+            color: var(--text-secondary);
+        }
+
+        .pill-metric {
+            font-size: 10px;
+            color: var(--status-nominal);
+        }
+
+        /* Center Zone: Segmented View Track */
+        .segmented-view-track {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+            gap: 2px;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .segmented-tab {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: var(--radius-xs);
+            transition: all 120ms var(--ease-snappy);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .segmented-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .segmented-tab.active {
+            color: var(--text-primary);
+            background: var(--bg-surface-1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 0 var(--border-specular);
+            font-weight: 600;
+        }
+
+        /* Right Zone: Command & Utility Toggles */
+        .header-cmd-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 28px;
+            padding: 0 10px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 120ms ease;
+            white-space: nowrap;
+        }
+
+        .header-cmd-pill:hover {
+            border-color: var(--border-strong);
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .header-kbd {
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            border-radius: 3px;
+            padding: 1px 4px;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .utility-toggle-group {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .utility-btn {
+            height: 24px;
+            padding: 0 8px;
+            background: transparent;
+            border: none;
+            border-radius: 3px;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 120ms ease;
+            white-space: nowrap;
+        }
+
+        .utility-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-hover);
+        }
+
+        .utility-ghost-btn {
+            height: 28px;
+            width: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--radius-xs);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 120ms ease;
+        }
+
+        .utility-ghost-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-2);
+            border-color: var(--border-subtle);
+        }
+
+        /* Architectural Hero Badges */
+        .telemetry-spec-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 24px;
+            padding: 0 10px;
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xs);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border-strong);
+            display: inline-block;
+        }
+
+        .telemetry-spec-pill.is-active .pill-dot {
+            background: var(--status-nominal);
+            box-shadow: 0 0 5px var(--status-nominal);
+        }
+
+        /* Diurnal Sensor Solar Bands */
+        .vernier-tick.tick-night {
+            background: var(--border-strong, #333A4D);
+            opacity: 0.5;
+        }
+
+        .vernier-tick.tick-twilight {
+            background: var(--accent-secondary, #38BDF8);
+            opacity: 0.85;
+        }
+
+        .vernier-tick.tick-daylight {
+            background: var(--accent-primary, #FF5722);
+            opacity: 1;
+        }
+
         .workbench-home {
             min-height: 100dvh;
             display: flex;
@@ -303,95 +536,224 @@
 </head>
 <body class="workbench-home">
 
-    <!-- ====================================================================
-         1. 5-SECOND CINEMATIC CALIBRATION & INTRO STAGE
-         Handcrafted Horological Sequence (Auto-advances in 5s or press Space/Esc)
+<!-- ====================================================================
+         1. ENTERPRISE PLANETARY INTRO STAGE (Sprint M - Redesign)
+         Sovereign Planetary Command & Stratum-1 Telemetry Experience
          ==================================================================== -->
-    <div class="intro-stage" id="introStage">
-        <!-- Top Telemetry Stream -->
-        <div class="intro-top-telemetry">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="intro-dot" style="background: var(--accent-primary); box-shadow: 0 0 6px var(--accent-primary);"></span>
-                <span>HOROLOGIUM CALIBRE-01 // BOOTSTRAP TELEMETRY</span>
+    <div class="intro-stage" id="introStage" role="dialog" aria-modal="true" aria-label="Horologium Planetary Chronometry Initialization">
+        <!-- Top HUD Telemetry Bar -->
+        <header class="intro-top-telemetry">
+            <div class="intro-telemetry-brand">
+                <span class="intro-status-beacon" aria-hidden="true"></span>
+                <span class="intro-brand-code">HOROLOGIUM CALIBRE-01 // STRATUM-1 TELEMETRY</span>
+                <span class="intro-divider">·</span>
+                <span class="intro-author-pill">ARCHITECT: SHAIK IMTHIYAS</span>
             </div>
-            <div>
-                <span id="introUtcRealtime">--:--:-- UTC</span> · <span style="color: var(--accent-counter);">SYS_OK</span>
+            <div class="intro-telemetry-meta">
+                <span id="introStatusPill" class="intro-pill-ok">ENGAGING ATOMIC REFERENCE</span>
+                <span class="intro-divider">·</span>
+                <span class="intro-badge-live">LIVE UTC PROBE</span>
+            </div>
+            <div class="intro-top-actions">
+                <button type="button" class="btn-intro-audio" id="introSoundToggle" title="Toggle Mechanical Escapement Audio [M]" aria-label="Toggle Audio">
+                    <span class="sound-icon">🔊</span>
+                    <span class="sound-text">AUDIO ON</span>
+                </button>
+                <button type="button" class="btn-intro-skip" id="btnSkipIntro" title="Skip to Workbench [Space/Esc]" aria-label="Launch Workbench">
+                    <span>LAUNCH WORKBENCH</span>
+                    <kbd>SPACE / ESC</kbd>
+                    <span>➔</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Planetary Command Deck (3-Column Grid) -->
+        <div class="intro-planetary-deck">
+            
+            <!-- Left Column: Master UTC Atomic Chronometer & World Clocks Array -->
+            <div class="intro-deck-col intro-deck-time">
+                <div class="intro-col-masthead">
+                    <span class="intro-sub-label">STRATUM-1 MASTER CHRONOMETER</span>
+                    <h2 class="intro-master-clock" id="introMasterUtc">--:--:--.-- UTC</h2>
+                    <div class="intro-master-subtext">
+                        <span class="badge-atomic-locked">● LOCKED</span>
+                        <span>GREENWICH MERIDIAN (0°00'00") · ±120ns JITTER</span>
+                    </div>
+                </div>
+
+                <!-- Synchronized Global Time Hubs -->
+                <div class="intro-world-hubs-panel">
+                    <div class="intro-panel-header">
+                        <span>PLANETARY FINANCIAL & AEROSPACE HUBS</span>
+                        <span class="intro-tnum">7/7 SYNC</span>
+                    </div>
+                    <div class="intro-world-grid">
+                        <div class="intro-hub-card">
+                            <div class="hub-head">
+                                <span class="hub-flag">🇬🇧</span>
+                                <span class="hub-id">LON</span>
+                                <span class="hub-offset">UTC+0</span>
+                            </div>
+                            <div class="hub-time" id="clockHub_LON">--:--:--</div>
+                            <div class="hub-name">London Prime</div>
+                        </div>
+                        <div class="intro-hub-card">
+                            <div class="hub-head">
+                                <span class="hub-flag">🇺🇸</span>
+                                <span class="hub-id">NYC</span>
+                                <span class="hub-offset">UTC-5</span>
+                            </div>
+                            <div class="hub-time" id="clockHub_NYC">--:--:--</div>
+                            <div class="hub-name">New York EST</div>
+                        </div>
+                        <div class="intro-hub-card">
+                            <div class="hub-head">
+                                <span class="hub-flag">🇨🇭</span>
+                                <span class="hub-id">ZRH</span>
+                                <span class="hub-offset">UTC+1</span>
+                            </div>
+                            <div class="hub-time" id="clockHub_ZRH">--:--:--</div>
+                            <div class="hub-name">Zurich CET</div>
+                        </div>
+                        <div class="intro-hub-card">
+                            <div class="hub-head">
+                                <span class="hub-flag">🇦🇪</span>
+                                <span class="hub-id">DXB</span>
+                                <span class="hub-offset">UTC+4</span>
+                            </div>
+                            <div class="hub-time" id="clockHub_DXB">--:--:--</div>
+                            <div class="hub-name">Dubai GST</div>
+                        </div>
+                        <div class="intro-hub-card">
+                            <div class="hub-head">
+                                <span class="hub-flag">🇮🇳</span>
+                                <span class="hub-id">DEL</span>
+                                <span class="hub-offset">UTC+5:30</span>
+                            </div>
+                            <div class="hub-time" id="clockHub_DEL">--:--:--</div>
+                            <div class="hub-name">New Delhi IST</div>
+                        </div>
+                        <div class="intro-hub-card">
+                            <div class="hub-head">
+                                <span class="hub-flag">🇯🇵</span>
+                                <span class="hub-id">TYO</span>
+                                <span class="hub-offset">UTC+9</span>
+                            </div>
+                            <div class="hub-time" id="clockHub_TYO">--:--:--</div>
+                            <div class="hub-name">Tokyo JST</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Column: 3D Planetary Vector Globe & Brand Masthead -->
+            <div class="intro-deck-col intro-deck-globe">
+                <!-- Brand Title & Astrolabe Insignia -->
+                <div class="intro-brand-masthead">
+                    <div class="intro-brand-insignia">
+                        <svg class="astrolabe-logo-svg" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
+                            <circle cx="22" cy="22" r="20" fill="none" stroke="var(--border-interactive, #3b4252)" stroke-width="1.5" stroke-dasharray="2 3"/>
+                            <circle cx="22" cy="22" r="14" fill="none" stroke="var(--accent-primary, #ff4400)" stroke-width="1.2"/>
+                            <circle cx="22" cy="22" r="4" fill="var(--accent-primary, #ff4400)"/>
+                            <line x1="22" y1="2" x2="22" y2="42" stroke="var(--accent-primary, #ff4400)" stroke-width="1" stroke-dasharray="1 2"/>
+                            <line x1="2" y1="22" x2="42" y2="22" stroke="var(--accent-primary, #ff4400)" stroke-width="1" stroke-dasharray="1 2"/>
+                            <line x1="22" y1="22" x2="34" y2="10" stroke="#00e5b8" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="intro-brand-text-block">
+                        <h1 class="intro-brand-heading">H O R O L O G I U M</h1>
+                        <p class="intro-brand-strapline">PLANETARY CHRONOMETRY & MERIDIAN TELEMETRY SYSTEM</p>
+                    </div>
+                </div>
+
+                <!-- 3D Orthographic Canvas Globe Container -->
+                <div class="intro-globe-wrapper">
+                    <canvas id="introGlobeCanvas" class="intro-globe-canvas" width="360" height="360" aria-label="3D Rotating Planetary Map and Solar Terminator"></canvas>
+                    <div class="intro-globe-reticle-ring"></div>
+                </div>
+
+                <!-- Real-time Astronomical Zenith Coordinates Readout -->
+                <div class="intro-globe-coordinates">
+                    <div class="coord-item">
+                        <span class="coord-label">SOLAR DECLINATION:</span>
+                        <span id="introSolarDec" class="coord-val">CALCULATING...</span>
+                    </div>
+                    <span class="coord-divider">·</span>
+                    <div class="coord-item">
+                        <span class="coord-label">SUBSOLAR ZENITH:</span>
+                        <span id="introSubsolarLon" class="coord-val">CALCULATING...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Enterprise SLO & System Verification Matrix -->
+            <div class="intro-deck-col intro-deck-slo">
+                <div class="intro-col-masthead">
+                    <span class="intro-sub-label">ENTERPRISE DISTRIBUTED SYSTEMS SLO</span>
+                    <h3 class="intro-slo-headline">99.999% SLA</h3>
+                    <div class="intro-master-subtext">
+                        <span class="badge-slo-tier">TIER-1 CHRONOMETRY</span>
+                        <span>FIVE NINES CONTINUOUS DRIFT TARGET</span>
+                    </div>
+                </div>
+
+                <!-- SLO Metrics Bento Grid -->
+                <div class="intro-slo-bento">
+                    <div class="slo-card">
+                        <div class="slo-metric-val" style="color: var(--semantic-success, #10b981);">99.999%</div>
+                        <div class="slo-metric-label">UPTIME COMMITMENT (SLA)</div>
+                        <div class="slo-metric-detail">High-availability multi-region LibSQL replication</div>
+                    </div>
+                    <div class="slo-card">
+                        <div class="slo-metric-val" style="color: #00e5b8;">&lt; 0.12ms</div>
+                        <div class="slo-metric-label">MARZULLO JITTER TOLERANCE</div>
+                        <div class="slo-metric-detail">Stratum-1 Truechimer consensus lock (4/4 sources)</div>
+                    </div>
+                    <div class="slo-card">
+                        <div class="slo-metric-val">220 ZONES</div>
+                        <div class="slo-metric-label">GEODESIC COVERAGE</div>
+                        <div class="slo-metric-detail">IANA TZDB 2024b & RFC 9557 compliant timestamps</div>
+                    </div>
+                    <div class="slo-card">
+                        <div class="slo-metric-val" style="color: var(--accent-primary, #ff4400);">0 COOKIES</div>
+                        <div class="slo-metric-label">DATA SOVEREIGNTY</div>
+                        <div class="slo-metric-detail">Zero-knowledge client-side computation architecture</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Center Horological Escapement Dial & 5s Countdown -->
-        <div class="intro-dial-core">
-            <div class="intro-dial-wrapper">
-                <!-- Rotating Astrolabe / Meridian Graticule -->
-                <div class="intro-rotating-graticule"></div>
-
-                <!-- SVG Concentric Progress Bezel (5.0s Sweep) -->
-                <svg class="intro-bezel-svg" viewBox="0 0 280 280">
-                    <circle class="intro-progress-track" cx="140" cy="140" r="125" />
-                    <circle class="intro-progress-bar" id="introProgressBar" cx="140" cy="140" r="125" />
-                </svg>
-
-                <!-- Center Readout -->
-                <div class="intro-center-readout">
-                    <div class="intro-brand-sub">CALIBRATING REFERENCE</div>
-                    <div class="intro-countdown-clock" id="introCountdown">5.00s</div>
-                    <div class="intro-countdown-label">ENGAGING ATOMIC TIMING</div>
-                </div>
+        <!-- Bottom Telemetry Timeline Progression Ribbon -->
+        <footer class="intro-bottom-timeline">
+            <!-- Calibrated Progress Bar -->
+            <div class="intro-progress-bar-track">
+                <div class="intro-progress-bar-fill" id="introProgressBar"></div>
             </div>
 
-            <!-- Sequential Diagnostic Step Readouts -->
-            <div class="intro-diagnostic-stream">
-                <div class="intro-log-row active" id="diagStep1">
-                    <div>
-                        <span class="intro-dot"></span>
-                        <span>[01/05] SYNCING MASTER UTC MERIDIAN (0° GREENWICH)</span>
-                    </div>
-                    <span class="tnum" style="color: var(--semantic-success);">LOCKED</span>
+            <div class="intro-timeline-row">
+                <div class="intro-step-pill active completed" id="introStep1">
+                    <span class="intro-step-dot"></span>
+                    <span class="intro-step-text">[01/04] STRATUM-1 UTC REFERENCE SYNCED</span>
+                    <span class="intro-step-stat" id="step1Stat">LOCKED</span>
                 </div>
-                <div class="intro-log-row" id="diagStep2">
-                    <div>
-                        <span class="intro-dot"></span>
-                        <span>[02/05] 220 SOVEREIGN GEODESIC BOUNDARIES & 470 POLYGONS</span>
-                    </div>
-                    <span class="tnum" id="diagStep2Status">PENDING</span>
+                <div class="intro-step-pill" id="introStep2">
+                    <span class="intro-step-dot"></span>
+                    <span class="intro-step-text">[02/04] 220 SOVEREIGN GEODESIC BOUNDARIES</span>
+                    <span class="intro-step-stat" id="step2Stat">PENDING</span>
                 </div>
-                <div class="intro-log-row" id="diagStep3">
-                    <div>
-                        <span class="intro-dot"></span>
-                        <span>[03/05] COMPUTING REAL-TIME SOLAR DECLINATION & TERMINATOR</span>
-                    </div>
-                    <span class="tnum" id="diagStep3Status">PENDING</span>
+                <div class="intro-step-pill" id="introStep3">
+                    <span class="intro-step-dot"></span>
+                    <span class="intro-step-text">[03/04] ASTRONOMICAL SOLAR TERMINATOR</span>
+                    <span class="intro-step-stat" id="step3Stat">PENDING</span>
                 </div>
-                <div class="intro-log-row" id="diagStep4">
-                    <div>
-                        <span class="intro-dot"></span>
-                        <span>[04/05] ENGAGING VERNIER DRIFT SENSORS & TABULAR ENGINES</span>
-                    </div>
-                    <span class="tnum" id="diagStep4Status">PENDING</span>
+                <div class="intro-step-pill" id="introStep4">
+                    <span class="intro-step-dot"></span>
+                    <span class="intro-step-text">[04/04] MARZULLO 99.999% SLO NOMINAL</span>
+                    <span class="intro-step-stat" id="step4Stat">ARMING</span>
                 </div>
-                <div class="intro-log-row" id="diagStep5">
-                    <div>
-                        <span class="intro-dot"></span>
-                        <span>[05/05] ALL OPERATIONAL SUBSYSTEMS NOMINAL</span>
-                    </div>
-                    <span class="tnum" id="diagStep5Status">ARMING</span>
-                </div>
+                <div class="intro-pct-tag" id="introProgressPct">0%</div>
             </div>
-        </div>
-
-        <!-- Bottom Actions (Skip & Sound Controls) -->
-        <div class="intro-actions-bar">
-            <button type="button" class="btn-sound-toggle" id="introSoundToggle" title="Toggle Mechanical Audio Ticks">
-                <span id="soundIcon">🔊</span>
-                <span id="soundText">AUDIO ON</span>
-            </button>
-
-            <button type="button" class="btn-skip-intro" id="btnSkipIntro">
-                <span>ENTER WORKBENCH</span>
-                <kbd style="background: var(--bg-0); padding: 2px 6px; border-radius: 3px; font-size: 10px;">SPACE / ESC</kbd>
-                <span>➔</span>
-            </button>
-        </div>
+        </footer>
     </div>
 
 
@@ -399,34 +761,59 @@
          2. TOP TELEMETRY BAR (48px Height Locked, 1px Structural Grid)
          ==================================================================== -->
     <header class="telemetry-bar">
+        <!-- Zone 1: Identity & Live Stratum-1 Telemetry Pulse -->
         <div class="telemetry-left">
-            <a href="/index.html" class="brand-monogram">
+            <a href="/" class="brand-monogram" title="Horologium Planetary Time Machine">
                 <span class="brand-dot"></span>
-                <span>HOROLOGIUM</span>
+                <span class="brand-name">HOROLOGIUM</span>
+                <span class="brand-calibre">CALIBRE-01</span>
             </a>
-            <span class="telemetry-title">CALIBRE-01 // Planetary Time & Meridian Atlas</span>
-        </div>
-
-        <div class="telemetry-center">
-            <div class="utc-master-clock">
-                <span class="utc-label">UTC MASTER</span>
-                <span id="homeUtcClock" class="font-mono">--:--:-- UTC</span>
-            </div>
-            <div class="solar-declination">
-                <span>SOLAR DEC:</span>
-                <span id="homeSolarDec" class="font-mono">CALCULATING...</span>
+            <div class="header-live-pulse-pill" title="Stratum-1 Truechimer Atomic Synchronization">
+                <span class="live-pulse-dot-nominal" aria-hidden="true"></span>
+                <span id="homeUtcClock" class="font-mono tabular-nums">--:--:-- UTC</span>
+                <span class="pill-divider">·</span>
+                <span id="homeDriftHeader" class="pill-metric">±0.0ms</span>
             </div>
         </div>
 
+        <!-- Zone 2: Unified Segmented View Tabs (Hick's Law Consolidated) -->
+        <nav class="telemetry-center" aria-label="Operational Views">
+            <div class="segmented-view-track" role="tablist">
+                <a href="/" class="segmented-tab active" role="tab" aria-selected="true">
+                    <span>Overview</span>
+                </a>
+                <a href="/flight-deck/" class="segmented-tab" role="tab">
+                    <span>Flight Deck</span>
+                </a>
+                <a href="/geodesic-registry/" class="segmented-tab" role="tab">
+                    <span>Directory</span>
+                </a>
+                <a href="/protocol-liaison/" class="segmented-tab" role="tab">
+                    <span>Registry</span>
+                </a>
+                <a href="/api-explorer/" class="segmented-tab" role="tab">
+                    <span>API Docs</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Zone 3: Global Command & Preferences Utilities -->
         <div class="telemetry-right">
-            <button type="button" class="telemetry-btn" id="homeReplayIntro" title="Replay 5-second cinematic calibration sequence">↺ REPLAY INTRO</button>
-            <button type="button" class="telemetry-btn" id="homeFormatToggle" title="Toggle 12H / 24H Military Format">24H</button>
-            <button type="button" class="telemetry-btn" id="homeThemeToggle" title="Toggle Obsidian Rhodium / Silvered Dial">OBSIDIAN</button>
-            <a href="/api-explorer/" class="nav-action-btn" style="border-color: var(--accent-counter); color: var(--accent-counter);">OPENAPI DOCS</a>
-            <a href="/flight-deck/" class="nav-action-btn">⊕ FLIGHT DECK</a>
-            <a href="/geodesic-registry/" class="nav-action-btn">DIRECTORY</a>
-            <a href="/protocol-liaison/" class="nav-action-btn">REGISTRY</a>
-            <a href="/operator-gateway/" class="nav-action-btn">OPERATOR</a>
+            <button type="button" class="header-cmd-pill" id="homeSearchTrigger" title="Quick Search 220+ Nations & Cities [⌘K / /]" aria-label="Search Timezones">
+                <span class="search-glyph">⌕</span>
+                <span class="search-label">Search</span>
+                <kbd class="header-kbd">⌘K</kbd>
+            </button>
+            <div class="utility-toggle-group">
+                <button type="button" class="utility-btn" id="homeFormatToggle" title="Toggle 12H / 24H Military Format" aria-label="Toggle 24 Hour Format">24H</button>
+                <button type="button" class="utility-btn" id="homeThemeToggle" title="Toggle Obsidian Dark / Silvered Light Theme" aria-label="Toggle Theme">
+                    <span class="theme-icon">◐</span>
+                    <span class="theme-text">OBSIDIAN</span>
+                </button>
+            </div>
+            <button type="button" class="utility-ghost-btn" id="homeReplayIntro" title="Replay 5-second cinematic calibration sequence" aria-label="Replay Intro">
+                <span>↺</span>
+            </button>
         </div>
     </header>
 
@@ -487,10 +874,22 @@
                     </div>
 
                     <div class="masthead-telemetry-pills">
-                        <span class="badge-semantic badge-semantic-success">● [LOCK] 0.00ms CLOCK SKEW</span>
-                        <span class="badge-semantic badge-semantic-counter">◆ [2026.10] IANA TIMEZONE REGISTRY</span>
-                        <span class="badge-semantic badge-semantic-vermilion">▲ [SUN] REAL-TIME SOLAR TERMINATOR</span>
-                        <span class="badge-semantic badge-semantic-success">✓ RFC-9557 COMPLIANT</span>
+                        <div class="telemetry-spec-pill is-active">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>[LOCK] 0.00ms CLOCK SKEW</span>
+                        </div>
+                        <div class="telemetry-spec-pill">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>IANA TIMEZONE REGISTRY</span>
+                        </div>
+                        <div class="telemetry-spec-pill">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>SOLAR TERMINATOR ALIGNED</span>
+                        </div>
+                        <div class="telemetry-spec-pill">
+                            <span class="pill-dot" aria-hidden="true"></span>
+                            <span>RFC-9557 COMPLIANT</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -506,7 +905,7 @@
                     <div class="vernier-clock-large" id="homeDeviceClock">--:--:--</div>
 
                     <div style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); text-transform: uppercase;">
-                        24-HOUR BAND CAPACITY // RESOLUTION SENSOR
+                        24-HOUR SOLAR & MERIDIAN CYCLE // DIURNAL SENSOR
                     </div>
 
                     <div class="vernier-meter" id="homeVernierMeter">
@@ -605,7 +1004,7 @@
                                 <option value="Australia/Sydney">🇦🇺 Sydney (UTC+10)</option>
                             </select>
                         </div>
-                        <div class="station-time-display" id="stationBTime" style="color: var(--accent-counter);">--:--:--</div>
+                        <div class="station-time-display" id="stationBTime" style="color: var(--accent-secondary);">--:--:--</div>
                         <div style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-1);" id="stationBDate">
                             Delta Calculation...
                         </div>
@@ -681,15 +1080,26 @@
                         <rect width="1000" height="480" fill="var(--bg-0)" />
                         <rect width="1000" height="480" fill="url(#miniGrid)" />
 
-                        <!-- World Continents Simplified Vector Outlines -->
+                        <!-- High-Precision Geodesic Vector Continents -->
                         <g class="mini-continents-group" id="miniContinentsGroup">
-                            <!-- Populated with continent landmass paths -->
-                            <path class="mini-map-land" d="M120 70 L280 70 L310 130 L270 180 L220 220 L180 240 L160 210 L130 180 L110 130 Z" title="North America" />
-                            <path class="mini-map-land" d="M220 260 L290 280 L320 340 L310 420 L270 450 L240 380 L220 310 Z" title="South America" />
-                            <path class="mini-map-land" d="M460 80 L560 80 L550 150 L500 180 L460 170 L450 120 Z" title="Europe" />
-                            <path class="mini-map-land" d="M450 190 L560 190 L570 270 L550 360 L510 390 L470 340 L440 250 Z" title="Africa" />
-                            <path class="mini-map-land" d="M570 70 L860 60 L890 150 L840 240 L760 260 L680 280 L620 240 L570 170 Z" title="Asia" />
-                            <path class="mini-map-land" d="M780 300 L880 300 L890 380 L840 400 L790 380 Z" title="Australia" />
+                            <!-- North America -->
+                            <path class="mini-map-land" d="M33 66 L111 53 L222 40 L333 53 L347 106 L319 120 L291 146 L277 173 L250 186 L208 186 L166 154 L152 112 L111 80 Z" title="North America" />
+                            <!-- Greenland -->
+                            <path class="mini-map-land" d="M380 40 L430 45 L415 90 L370 75 Z" title="Greenland" />
+                            <!-- South America -->
+                            <path class="mini-map-land" d="M277 213 L333 208 L402 253 L402 280 L388 298 L347 333 L319 386 L291 373 L300 333 L277 253 Z" title="South America" />
+                            <!-- Europe & British Isles -->
+                            <path class="mini-map-land" d="M472 144 L500 128 L513 122 L541 133 L569 144 L583 120 L611 93 L583 66 L541 58 L513 74 L486 85 L472 120 Z" title="Europe" />
+                            <path class="mini-map-land" d="M480 100 L495 95 L490 115 L475 110 Z" title="United Kingdom" />
+                            <!-- Africa -->
+                            <path class="mini-map-land" d="M452 200 L486 144 L527 141 L588 157 L619 208 L641 213 L611 266 L597 306 L555 333 L541 320 L527 253 L500 226 L458 213 Z" title="Africa" />
+                            <!-- Asia / Eurasia -->
+                            <path class="mini-map-land" d="M583 133 L625 133 L652 173 L694 173 L708 213 L722 200 L750 181 L777 200 L791 226 L819 186 L838 160 L861 133 L888 120 L902 80 L972 66 L777 40 L666 53 L625 80 Z" title="Asia" />
+                            <path class="mini-map-land" d="M880 140 L895 160 L875 190 L865 170 Z" title="Japan" />
+                            <!-- Australia & Oceania -->
+                            <path class="mini-map-land" d="M819 298 L847 280 L888 272 L916 298 L925 320 L911 341 L875 333 L819 333 Z" title="Australia" />
+                            <!-- Antarctica -->
+                            <path class="mini-map-land" d="M100 450 L900 450 L850 435 L700 440 L500 430 L300 440 L150 435 Z" title="Antarctica" />
                         </g>
 
                         <!-- Dynamic Astronomical Solar Terminator Shadow Polygon -->
@@ -783,6 +1193,7 @@
          ==================================================================== -->
     <script type="module">
         import { calculateSolarDeclination, getSubsolarLongitude, generateTerminatorPath } from '/src/utils/timeMath.js';
+        import { initPlanetaryIntro } from '/src/components/intro/planetaryIntro.js';
         import { COUNTRIES_DATA } from '/src/data/countries.data.js';
         import { haptics } from '/src/utils/audioHaptics.js';
         import { GlobeWebGL } from '/src/components/map/globeWebGL.js';
@@ -871,129 +1282,25 @@
         }
 
         // --------------------------------------------------------------------
-        // A. 5-SECOND CINEMATIC CALIBRATION STAGE ENGINE
+        // A. ENTERPRISE PLANETARY INTRO STAGE (Sprint M - Redesign)
         // --------------------------------------------------------------------
-        const introStage = document.getElementById('introStage');
-        const introCountdown = document.getElementById('introCountdown');
-        const introProgressBar = document.getElementById('introProgressBar');
-        const btnSkipIntro = document.getElementById('btnSkipIntro');
+        const planetaryIntro = initPlanetaryIntro({
+            durationMs: 3800,
+            onComplete: () => {
+                console.info('[Horologium] Planetary intro sequence nominal. Calibre-01 workbench engaged.');
+            }
+        });
+        window.__HOROLOGIUM_INTRO__ = planetaryIntro;
+
         const homeReplayIntro = document.getElementById('homeReplayIntro');
         const btnReplayIntroBottom = document.getElementById('btnReplayIntroBottom');
-        const introSoundToggle = document.getElementById('introSoundToggle');
-        const soundIcon = document.getElementById('soundIcon');
-        const soundText = document.getElementById('soundText');
 
-        let introStartTime = null;
-        let introAnimationId = null;
-        let introActive = true;
-        let lastTickSecond = -1;
-
-        // Sound Toggle
-        if (introSoundToggle) {
-            introSoundToggle.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                const enabled = haptics.toggle();
-                soundIcon.textContent = enabled ? '🔊' : '🔇';
-                soundText.textContent = enabled ? 'AUDIO ON' : 'AUDIO OFF';
-            });
+        if (homeReplayIntro) {
+            homeReplayIntro.addEventListener('click', () => planetaryIntro.replay());
         }
-
-        function dismissIntro() {
-            if (!introActive) return;
-            introActive = false;
-            if (introAnimationId) cancelAnimationFrame(introAnimationId);
-            if (introStage) introStage.classList.add('dismissed');
-            haptics.playLockTone();
+        if (btnReplayIntroBottom) {
+            btnReplayIntroBottom.addEventListener('click', () => planetaryIntro.replay());
         }
-
-        function runIntroSequence(timestamp) {
-            if (!introStartTime) introStartTime = timestamp;
-            const elapsed = timestamp - introStartTime;
-            const remainingMs = Math.max(0, 5000 - elapsed);
-            const remainingSec = (remainingMs / 1000).toFixed(2);
-
-            // Update digital countdown
-            if (introCountdown) {
-                introCountdown.textContent = `${remainingSec}s`;
-            }
-
-            // Update SVG circle stroke (radius=125, circumference=785)
-            const progress = Math.min(elapsed / 5000, 1);
-            if (introProgressBar) {
-                const offset = 785 * (1 - progress);
-                introProgressBar.style.strokeDashoffset = offset;
-            }
-
-            // Audio tick on whole seconds
-            const currentSec = Math.floor(elapsed / 1000);
-            if (currentSec !== lastTickSecond && currentSec < 5) {
-                lastTickSecond = currentSec;
-                haptics.playTick();
-            }
-
-            // Sequential diagnostic steps at each second
-            if (elapsed >= 1000) {
-                const s2 = document.getElementById('diagStep2');
-                const s2stat = document.getElementById('diagStep2Status');
-                if (s2) s2.classList.add('active', 'completed');
-                if (s2stat) { s2stat.textContent = '220 LOADED'; s2stat.style.color = 'var(--semantic-success)'; }
-            }
-            if (elapsed >= 2000) {
-                const s3 = document.getElementById('diagStep3');
-                const s3stat = document.getElementById('diagStep3Status');
-                if (s3) s3.classList.add('active', 'completed');
-                if (s3stat) { s3stat.textContent = 'COMPUTED'; s3stat.style.color = 'var(--semantic-success)'; }
-            }
-            if (elapsed >= 3000) {
-                const s4 = document.getElementById('diagStep4');
-                const s4stat = document.getElementById('diagStep4Status');
-                if (s4) s4.classList.add('active', 'completed');
-                if (s4stat) { s4stat.textContent = 'SYNCHRONIZED'; s4stat.style.color = 'var(--semantic-success)'; }
-            }
-            if (elapsed >= 4000) {
-                const s5 = document.getElementById('diagStep5');
-                const s5stat = document.getElementById('diagStep5Status');
-                if (s5) s5.classList.add('active', 'completed');
-                if (s5stat) { s5stat.textContent = 'READY'; s5stat.style.color = 'var(--accent-counter)'; }
-            }
-
-            if (elapsed >= 5000) {
-                dismissIntro();
-            } else {
-                introAnimationId = requestAnimationFrame(runIntroSequence);
-            }
-        }
-
-        // Start calibration sequence on page load
-        introAnimationId = requestAnimationFrame(runIntroSequence);
-
-        if (btnSkipIntro) {
-            btnSkipIntro.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                haptics.playMechanicalClick();
-                dismissIntro();
-            });
-        }
-
-        function replayCalibration() {
-            if (introStage) {
-                introStage.classList.remove('dismissed');
-                introActive = true;
-                introStartTime = null;
-                lastTickSecond = -1;
-                // Reset diagnostic rows
-                for (let i = 2; i <= 5; i++) {
-                    const row = document.getElementById(`diagStep${i}`);
-                    if (row) row.classList.remove('active', 'completed');
-                }
-                const s5stat = document.getElementById('diagStep5Status');
-                if (s5stat) { s5stat.textContent = 'ARMING'; s5stat.style.color = 'var(--fg-2)'; }
-                introAnimationId = requestAnimationFrame(runIntroSequence);
-            }
-        }
-
-        if (homeReplayIntro) homeReplayIntro.addEventListener('click', replayCalibration);
-        if (btnReplayIntroBottom) btnReplayIntroBottom.addEventListener('click', replayCalibration);
 
         // --------------------------------------------------------------------
         // B. LIVE TELEMETRY, 12H/24H & THEME MANAGEMENT
@@ -1004,12 +1311,19 @@
         const vernierContainer = document.getElementById('homeVernierMeter');
         if (vernierContainer) {
             vernierContainer.innerHTML = '';
-            for (let i = 1; i <= 24; i++) {
+            for (let h = 0; h < 24; h++) {
                 const tick = document.createElement('div');
                 tick.className = 'vernier-tick';
-                if (i <= 18) tick.classList.add('active-counter');
-                else if (i <= 21) tick.classList.add('active-warning');
-                else tick.classList.add('active-danger');
+                if ((h >= 0 && h < 6) || (h >= 20 && h < 24)) {
+                    tick.classList.add('tick-night');
+                    tick.title = `${String(h).padStart(2, '0')}:00 - Nocturnal Solar Arc`;
+                } else if ((h >= 6 && h < 8) || (h >= 18 && h < 20)) {
+                    tick.classList.add('tick-twilight');
+                    tick.title = `${String(h).padStart(2, '0')}:00 - Solar Twilight Horizon`;
+                } else {
+                    tick.classList.add('tick-daylight');
+                    tick.title = `${String(h).padStart(2, '0')}:00 - Peak Diurnal Overlap`;
+                }
                 vernierContainer.appendChild(tick);
             }
         }
@@ -1347,20 +1661,21 @@
                 }
 
                 card.innerHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <div style="font-weight: 500; font-size: 13px; color: var(--fg-0);">
+                    <div style="min-width: 0; flex: 1; padding-right: 12px; display: flex; flex-direction: column; gap: 2px;">
+                        <div style="font-weight: 500; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                             <span>${item.flag}</span> ${item.capital || item.country}
                         </div>
-                        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">
+                        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.country} · ${item.utc}">
                             ${item.country} · ${item.utc}
                         </div>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--fg-0); font-variant-numeric: tabular-nums;">
+                    <div style="flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                        <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; white-space: nowrap;">
                             ${cityTime}
                         </div>
-                        <a href="/flight-deck/?country=${encodeURIComponent(item.country)}" style="font-family: var(--font-mono); font-size: 9px; color: var(--accent-primary); text-decoration: none;">
-                            VIEW MAP ➔
+                        <a href="/flight-deck/?country=${encodeURIComponent(item.country)}" style="font-family: var(--font-mono); font-size: 9px; color: var(--accent-primary); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 2px;" title="View ${item.country} on Flight Deck">
+                            <span>VIEW MAP</span>
+                            <span>➔</span>
                         </a>
                     </div>
                 `;
@@ -1370,6 +1685,17 @@
         }
 
         renderSearchResults();
+
+        const searchTrigger = document.getElementById('homeSearchTrigger');
+        if (searchTrigger) {
+            searchTrigger.addEventListener('click', () => {
+                const searchInput = document.getElementById('benchSearchInput');
+                if (searchInput) {
+                    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    searchInput.focus();
+                }
+            });
+        }
 
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
@@ -1383,9 +1709,9 @@
             if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
 
             if (e.code === 'Space' || e.key === 'Escape') {
-                if (introActive) {
+                if (window.__HOROLOGIUM_INTRO__ && window.__HOROLOGIUM_INTRO__.isActive) {
                     e.preventDefault();
-                    dismissIntro();
+                    window.__HOROLOGIUM_INTRO__.dismiss();
                 }
             } else if (e.key === 'm' || e.key === 'M') {
                 window.location.href = '/flight-deck/';

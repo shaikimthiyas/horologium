@@ -36,9 +36,9 @@ export class ChronoSliderController {
     this.dstStatusLabel = hasDoc ? document.getElementById('dstStatusLabel') : null;
     this.subsolarPosLabel = hasDoc ? document.getElementById('subsolarPosLabel') : null;
 
-    // Controls container
+    // Controls container (Priority: Docked Matrix Transport Bar)
     this.controlsContainer = hasDoc
-      ? (document.querySelector('.scrubber-controls') || document.getElementById('scrubberControls'))
+      ? (document.getElementById('matrixTransportDock') || document.querySelector('.scrubber-controls') || document.getElementById('scrubberControls'))
       : null;
 
     // State
