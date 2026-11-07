@@ -147,13 +147,22 @@ export class PlanetaryIntroStage {
   }
 
   setupListeners() {
+    const handleEnter = (e) => {
+      if (e) e.preventDefault();
+      haptics.playMechanicalClick();
+      this.dismiss();
+      if (typeof window !== 'undefined' && window.location.pathname !== '/horo/') {
+        window.location.href = '/horo/';
+      }
+    };
+
     // Skip / Launch Button
     if (this.btnSkip) {
-      this.btnSkip.addEventListener('click', (e) => {
-        e.preventDefault();
-        haptics.playMechanicalClick();
-        this.dismiss();
-      });
+      this.btnSkip.addEventListener('click', handleEnter);
+    }
+    const btnEnter = document.getElementById('btnEnterHoro');
+    if (btnEnter) {
+      btnEnter.addEventListener('click', handleEnter);
     }
 
     // Audio Haptics Toggle
@@ -178,6 +187,9 @@ export class PlanetaryIntroStage {
         e.preventDefault();
         haptics.playMechanicalClick();
         this.dismiss();
+        if (typeof window !== 'undefined' && window.location.pathname !== '/horo/') {
+          window.location.href = '/horo/';
+        }
       }
     };
     window.addEventListener('keydown', this.keyHandler);
@@ -250,9 +262,11 @@ export class PlanetaryIntroStage {
     if (!this.canvas || !this.ctx) return;
     const rect = this.canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const size = Math.min(rect.width || 420, rect.height || 420);
+    const rawSize = Math.max(rect.width, rect.height);
+    const size = Math.floor(rawSize > 100 ? rawSize : 700);
     this.canvas.width = Math.floor(size * dpr);
     this.canvas.height = Math.floor(size * dpr);
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(dpr, dpr);
   }
 
@@ -349,8 +363,7 @@ export class PlanetaryIntroStage {
     });
 
     if (progress >= 0.95 && this.statusPillEl) {
-      this.statusPillEl.textContent = 'SYSTEM OPERATIONAL // NOMINAL';
-      this.statusPillEl.style.color = 'var(--cyan-telemetry, #00F5D4)';
+      this.statusPillEl.innerHTML = '<span class="status-pulse-dot" aria-hidden="true"></span> <span class="status-label">SYSTEM OPERATIONAL</span> <span class="status-sep">·</span> <span class="status-sla">99.999% SLA</span> <span class="status-sep">·</span> <span class="status-loc">GENEVA STRATUM-1</span>';
     }
   }
 
@@ -407,7 +420,7 @@ export class PlanetaryIntroStage {
 
     const cx = renderW / 2;
     const cy = renderH / 2;
-    const R = Math.min(renderW, renderH) * 0.40; // Globe sphere radius
+    const R = Math.min(renderW, renderH) * 0.45; // Globe sphere radius (massive tourbillon scale)
 
     // Apply Inertia Momentum & Prograde Revolution Physics (West to East)
     if (!this.drag.isDragging) {
