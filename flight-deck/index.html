@@ -69,15 +69,41 @@
         </div>
 
         <!-- Vector Map SVG -->
-        <svg id="allSvg" baseprofile="tiny" version="1.2" viewbox="0 0 2000 857" xmlns="http://www.w3.org/2000/svg">
-            <!-- Astronomical Solar Terminator Day/Night Shadow Curve -->
-            <path id="solarTerminator" class="solar-terminator-shadow" d=""></path>
+        <svg id="allSvg" baseprofile="tiny" version="1.2" viewBox="0 0 2000 857" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Golden Hour Atmosphere Blur Filter -->
+                <filter id="terminatorGlowBlur" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="5" />
+                </filter>
+                <!-- Night Umbra Feathering Filter -->
+                <filter id="nightBlur" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="3.5" />
+                </filter>
+                <!-- Bioluminescent City Light Glow Filter -->
+                <filter id="cityGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2.2" />
+                </filter>
+                <!-- Night Umbra Mask for Bioluminescent Night City Clusters -->
+                <mask id="nightUmbraMask">
+                    <rect x="0" y="0" width="2000" height="857" fill="black" />
+                    <path id="nightMaskPath" fill="white" d="" />
+                </mask>
+            </defs>
 
-            <!-- Coordinate Graticules Grid Lines (Dashed Lat/Lon lines) -->
+            <!-- 1. Sunlit Ocean Base Layer -->
+            <rect class="map-ocean-base" width="2000" height="857" />
+
+            <!-- 2. Continental Shelf Bathymetry Contour -->
+            <g id="bathymetryShelfGroup" class="bathymetry-shelf-group"></g>
+
+            <!-- 3. Coordinate Graticules Grid Lines (15° Timezone Bands & 30° Latitudes) -->
             <g id="graticulesGroup"></g>
 
-            <!-- Active Longitudinal Meridian Line -->
-            <line id="activeMeridianLine" class="active-meridian-needle" x1="1000" y1="0" x2="1000" y2="857"></line>
+            <!-- 4. Labeled Celestial Rails (Tropic of Cancer, Equator, Tropic of Capricorn) -->
+            <g id="celestialRailsGroup"></g>
+
+            <!-- 5. Country Landmass Paths -->
+            <g id="landmassGroup">
         <path class="allPaths"
             d="M1383 261.6l1.5 1.8-2.9 0.8-2.4 1.1-5.9 0.8-5.3 1.3-2.4 2.8 1.9 2.7 1.4 3.2-2 2.7 0.8 2.5-0.9 2.3-5.2-0.2 3.1 4.2-3.1 1.7-1.4 3.8 1.1 3.9-1.8 1.8-2.1-0.6-4 0.9-0.2 1.7-4.1 0-2.3 3.7 0.8 5.4-6.6 2.7-3.9-0.6-0.9 1.4-3.4-0.8-5.3 1-9.6-3.3 3.9-5.8-1.1-4.1-4.3-1.1-1.2-4.1-2.7-5.1 1.6-3.5-2.5-1 0.5-4.7 0.6-8 5.9 2.5 3.9-0.9 0.4-2.9 4-0.9 2.6-2-0.2-5.1 4.2-1.3 0.3-2.2 2.9 1.7 1.6 0.2 3 0 4.3 1.4 1.8 0.7 3.4-2 2.1 1.2 0.9-2.9 3.2 0.1 0.6-0.9-0.2-2.6 1.7-2.2 3.3 1.4-0.1 2 1.7 0.3 0.9 5.4 2.7 2.1 1.5-1.4 2.2-0.6 2.5-2.9 3.8 0.5 5.4 0z" data-code="AF"
             id="Afghanistan">
@@ -1598,18 +1624,64 @@
         <path class="allPaths" id="Fiji"
             d="M 1994.4 606 1994 606.4 1993.2 607.5 1992.9 607.6 1992.2 608 1992 608.6 1991.6 608.8 1991.4 609.1 1991.3 609.3 1991.6 609.4 1992.2 609.1 1992.3 609 1992.6 608.7 1992.8 608.4 1993.4 608.1 1993.7 607.8 1994.3 607.5 1994.3 607.8 1993.8 608.5 1993.6 608.6 1993.7 609.2 1993.4 609.5 1993.1 609.2 1992.7 609.2 1992.2 609.3 1991.8 609.6 1991.1 609.7 1990.1 609.7 1990.6 609.2 1990.2 609 1989.6 609.2 1989.2 609.4 1989.2 609.6 1988.9 609.7 1988.7 609.8 1988.6 610.2 1988.4 610.5 1988.1 610.4 1988.1 610.2 1987.7 610.1 1987.3 610.3 1987.1 610.8 1986.8 611 1986.5 611 1986.5 610.7 1986.5 610.3 1986.3 609.9 1986.4 609.7 1986.3 609.6 1985.7 609.8 1985.7 609.4 1986.1 609.1 1986.2 609.1 1986.1 608.6 1986.4 608.5 1986.9 608.8 1987.5 608.4 1987.7 608.4 1988 608.1 1988.2 608.1 1988.5 607.8 1988.5 607.6 1989.3 607.5 1990.2 607.2 1990.5 607.1 1990.9 607.2 1991.4 607 1991.6 606.6 1991.8 606.6 1992 606.2 1992.4 606.3 1992.5 606.1 1992.7 606.2 1993.7 605.7 1993.8 606 1994 605.9 1994.2 606 1994.5 605.7 1995 605.5 1995.1 605.6 1994.6 606 1994.4 606 Z">
         </path>
-        <circle cx="997.9" cy="189.1" id="0"></circle>
-        <circle cx="673.5" cy="724.1" id="1"></circle>
-        <circle cx="1798.2" cy="719.3" id="2"></circle>
-    </svg>
+                    </g>
 
-        <!-- Technical Crosshair Tooltip -->
-        <div id="name">
+            <!-- 6. Bioluminescent Night City Lights (Satellite from Orbit Effect — Masked to Night Side Only) -->
+            <g id="nightCitiesGroup" mask="url(#nightUmbraMask)" class="night-cities-cluster"></g>
+
+            <!-- 7. Multi-Band Atmospheric Twilight & Shadow Overlay Layer -->
+            <g id="twilightBandsGroup" class="twilight-bands-group">
+                <!-- Civil Twilight Band (alpha = 0° to -6°) -->
+                <path id="civilTwilightPath" class="solar-twilight-civil" d=""></path>
+                <!-- Nautical Twilight Band (alpha = -6° to -12°) -->
+                <path id="nauticalTwilightPath" class="solar-twilight-nautical" d=""></path>
+                <!-- Astronomical Night Umbra (alpha < -12°) -->
+                <path id="astronomicalNightPath" class="solar-night-umbra" d=""></path>
+                <!-- Legacy selector for backward compatibility & tests -->
+                <path id="solarTerminator" class="solar-terminator-shadow" d="" style="display:none;"></path>
+                <!-- Golden Hour Horizon Refraction Glow (alpha = 0°) -->
+                <path id="goldenHourGlow" class="solar-golden-glow" d=""></path>
+                <!-- Golden Hour Horizon Core Line -->
+                <path id="goldenHourCore" class="solar-golden-core" d=""></path>
+            </g>
+
+            <!-- 8. Celestial Mechanics (Subsolar Zenith Beacon & Solar Analemma Figure-8) -->
+            <g id="celestialMechanicsGroup">
+                <!-- Solar Analemma Figure-8 Curve (Equation of Time & Annual Drift) -->
+                <path id="solarAnalemmaPath" class="solar-analemma-curve" d=""></path>
+                <!-- Live Subsolar Zenith Beacon (90° Sun Position) -->
+                <g id="subsolarBeaconGroup" class="subsolar-beacon"></g>
+                <!-- Antisolar Nadir (Midnight Nadir) -->
+                <g id="antisolarNadirGroup" class="antisolar-nadir"></g>
+            </g>
+
+            <!-- 9. Great-Circle Geodesic Flight Paths Layer -->
+            <g id="geodesicArcsGroup" class="geodesic-arcs-layer"></g>
+
+            <!-- 10. Pinned City Interactive Beacons Layer -->
+            <g id="pinnedCityBeaconsGroup" class="pinned-beacons-layer"></g>
+
+            <!-- 11. Interactive 15° Meridian Time-Band Loupe -->
+            <g id="meridianLoupeGroup" class="meridian-loupe-layer" style="opacity: 0; pointer-events: none;">
+                <rect id="meridianLoupeRect" class="meridian-loupe-rect" x="0" y="0" width="83.33" height="857" />
+                <line id="meridianLoupeLeftLine" class="meridian-loupe-guide" x1="0" y1="0" x2="0" y2="857" />
+                <line id="meridianLoupeRightLine" class="meridian-loupe-guide" x1="0" y1="0" x2="0" y2="857" />
+                <line id="activeMeridianLine" class="active-meridian-needle" x1="1000" y1="0" x2="1000" y2="857"></line>
+            </g>
+        </svg>
+
+        <!-- Rich Cartographic Telemetry Floating Tooltip -->
+        <div id="name" class="map-hover-pill">
             <p id="namep">
                 <span id="tooltipFlag">🌐</span>
                 <span id="tooltipCountry" class="font-mono">Country</span>
                 <span id="tooltipEditorial" class="tooltip-editorial"></span>
             </p>
+            <div id="tooltipSolarTelemetry" class="tooltip-solar-row" style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; margin-top: 4px; border-top: 1px solid var(--border-subtle); padding-top: 4px;">
+                <span id="tooltipSolarTime" style="color: var(--text-secondary);">SOLAR 12:00:00</span>
+                <span style="color: var(--border-strong);">·</span>
+                <span id="tooltipSolarBadge" style="padding: 1px 5px; border-radius: 3px; font-weight: 500;">☀ Daylight</span>
+            </div>
         </div>
     </main>
 

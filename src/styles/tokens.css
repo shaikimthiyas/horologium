@@ -45,15 +45,33 @@
   --status-critical: #EF4444;
   --status-critical-bg: rgba(239, 68, 68, 0.14);
 
-  /* MAP SURFACE TOKENS (HIGH-CONTRAST NIGHT VISIBILITY) */
-  --map-water: var(--bg-canvas);
-  --map-land: #181D29;
-  --map-land-stroke: rgba(237, 239, 242, 0.10);
-  --map-land-hover: #22293A;
-  --map-land-selected: #2B354C;
+  /* ========================================================================
+     CARTOGRAPHIC & ASTRONOMICAL TOKENS (Deep Space Observatory)
+     ======================================================================== */
+  --map-ocean-day: #0D1526;
+  --map-ocean-polar: #090E1A;
+  --map-ocean-night: #05070B;
+  --map-water: var(--map-ocean-day);
+  --map-land: #1E293B;
+  --map-land-day: #1E293B;
+  --map-land-night: #0B0F17;
+  --map-land-stroke: #293548;
+  --map-shelf-stroke: rgba(51, 65, 85, 0.40);
+  --map-land-hover: #2E3E55;
+  --map-land-selected: #334155;
   --map-land-selected-stroke: var(--accent-primary);
-  --map-graticule: rgba(237, 239, 242, 0.04);
-  --map-terminator-shadow: rgba(4, 7, 14, 0.50);
+  --map-terminator-glow: #F59E0B;
+  --map-golden-core: #FBBF24;
+  --map-twilight-civil: rgba(30, 41, 59, 0.32);
+  --map-twilight-nautical: rgba(15, 23, 42, 0.52);
+  --map-night-umbra: rgba(5, 7, 11, 0.72);
+  --map-night-tint: rgba(5, 7, 11, 0.68);
+  --map-terminator-shadow: rgba(5, 7, 11, 0.65);
+  --map-city-lights: #FBBF24;
+  --map-city-glow: rgba(251, 191, 36, 0.45);
+  --map-loupe-fill: rgba(59, 130, 246, 0.08);
+  --map-graticule: rgba(237, 239, 242, 0.06);
+  --map-graticule-label: #64748B;
 
   /* BACKWARD COMPATIBILITY BRIDGE (Preserves Legacy Engine Bindings & Tests) */
   --bg-0: var(--bg-canvas);
@@ -153,15 +171,33 @@
   --status-critical: #DC2626;
   --status-critical-bg: rgba(220, 38, 38, 0.12);
 
-  /* MAP SURFACE TOKENS (SILVERED DIAL) */
-  --map-water: #EAECEF;
+  /* ========================================================================
+     CARTOGRAPHIC & ASTRONOMICAL TOKENS (Architectural Relief Atlas)
+     ======================================================================== */
+  --map-ocean-day: #E2E8F0;
+  --map-ocean-polar: #E8EEF5;
+  --map-ocean-night: #CBD5E1;
+  --map-water: var(--map-ocean-day);
   --map-land: #FFFFFF;
-  --map-land-stroke: rgba(13, 16, 23, 0.08);
-  --map-land-hover: #F1F5F9;
-  --map-land-selected: #DCE3EE;
+  --map-land-day: #FFFFFF;
+  --map-land-night: #F1F5F9;
+  --map-land-stroke: #CBD5E1;
+  --map-shelf-stroke: rgba(148, 163, 184, 0.45);
+  --map-land-hover: #F8FAFC;
+  --map-land-selected: #E2E8F0;
   --map-land-selected-stroke: var(--accent-primary);
-  --map-graticule: rgba(13, 16, 23, 0.05);
-  --map-terminator-shadow: rgba(13, 16, 23, 0.15);
+  --map-terminator-glow: #EA580C;
+  --map-golden-core: #F59E0B;
+  --map-twilight-civil: rgba(15, 23, 42, 0.22);
+  --map-twilight-nautical: rgba(15, 23, 42, 0.38);
+  --map-night-umbra: rgba(15, 23, 42, 0.54);
+  --map-night-tint: rgba(15, 23, 42, 0.42);
+  --map-terminator-shadow: rgba(15, 23, 42, 0.45);
+  --map-city-lights: #D97706;
+  --map-city-glow: rgba(217, 119, 6, 0.35);
+  --map-loupe-fill: rgba(37, 99, 235, 0.06);
+  --map-graticule: rgba(15, 23, 42, 0.08);
+  --map-graticule-label: #94A3B8;
 
   /* BACKWARD COMPATIBILITY BRIDGE */
   --bg-0: var(--bg-canvas);

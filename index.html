@@ -1303,9 +1303,38 @@
                 <!-- SVG Equirectangular Canvas Preview / 3D WebGL Canvas -->
                 <div class="mini-map-viewport">
                     <svg class="mini-map-svg" id="miniMapSvg2D" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="1000" height="480" fill="var(--map-water)" />
+                        <defs>
+                            <filter id="miniTerminatorBlur" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="3" />
+                            </filter>
+                            <filter id="miniNightBlur" x="-10%" y="-10%" width="120%" height="120%">
+                                <feGaussianBlur stdDeviation="2.5" />
+                            </filter>
+                            <mask id="miniNightMask">
+                                <rect width="1000" height="480" fill="black" />
+                                <path id="miniNightMaskPath" fill="white" d="" />
+                            </mask>
+                        </defs>
 
-                        <!-- High-Precision Geodesic Vector Continents -->
+                        <!-- 1. Sunlit Ocean Base Layer -->
+                        <rect width="1000" height="480" class="map-ocean-base" fill="var(--map-ocean-day)" />
+
+                        <!-- 2. Labeled Celestial Reference Rails -->
+                        <g class="mini-celestial-rails">
+                            <!-- Tropic of Cancer (23.4°N) -->
+                            <line x1="0" y1="177.5" x2="1000" y2="177.5" class="celestial-rail-line" />
+                            <text x="8" y="173" class="celestial-rail-label" style="font-size: 8px;">23.4°N CANCER</text>
+                            
+                            <!-- Equator (0.0°) -->
+                            <line x1="0" y1="240" x2="1000" y2="240" class="celestial-rail-equator" />
+                            <text x="8" y="235" class="celestial-rail-label" style="font-size: 8px;">0.0° EQUATOR</text>
+
+                            <!-- Tropic of Capricorn (23.4°S) -->
+                            <line x1="0" y1="302.5" x2="1000" y2="302.5" class="celestial-rail-line" />
+                            <text x="8" y="298" class="celestial-rail-label" style="font-size: 8px;">23.4°S CAPRICORN</text>
+                        </g>
+
+                        <!-- 3. High-Precision Geodesic Vector Continents -->
                         <g class="mini-continents-group" id="miniContinentsGroup">
                             <path class="mini-map-land" d="M33 66 L111 53 L222 40 L333 53 L347 106 L319 120 L291 146 L277 173 L250 186 L208 186 L166 154 L152 112 L111 80 Z" title="North America" />
                             <path class="mini-map-land" d="M380 40 L430 45 L415 90 L370 75 Z" title="Greenland" />
@@ -1319,11 +1348,25 @@
                             <path class="mini-map-land" d="M100 450 L900 450 L850 435 L700 440 L500 430 L300 440 L150 435 Z" title="Antarctica" />
                         </g>
 
-                        <!-- Dynamic Astronomical Solar Terminator Shadow Polygon -->
-                        <path id="miniSolarTerminator" class="mini-map-terminator" d=""></path>
+                        <!-- 4. Bioluminescent Night City Lights (Masked to Night Side Only) -->
+                        <g id="miniNightCities" mask="url(#miniNightMask)"></g>
 
-                        <!-- Live Subsolar Sun Pip Indicator -->
-                        <circle id="miniSubsolarPip" class="mini-subsolar-pip" cx="500" cy="240" r="5" />
+                        <!-- 5. Multi-Band Atmospheric Twilight & Night Shadow Overlays -->
+                        <g id="miniTwilightBandsGroup">
+                            <path id="miniCivilTwilight" class="solar-twilight-civil" d=""></path>
+                            <path id="miniNauticalTwilight" class="solar-twilight-nautical" d=""></path>
+                            <path id="miniAstronomicalNight" class="solar-night-umbra" d=""></path>
+                            <path id="miniSolarTerminator" class="mini-map-terminator" d="" style="display:none;"></path>
+                            <path id="miniGoldenHourGlow" class="solar-golden-glow" d=""></path>
+                            <path id="miniGoldenHourCore" class="solar-golden-core" d=""></path>
+                        </g>
+
+                        <!-- 6. Solar Analemma Figure-8 Curve -->
+                        <path id="miniAnalemmaCurve" class="solar-analemma-curve" d=""></path>
+
+                        <!-- 7. Live Subsolar Sun Beacon -->
+                        <g id="miniSubsolarBeacon"></g>
+                        <circle id="miniSubsolarPip" class="mini-subsolar-pip" cx="500" cy="240" r="5" style="display:none;" />
                     </svg>
 
                     <!-- 3D WebGL Spherical Globe Canvas -->
@@ -1405,7 +1448,7 @@
          7. CLIENT LOGIC & ENGINE SCRIPTS
          ==================================================================== -->
     <script type="module">
-        import { calculateSolarDeclination, getSubsolarLongitude, generateTerminatorPath } from '/src/utils/timeMath.js';
+        import { calculateSolarDeclination, getSubsolarLongitude, generateTerminatorPath, generateTwilightBands, MAJOR_GLOBAL_CITIES } from '/src/utils/timeMath.js';
         import { initPlanetaryIntro } from '/src/components/intro/planetaryIntro.js';
         import { COUNTRIES_DATA } from '/src/data/countries.data.js';
         import { haptics } from '/src/utils/audioHaptics.js';
@@ -1423,6 +1466,22 @@
         window.__HOROLOGIUM_ERROR_BOUNDARY__ = errorBoundary;
 
         clockFsm.dispatch(ClockEvent.BOOT);
+
+        // Populate Mini World Map Night Cities
+        const miniNightCities = document.getElementById('miniNightCities');
+        if (miniNightCities) {
+            MAJOR_GLOBAL_CITIES.forEach(c => {
+                const x = ((c.lon + 180) / 360) * 1000;
+                const y = ((90 - c.lat) / 180) * 480;
+                const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                dot.setAttribute('cx', x.toFixed(1));
+                dot.setAttribute('cy', y.toFixed(1));
+                dot.setAttribute('r', '1.6');
+                dot.setAttribute('fill', 'var(--map-city-lights)');
+                miniNightCities.appendChild(dot);
+            });
+        }
+
 
         window.addEventListener('offline', () => clockFsm.dispatch(ClockEvent.CONNECTION_LOST));
         window.addEventListener('online', () => clockFsm.dispatch(ClockEvent.CONNECTION_RESTORED));
@@ -1560,19 +1619,37 @@
                 miniSubsolarLonEl.textContent = `${lonSign}${subsolarLon.toFixed(1)}°`;
             }
 
-            // Mini World Map Solar Terminator & Sun Position
-            const miniTerminator = document.getElementById('miniSolarTerminator');
-            if (miniTerminator) {
-                const termData = generateTerminatorPath(now, 1000, 480, 60);
-                miniTerminator.setAttribute('d', termData.pathD);
+            // Mini World Map Multi-Band Twilight & Sun Position
+            const bands = generateTwilightBands(now, 1000, 480, 80);
+            const miniCivil = document.getElementById('miniCivilTwilight');
+            if (miniCivil) miniCivil.setAttribute('d', bands.civilPolygonD);
+            const miniNaut = document.getElementById('miniNauticalTwilight');
+            if (miniNaut) miniNaut.setAttribute('d', bands.nauticalPolygonD);
+            const miniNight = document.getElementById('miniAstronomicalNight');
+            if (miniNight) miniNight.setAttribute('d', bands.astronomicalPolygonD);
+            const miniMask = document.getElementById('miniNightMaskPath');
+            if (miniMask) miniMask.setAttribute('d', bands.civilPolygonD);
+            const miniGlow = document.getElementById('miniGoldenHourGlow');
+            if (miniGlow) miniGlow.setAttribute('d', bands.goldenHourLineD);
+            const miniCore = document.getElementById('miniGoldenHourCore');
+            if (miniCore) miniCore.setAttribute('d', bands.goldenHourLineD);
+            const miniAnalemma = document.getElementById('miniAnalemmaCurve');
+            if (miniAnalemma) miniAnalemma.setAttribute('d', bands.analemmaPathD);
+
+            const miniBeacon = document.getElementById('miniSubsolarBeacon');
+            if (miniBeacon) {
+                miniBeacon.innerHTML = `
+                    <g transform="translate(${bands.subsolarPoint.x.toFixed(1)}, ${bands.subsolarPoint.y.toFixed(1)})">
+                        <circle class="subsolar-pulse-ring" r="16" />
+                        <circle class="subsolar-compass-ring" r="8" />
+                        <circle class="subsolar-sun-core" r="3.5" />
+                    </g>
+                `;
             }
 
-            const miniPip = document.getElementById('miniSubsolarPip');
-            if (miniPip) {
-                const pipX = ((subsolarLon + 180) / 360) * 1000;
-                const pipY = ((90 - dec) / 180) * 480;
-                miniPip.setAttribute('cx', pipX.toFixed(1));
-                miniPip.setAttribute('cy', pipY.toFixed(1));
+            const miniTerminator = document.getElementById('miniSolarTerminator');
+            if (miniTerminator) {
+                miniTerminator.setAttribute('d', bands.civilPolygonD);
             }
 
             a11y.announceHourlyShift(now);
