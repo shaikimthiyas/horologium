@@ -281,9 +281,17 @@ export class PlanetaryIntroStage {
         haptics.playTick();
       }
 
-      if (elapsed >= this.options.durationMs) {
+      if (elapsed >= this.options.durationMs && this.options.autoDismiss) {
         this.dismiss();
       } else {
+        if (elapsed >= this.options.durationMs) {
+          // Keep the 3D globe, gears, and telemetry alive after milestone completion
+          this.updateProgress(1.0, this.options.durationMs);
+          const enterBtn = document.getElementById('btnEnterHoro');
+          if (enterBtn && !enterBtn.classList.contains('ready-pulse')) {
+            enterBtn.classList.add('ready-pulse');
+          }
+        }
         this.animId = requestAnimationFrame(loop);
       }
     };

@@ -76,6 +76,7 @@ const redirectWithTrailingSlash = (targetPath) => (req, res, next) => {
   res.redirect(301, `${targetPath}${qs}`);
 };
 
+app.get(['/horo', '/horologium'], redirectWithTrailingSlash('/horo/'));
 app.get(['/flight-deck', '/map'], redirectWithTrailingSlash('/flight-deck/'));
 app.get(['/geodesic-registry', '/registry', '/directory', '/country'], redirectWithTrailingSlash('/geodesic-registry/'));
 app.get(['/operator-gateway', '/operator', '/security', '/auth'], redirectWithTrailingSlash('/operator-gateway/'));
@@ -97,6 +98,7 @@ if (existsSync(distPath)) {
   app.get('/about/', (req, res) => res.sendFile(resolve(distPath, 'about/index.html')));
   app.get('/status/', (req, res) => res.sendFile(resolve(distPath, 'status/index.html')));
   app.get('/privacy/', (req, res) => res.sendFile(resolve(distPath, 'privacy/index.html')));
+  app.get('/horo/', (req, res) => res.sendFile(resolve(distPath, 'horo/index.html')));
   app.get('/flight-deck/', (req, res) => res.sendFile(resolve(distPath, 'flight-deck/index.html')));
   app.get('/geodesic-registry/', (req, res) => res.sendFile(resolve(distPath, 'geodesic-registry/index.html')));
   app.get('/operator-gateway/', (req, res) => res.sendFile(resolve(distPath, 'operator-gateway/index.html')));

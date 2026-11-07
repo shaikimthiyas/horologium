@@ -1166,6 +1166,70 @@
             color: var(--text-primary);
             background: var(--bg-surface-2);
         }
+    
+.btn-intro-enter {
+  height: var(--ctrl-md);
+  padding: 0 18px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-primary, #3B82F6);
+  border: 1px solid var(--accent-primary, #3B82F6);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+  transition: all 120ms var(--ease-snappy);
+}
+
+.btn-intro-enter:hover {
+  background: #2563EB;
+  border-color: #2563EB;
+  color: #FFFFFF;
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.65);
+  transform: translateY(-1px);
+}
+
+.nav-intro-pill {
+  height: 32px;
+  padding: 0 12px;
+  background: var(--bg-surface-2, #181C28);
+  border: 1px solid var(--border-subtle, #232838);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--accent-primary, #3B82F6);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 120ms ease;
+}
+
+.nav-intro-pill:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+    
+.btn-intro-enter.ready-pulse {
+  animation: enterPulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.75);
+}
+@keyframes enterPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 16px rgba(59, 130, 246, 0.5); }
+  50% { transform: scale(1.03); box-shadow: 0 0 28px rgba(59, 130, 246, 0.9); }
+}
+
     </style>
 </head>
 <body class="workbench-home">
@@ -1173,7 +1237,7 @@
     <!-- ====================================================================
          1. OPTIONAL PLANETARY INTRO STAGE (Dismissed by default for instant productivity)
          ==================================================================== -->
-    <div class="intro-stage dismissed" id="introStage" role="dialog" aria-modal="true" aria-label="Horologium Calibre-01 Swiss Planetary Tourbillon">
+    <div class="intro-stage" id="introStage" role="dialog" aria-modal="true" aria-label="Horologium Calibre-01 Swiss Planetary Tourbillon">
         <!-- Chassis Hex Screws (Machined Precision Corners) -->
         <div class="chassis-screw screw-tl" aria-hidden="true"></div>
         <div class="chassis-screw screw-tr" aria-hidden="true"></div>
@@ -1198,6 +1262,10 @@
                     <span class="sound-icon">🔊</span>
                     <span class="sound-text">AUDIO ON</span>
                 </button>
+                <a href="/horo/" class="btn-intro-enter" id="btnEnterHoro" title="Enter Horologium Console">
+                    <span>ENTER HOROLOGIUM</span>
+                    <span style="font-size: 13px;">→</span>
+                </a>
                 <button type="button" class="btn-intro-skip" id="btnSkipIntro" title="Launch Workbench [Space/Esc]" aria-label="Launch Workbench">
                     <span>LAUNCH WORKBENCH</span>
                     <kbd>SPACE / ESC</kbd>
@@ -1935,11 +2003,51 @@
             });
         }
 
-        // Optional Planetary Intro (Dismissed by default)
-        const planetaryIntro = initPlanetaryIntro({
-            durationMs: 3800,
-            autoStart: false
-        });
+        // Route-aware initialization: / is the Intro Experience; /horo/ is the Hero Workbench
+        const isHoroRoute = window.location.pathname.startsWith('/horo');
+        let planetaryIntro = null;
+
+        if (isHoroRoute) {
+            const stage = document.getElementById('introStage');
+            if (stage) {
+                stage.classList.add('dismissed');
+                stage.style.display = 'none';
+            }
+            planetaryIntro = initPlanetaryIntro({ durationMs: 3800, autoStart: false });
+        } else {
+            // Root route (/) stays on the Swiss Planetary Tourbillon Intro
+            const stage = document.getElementById('introStage');
+            if (stage) {
+                stage.classList.remove('dismissed');
+                stage.style.display = 'flex';
+            }
+            planetaryIntro = initPlanetaryIntro({
+                durationMs: 3800,
+                autoStart: true,
+                autoDismiss: false,
+                onComplete: () => {
+                    // Milestone completion: highlight enter button
+                    const enterBtn = document.getElementById('btnEnterHoro');
+                    if (enterBtn) enterBtn.classList.add('ready-pulse');
+                }
+            });
+
+            const btnSkip = document.getElementById('btnSkipIntro');
+            if (btnSkip) {
+                btnSkip.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = '/horo/';
+                });
+            }
+
+            const btnEnter = document.getElementById('btnEnterHoro');
+            if (btnEnter) {
+                btnEnter.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = '/horo/';
+                });
+            }
+        }
         window.__HOROLOGIUM_INTRO__ = planetaryIntro;
 
         const btnReplayIntroBottom = document.getElementById('btnReplayIntroBottom');
