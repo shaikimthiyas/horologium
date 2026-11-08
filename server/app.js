@@ -8,6 +8,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { apiRouter } from './routes/api.js';
+import { embedRouter } from './routes/embed.js';
 import { metricsMiddleware } from './middleware/metricsMiddleware.js';
 import { livenessProbe, readinessProbe, startupProbe } from './middleware/healthProbes.js';
 import { problemDetailsErrorHandler } from './middleware/problemDetails.js';
@@ -82,11 +83,27 @@ app.get(['/geodesic-registry', '/registry', '/directory', '/country'], redirectW
 app.get(['/operator-gateway', '/operator', '/security', '/auth'], redirectWithTrailingSlash('/operator-gateway/'));
 app.get(['/protocol-liaison', '/liaison', '/inquiry', '/contact'], redirectWithTrailingSlash('/protocol-liaison/'));
 app.get(['/docs', '/api/docs', '/api-explorer'], redirectWithTrailingSlash('/api-explorer/'));
+app.get(['/developers', '/developer', '/portal', '/business'], redirectWithTrailingSlash('/developers/'));
 app.get(['/about', '/colophon', '/author'], redirectWithTrailingSlash('/about/'));
 app.get(['/status', '/telemetry', '/uptime'], redirectWithTrailingSlash('/status/'));
 app.get(['/privacy', '/legal', '/terms'], redirectWithTrailingSlash('/privacy/'));
 
 // API Routes
+// Public Embeddable Service & Standalone Iframes
+app.use('/embed', embedRouter);
+
+// Static Widgets CDN Route
+const widgetsPath = resolve(__dirname, '../public/widgets');
+if (existsSync(widgetsPath)) {
+  app.use('/widgets', express.static(widgetsPath));
+}
+
+// SDK CDN Route
+const sdkPath = resolve(__dirname, '../public/sdk');
+if (existsSync(sdkPath)) {
+  app.use('/sdk', express.static(sdkPath));
+}
+
 app.use('/api', apiRouter);
 
 // Production Static Distribution & Multi-Page Routing
@@ -104,6 +121,7 @@ if (existsSync(distPath)) {
   app.get('/operator-gateway/', (req, res) => res.sendFile(resolve(distPath, 'operator-gateway/index.html')));
   app.get('/protocol-liaison/', (req, res) => res.sendFile(resolve(distPath, 'protocol-liaison/index.html')));
   app.get('/api-explorer/', (req, res) => res.sendFile(resolve(distPath, 'api-explorer/index.html')));
+  app.get('/developers/', (req, res) => res.sendFile(resolve(distPath, 'developers/index.html')));
 
   app.use((req, res, next) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/ws')) {

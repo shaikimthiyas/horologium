@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Horologium // Planetary Time & Meeting Planner",
+  "version": "1.0.0",
+  "description": "Enterprise world clock, meeting overlap planner, and sub-second Stratum-1 time synchronization for global teams.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Open Horologium"
+  },
+  "permissions": [
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://horologium.io/*",
+    "http://localhost:5173/*",
+    "http://localhost:3001/*"
+  ]
+}
