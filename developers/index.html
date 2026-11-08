@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horologium // Developer Portal & Temporal Infrastructure</title>
+  <meta name="description" content="Production-ready public APIs, embeddable Web Component widgets, and Stratum-1 time synchronization for global enterprise applications." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <style>
+    :root {
+      --dev-bg: #07090E;
+      --dev-surface: #0E121B;
+      --dev-surface-2: #141A26;
+      --dev-border: rgba(255, 255, 255, 0.08);
+      --dev-cyan: #00F5D4;
+      --dev-blue: #3B82F6;
+      --dev-orange: #FF4D15;
+    }
+    body {
+      background-color: var(--dev-bg);
+      color: #EDEFF2;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .dev-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 64px 24px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+    .dev-hero {
+      border: 1px solid var(--dev-border);
+      background: radial-gradient(circle at 80% 20%, rgba(0, 245, 212, 0.05) 0%, transparent 60%),
+                  radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 60%),
+                  var(--dev-surface);
+      border-radius: var(--radius-lg, 14px);
+      padding: 36px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .dev-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--dev-cyan);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dev-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .dev-subtitle {
+      font-size: 15px;
+      color: #8E95A2;
+      max-width: 680px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .dev-badges-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .dev-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--dev-border);
+      color: #CBD5E1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 860px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    .card-panel {
+      background: var(--dev-surface);
+      border: 1px solid var(--dev-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: #8E95A2;
+      letter-spacing: 0.04em;
+    }
+    .form-input {
+      background: var(--dev-surface-2);
+      border: 1px solid var(--dev-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 140ms;
+    }
+    .form-input:focus {
+      border-color: var(--dev-cyan);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      border: 1px solid #3B82F6;
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 150ms;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.6);
+    }
+    .code-box {
+      background: #05070B;
+      border: 1px solid var(--dev-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #38BDF8;
+      overflow-x: auto;
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--dev-border);
+      color: #EDEFF2;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.16); }
+    .studio-preview-box {
+      background: #05070B;
+      border: 1px dashed var(--dev-border);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+    }
+    .studio-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--dev-border);
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+    .studio-tab {
+      background: none;
+      border: none;
+      color: #8E95A2;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .studio-tab.active {
+      color: var(--dev-cyan);
+      background: rgba(0, 245, 212, 0.08);
+    }
+  </style>
+  <script type="module" src="/widgets/horologium-widgets.js"></script>
+</head>
+<body>
+
+  <!-- Canonical Semantic Header -->
+  <header class="telemetry-bar" style="border-bottom: 1px solid var(--dev-border); padding: 14px 24px; background: rgba(10,13,20,0.85); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <a href="/" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:#00F5D4; box-shadow:0 0 8px #00F5D4; display:inline-block;"></span>
+        <span style="font-weight:700; color:#FFFFFF; font-size:15px; letter-spacing:-0.01em;">Horologium</span>
+      </a>
+      <span style="color:#64748B;">/</span>
+      <span style="font-family:var(--font-mono); font-size:12px; color:#8E95A2;">DEVELOPER PLATFORM</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <a href="/horo/" style="color:#CBD5E1; text-decoration:none; font-size:12px; font-family:var(--font-mono);">Workbench →</a>
+      <a href="/api-explorer/" style="color:#CBD5E1; text-decoration:none; font-size:12px; font-family:var(--font-mono);">API Explorer →</a>
+    </div>
+  </header>
+
+  <main class="dev-container">
+    <!-- Hero Zone -->
+    <section class="dev-hero">
+      <div class="dev-eyebrow">
+        <span>●</span>
+        <span>Public Temporal Infrastructure · Enterprise Layer</span>
+      </div>
+      <h1 class="dev-title">Temporal Infrastructure for Global Systems.</h1>
+      <p class="dev-subtitle">
+        High-precision Stratum-1 time synchronization, cross-border meeting overlap algorithms, and embeddable Web Component widgets designed to power calendars, CRMs, logistics, and SaaS platforms worldwide.
+      </p>
+      <div class="dev-badges-row">
+        <span class="dev-badge"><strong style="color:#10B981;">99.999% SLA</strong> Uptime</span>
+        <span class="dev-badge"><strong style="color:#00F5D4;">RFC 5905</strong> SNTP v4</span>
+        <span class="dev-badge"><strong style="color:#38BDF8;">Marzullo</strong> Consensus</span>
+        <span class="dev-badge">Zero-Knowledge Privacy</span>
+        <span class="dev-badge">Free Public Utility Tier</span>
+      </div>
+    </section>
+
+    <!-- Grid: Key Provisioning & Interactive Widget Studio -->
+    <div class="grid-2">
+      <!-- 1. Instant API Key Provisioning -->
+      <section class="card-panel">
+        <h2 class="card-title">
+          <span>🔑</span>
+          <span>Generate Developer API Key</span>
+        </h2>
+        <p style="font-size:13px; color:#8E95A2; line-height:1.4;">
+          Instant self-service provisioning for verified partners. Unlocks 1,200 requests/minute, domain origin scoping, and enterprise metrics telemetry. Zero credit card required.
+        </p>
+
+        <form id="keyForm" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <label class="form-label" for="tenantName">APPLICATION / ORGANIZATION NAME</label>
+            <input type="text" id="tenantName" class="form-input" placeholder="e.g. Acme SaaS" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="tenantEmail">DEVELOPER CONTACT EMAIL</label>
+            <input type="email" id="tenantEmail" class="form-input" placeholder="developer@acme.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="allowedDomains">ALLOWED DOMAINS (CORS)</label>
+            <input type="text" id="allowedDomains" class="form-input" placeholder="* (or app.acme.com)" value="*" />
+          </div>
+          <button type="submit" class="btn-primary" id="btnSubmitKey">
+            <span>Generate Free API Key</span>
+            <span>→</span>
+          </button>
+        </form>
+
+        <div id="keyResult" style="display:none; flex-direction:column; gap:10px; margin-top:10px;">
+          <span style="font-size:12px; font-weight:600; color:#10B981;">✓ API Key Provisioned Successfully</span>
+          <div class="code-box">
+            <button type="button" class="copy-btn" id="btnCopyKey">Copy</button>
+            <code id="rawKeyText">hlg_live_...</code>
+          </div>
+          <p style="font-size:11px; color:#94A3B8;">Pass this key via <code style="color:#00F5D4;">X-Horologium-Key</code> or <code style="color:#00F5D4;">Authorization: Bearer</code>.</p>
+        </div>
+      </section>
+
+      <!-- 2. Interactive Widget Studio -->
+      <section class="card-panel">
+        <h2 class="card-title">
+          <span>🧩</span>
+          <span>Embeddable Widget Studio</span>
+        </h2>
+        <p style="font-size:13px; color:#8E95A2; line-height:1.4;">
+          Embed responsive world clocks and meeting planners into Notion, Confluence, WordPress, React, or custom dashboards.
+        </p>
+
+        <!-- Studio Controls -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label">WIDGET TYPE</label>
+            <select id="studioWidgetType" class="form-input">
+              <option value="clock">World Clock Card</option>
+              <option value="overlap">Meeting Overlap</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">TIMEZONE</label>
+            <select id="studioTimezone" class="form-input">
+              <option value="Asia/Tokyo">Asia/Tokyo (Tokyo)</option>
+              <option value="Europe/London">Europe/London (London)</option>
+              <option value="America/New_York">America/New_York (New York)</option>
+              <option value="Asia/Kolkata">Asia/Kolkata (New Delhi)</option>
+              <option value="Europe/Zurich">Europe/Zurich (Geneva)</option>
+              <option value="Australia/Sydney">Australia/Sydney (Sydney)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Widget Preview -->
+        <div class="studio-preview-box" id="studioPreviewBox">
+          <horologium-clock tz="Asia/Tokyo" city="Tokyo" theme="obsidian"></horologium-clock>
+        </div>
+
+        <!-- Code Snippet Tabs -->
+        <div>
+          <div class="studio-tabs">
+            <button type="button" class="studio-tab active" data-format="wc">Web Component</button>
+            <button type="button" class="studio-tab" data-format="iframe">Iframe Embed</button>
+          </div>
+          <div class="code-box">
+            <button type="button" class="copy-btn" id="btnCopySnippet">Copy</button>
+            <pre style="margin:0; font-size:11px; white-space:pre-wrap;" id="snippetCode"></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- REST API Endpoints Quick Reference -->
+    <section class="card-panel">
+      <h2 class="card-title">
+        <span>⚡</span>
+        <span>Stratum-1 REST & WebSocket Endpoints</span>
+      </h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
+          <div style="font-family:var(--font-mono); font-size:12px; color:#10B981; font-weight:600; margin-bottom:4px;">GET /api/v1/time</div>
+          <p style="font-size:12px; color:#8E95A2;">Synchronized atomic UTC timestamp, ISO string, solar declination, and subsolar meridian coordinates.</p>
+        </div>
+        <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
+          <div style="font-family:var(--font-mono); font-size:12px; color:#00F5D4; font-weight:600; margin-bottom:4px;">GET /api/v1/zones/overlap</div>
+          <p style="font-size:12px; color:#8E95A2;">24-hour mutual working hour overlap calculation between any two global IANA timezones.</p>
+        </div>
+        <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
+          <div style="font-family:var(--font-mono); font-size:12px; color:#38BDF8; font-weight:600; margin-bottom:4px;">GET /api/v1/stratum1/sync</div>
+          <p style="font-size:12px; color:#8E95A2;">Marzullo truechimer consensus diagnostics, cluster jitter, and clock skew telemetry.</p>
+        </div>
+        <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
+          <div style="font-family:var(--font-mono); font-size:12px; color:#F59E0B; font-weight:600; margin-bottom:4px;">WS /ws/sntp</div>
+          <p style="font-size:12px; color:#8E95A2;">Bidirectional RFC 4330 SNTP packet exchange over WebSockets with sub-millisecond round-trip time calibration.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="margin-top:auto; border-top:1px solid var(--dev-border); padding:24px; text-align:center; font-size:12px; color:#64748B;">
+    Horologium // Calibre-01 · Handcrafted by Shaik Imthiyas · Zero-Knowledge Temporal Infrastructure · 99.999% SLA
+  </footer>
+
+  <script>
+    // 1. Key Provisioning Script
+    const form = document.getElementById('keyForm');
+    const resultBox = document.getElementById('keyResult');
+    const rawKeyText = document.getElementById('rawKeyText');
+    const btnSubmit = document.getElementById('btnSubmitKey');
+    const btnCopy = document.getElementById('btnCopyKey');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Provisioning...';
+
+      const payload = {
+        tenantName: document.getElementById('tenantName').value,
+        tenantEmail: document.getElementById('tenantEmail').value,
+        allowedDomains: document.getElementById('allowedDomains').value || '*'
+      };
+
+      try {
+        const res = await fetch('/api/v1/developers/keys', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          resultBox.style.display = 'flex';
+          rawKeyText.textContent = data.apiKey;
+        } else {
+          alert(data.detail || 'Failed to provision key');
+        }
+      } catch (err) {
+        alert('Network error provisioning key');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Generate Free API Key →';
+      }
+    });
+
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(rawKeyText.textContent);
+      btnCopy.textContent = 'Copied!';
+      setTimeout(() => { btnCopy.textContent = 'Copy'; }, 2000);
+    });
+
+    // 2. Widget Studio Configurator
+    const widgetTypeSelect = document.getElementById('studioWidgetType');
+    const timezoneSelect = document.getElementById('studioTimezone');
+    const previewBox = document.getElementById('studioPreviewBox');
+    const snippetCode = document.getElementById('snippetCode');
+    const btnCopySnippet = document.getElementById('btnCopySnippet');
+    let currentFormat = 'wc';
+
+    function updateStudio() {
+      const type = widgetTypeSelect.value;
+      const tz = timezoneSelect.value;
+      const city = tz.split('/').pop().replace(/_/g, ' ');
+
+      if (type === 'clock') {
+        previewBox.innerHTML = '<horologium-clock tz="' + tz + '" city="' + city + '" theme="obsidian"></horologium-clock>';
+        if (currentFormat === 'wc') {
+          snippetCode.textContent = '<!-- 1. Import Web Component Bundle (once per page) -->\\n<script type="module" src="https://horologium.io/widgets/horologium-widgets.js"><\\/script>\\n\\n<!-- 2. Drop In Custom Element -->\\n<horologium-clock tz="' + tz + '" city="' + city + '" theme="obsidian"></horologium-clock>';
+        } else {
+          snippetCode.textContent = '<iframe src="https://horologium.io/embed/clock?tz=' + encodeURIComponent(tz) + '&city=' + encodeURIComponent(city) + '&theme=obsidian" width="360" height="160" frameborder="0" loading="lazy"></iframe>';
+        }
+      } else {
+        previewBox.innerHTML = '<horologium-overlap station-a="Europe/London" station-b="' + tz + '" theme="obsidian"></horologium-overlap>';
+        if (currentFormat === 'wc') {
+          snippetCode.textContent = '<!-- 1. Import Web Component Bundle (once per page) -->\\n<script type="module" src="https://horologium.io/widgets/horologium-widgets.js"><\\/script>\\n\\n<!-- 2. Drop In Custom Element -->\\n<horologium-overlap station-a="Europe/London" station-b="' + tz + '" theme="obsidian"></horologium-overlap>';
+        } else {
+          snippetCode.textContent = '<iframe src="https://horologium.io/embed/overlap?stationA=Europe/London&stationB=' + encodeURIComponent(tz) + '&theme=obsidian" width="580" height="220" frameborder="0" loading="lazy"></iframe>';
+        }
+      }
+    }
+
+    widgetTypeSelect.addEventListener('change', updateStudio);
+    timezoneSelect.addEventListener('change', updateStudio);
+
+    document.querySelectorAll('.studio-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.studio-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFormat = tab.dataset.format;
+        updateStudio();
+      });
+    });
+
+    btnCopySnippet.addEventListener('click', () => {
+      navigator.clipboard.writeText(snippetCode.textContent);
+      btnCopySnippet.textContent = 'Copied!';
+      setTimeout(() => { btnCopySnippet.textContent = 'Copy'; }, 2000);
+    });
+
+    updateStudio();
+  </script>
+</body>
+</html>

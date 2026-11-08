@@ -39,7 +39,11 @@ function enterpriseRoutePlugin() {
           '/uptime': '/status/',
           '/privacy': '/privacy/',
           '/legal': '/privacy/',
-          '/terms': '/privacy/'
+          '/terms': '/privacy/',
+          '/developers': '/developers/',
+          '/developer': '/developers/',
+          '/portal': '/developers/',
+          '/business': '/developers/'
         };
 
         if (aliasMap[path]) {
@@ -85,6 +89,7 @@ export default defineConfig({
         about: resolve(__dirname, 'about/index.html'),
         status: resolve(__dirname, 'status/index.html'),
         privacy: resolve(__dirname, 'privacy/index.html'),
+        developers: resolve(__dirname, 'developers/index.html'),
         notFound: resolve(__dirname, '404.html')
       }
     }

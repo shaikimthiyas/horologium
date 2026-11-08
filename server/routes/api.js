@@ -20,6 +20,9 @@ import { createDatabaseBackup, listDatabaseBackups } from '../db/backup.js';
 import { redisClient } from '../cache/redisClient.js';
 import { ntpService } from '../services/ntpService.js';
 import { getActiveWsClientsCount } from '../services/websocketSntp.js';
+import { apiKeyAuthenticator, requireApiKey } from '../middleware/apiKeyMiddleware.js';
+import { provisionDeveloperKey, verifyDeveloperKey, getPlatformDeveloperMetrics } from '../controllers/developerController.js';
+
 
 export const apiRouter = Router();
 
@@ -37,6 +40,7 @@ const transmissionLimiter = createRedisRateLimiter({
   message: 'Transmission frequency limit reached for this IP terminal. Please standby.'
 });
 
+apiRouter.use(apiKeyAuthenticator);
 apiRouter.use(generalLimiter);
 
 /**
@@ -271,3 +275,11 @@ apiRouter.get('/admin/backups', requireOperatorAuth, (req, res) => {
     res.status(500).json({ status: 'ERROR', error: err.message });
   }
 });
+
+/**
+ * Developer Platform & Enterprise Governance
+ */
+apiRouter.post('/v1/developers/keys', provisionDeveloperKey);
+apiRouter.get('/v1/developers/keys/verify', requireApiKey, verifyDeveloperKey);
+apiRouter.get('/v1/developers/metrics', getPlatformDeveloperMetrics);
+
