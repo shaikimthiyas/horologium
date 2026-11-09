@@ -227,7 +227,6 @@ horologium/
 │   ├── ISSUE_TEMPLATE/           # Structured bug & feature request templates
 │   ├── workflows/ci.yml          # GitHub Actions test & build matrix (Node 20/22)
 │   ├── CODEOWNERS                # Sovereign architecture codeownership
-│   ├── dependabot.yml            # Automated weekly dependency maintenance
 │   └── PULL_REQUEST_TEMPLATE.md  # Standardized production change verification checklist
 ├── deploy/                       # Multi-stage Docker & production deployment manifests
 ├── docs/                         # Consolidated engineering specifications & standards

@@ -1,7 +1,7 @@
 # ⬡ HOROLOGIUM: ARCHITECTURAL SPECIFICATION & SYSTEM DESIGN
-**System Classification:** Enterprise Temporal, Cartographic & Meridian Telemetry Engine  
-**Calibre Specification:** Calibre-01  
-**Sovereign Architect:** Shaik Imthiyas  
+**System Classification:** Enterprise Temporal, Cartographic & Meridian Telemetry Engine
+**Calibre Specification:** Calibre-01
+**Sovereign Architect:** Shaik Imthiyas
 **Status:** Production-Ready Enterprise Release | **Classification:** Master Specification
 
 ---
@@ -110,3 +110,4 @@ Micro-widgets for third-party websites:
 
 ### 5.3 Optical Halation Compensation
 High-luminance elements on deep black backgrounds bleed visually into adjacent pixels. Horologium compensates by applying calibrated text shadows and hairline inner borders (`inset 0 1px 0 0 rgba(255,255,255,0.06)`), preventing blurred outlines and maintaining crisp legibility.
+

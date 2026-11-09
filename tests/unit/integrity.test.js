@@ -79,3 +79,4 @@ describe('Horologium Repository & Architecture Integrity', () => {
     assert.ok(manifest.name);
   });
 });
+
