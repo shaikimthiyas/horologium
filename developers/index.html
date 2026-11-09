@@ -264,20 +264,20 @@
           <span>Generate Developer API Key</span>
         </h2>
         <p style="font-size:13px; color:#8E95A2; line-height:1.4;">
-          Instant self-service provisioning for verified partners. Unlocks 1,200 requests/minute, domain origin scoping, and enterprise metrics telemetry. Zero credit card required.
+          Instant self-service provisioning for developers. Provides 1,200 requests/minute, domain origin scoping, and platform metrics telemetry. No credit card required.
         </p>
 
         <form id="keyForm" style="display:flex; flex-direction:column; gap:12px;">
           <div class="form-group">
-            <label class="form-label" for="tenantName">APPLICATION / ORGANIZATION NAME</label>
+            <label class="form-label" for="tenantName">Organization or Project Name</label>
             <input type="text" id="tenantName" class="form-input" placeholder="e.g. Acme SaaS" required />
           </div>
           <div class="form-group">
-            <label class="form-label" for="tenantEmail">DEVELOPER CONTACT EMAIL</label>
+            <label class="form-label" for="tenantEmail">Developer Email Address</label>
             <input type="email" id="tenantEmail" class="form-input" placeholder="developer@acme.com" required />
           </div>
           <div class="form-group">
-            <label class="form-label" for="allowedDomains">ALLOWED DOMAINS (CORS)</label>
+            <label class="form-label" for="allowedDomains">Allowed Origin Domains (CORS)</label>
             <input type="text" id="allowedDomains" class="form-input" placeholder="* (or app.acme.com)" value="*" />
           </div>
           <button type="submit" class="btn-primary" id="btnSubmitKey">

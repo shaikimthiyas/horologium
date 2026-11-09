@@ -51,3 +51,4 @@ export declare class HorologiumClient {
   getSolarPosition(date?: Date): SolarPositionResult;
   subscribeToTicks(callback: (time: AtomicTimeResult) => void, intervalMs?: number): () => void;
 }
+

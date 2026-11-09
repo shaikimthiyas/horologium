@@ -96,3 +96,4 @@ if (errors === 0) {
   console.error(`✖ Integrity check failed with ${errors} error(s).`);
   process.exit(1);
 }
+

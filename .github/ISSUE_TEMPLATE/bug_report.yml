@@ -28,3 +28,4 @@ body:
       placeholder: "e.g. Node 22.x, Chrome 130, Windows 11"
     validations:
       required: true
+

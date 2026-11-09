@@ -214,21 +214,21 @@
         <div class="directory-header">
             <div class="directory-tag">
                 <span class="badge-semantic badge-semantic-counter">● IANA 2026.10</span>
-                <span>GLOBAL GEODESIC & MERIDIAN REGISTRY</span>
+                <span>GLOBAL TIMEZONE & COUNTRY DIRECTORY</span>
             </div>
-            <h1>Universal Geodesic Directory</h1>
-            <p>Comprehensive institutional reference catalog indexing standard meridians, civil daylight times, ISO-3166 territory codes, and atomic offsets across 220 sovereign territories.</p>
+            <h1>Global Timezone & Country Directory</h1>
+            <p>Standard reference catalog indexing meridians, daylight saving status, ISO-3166 territory codes, and UTC offsets across 220 countries and territories.</p>
         </div>
 
         <div class="directory-filter-bar">
             <!-- Recessed Instrument Input with Monospace Prefix Slot -->
             <div class="input-recessed-group" style="flex: 1; max-width: 580px;">
-                <span class="input-slot-prefix">GEO://</span>
-                <input type="text" id="dirSearchInput" class="input-recessed" placeholder="Filter by nation, capital, ISO code, or UTC offset (e.g. Japan, Paris, UTC+5)..." />
+                <span class="input-slot-prefix">⌕</span>
+                <input type="text" id="dirSearchInput" class="input-recessed" placeholder="Search by country, capital, ISO code, or UTC offset (e.g. Japan, Paris, UTC+5)..." />
             </div>
 
             <div class="filter-counter">
-                INDEXED: <strong id="dirCounter">0</strong> SOVEREIGN TERRITORIES
+                TOTAL: <strong id="dirCounter">0</strong> TERRITORIES
             </div>
         </div>
 
@@ -236,7 +236,7 @@
             <table class="geodesic-table">
                 <thead>
                     <tr>
-                        <th>SOVEREIGN NATION & CAPITAL</th>
+                        <th>Country & Capital</th>
                         <th style="width: 80px;">ISO</th>
                         <th>IANA TIMEZONE KEY</th>
                         <th style="width: 120px;">OFFSET</th>

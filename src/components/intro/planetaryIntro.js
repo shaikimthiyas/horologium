@@ -122,10 +122,10 @@ export class PlanetaryIntroStage {
 
     // 4 Calibrated Initialization Milestones
     this.milestones = [
-      { timeMs: 0, id: 'introStep1', label: 'STRATUM-1 UTC REFERENCE SYNCED', statId: 'step1Stat', statText: 'LOCKED' },
-      { timeMs: 950, id: 'introStep2', label: '220 GEODESIC BOUNDARIES MAPPED', statId: 'step2Stat', statText: 'VERIFIED' },
-      { timeMs: 1900, id: 'introStep3', label: 'SOLAR TERMINATOR & ZENITH ALIGNED', statId: 'step3Stat', statText: 'RESOLVED' },
-      { timeMs: 2850, id: 'introStep4', label: 'MARZULLO 99.999% SLO NOMINAL', statId: 'step4Stat', statText: 'ARMED' }
+      { timeMs: 0, id: 'introStep1', label: 'STRATUM-1 UTC REFERENCE SYNCED', statId: 'step1Stat', statText: 'SYNCED' },
+      { timeMs: 950, id: 'introStep2', label: '220 TERRITORIAL BOUNDARIES LOADED', statId: 'step2Stat', statText: 'LOADED' },
+      { timeMs: 1900, id: 'introStep3', label: 'SOLAR TERMINATOR & ZENITH ALIGNED', statId: 'step3Stat', statText: 'ALIGNED' },
+      { timeMs: 2850, id: 'introStep4', label: 'MARZULLO 99.999% SLO NOMINAL', statId: 'step4Stat', statText: 'ACTIVE' }
     ];
 
     if (this.hasDom && this.options.autoStart) {

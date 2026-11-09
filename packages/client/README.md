@@ -54,5 +54,6 @@ console.log(`Solar Declination: ${solar.declinationDeg}°`);
 
 ## Authorship & License
 
-Engineered with Swiss horological precision by **Shaik Imthiyas**.  
+Engineered with Swiss horological precision by **Shaik Imthiyas**.
 Licensed under the [MIT License](../../LICENSE).
+
