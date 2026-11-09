@@ -117,6 +117,10 @@ app.use(express.static(baseStatic));
 const resolvePage = (rel) => {
   const inDist = resolve(distPath, rel);
   if (existsSync(inDist)) return inDist;
+  const inDistPages = resolve(distPath, 'pages', rel);
+  if (existsSync(inDistPages)) return inDistPages;
+  const inPages = resolve(rootPath, 'pages', rel);
+  if (existsSync(inPages)) return inPages;
   return resolve(rootPath, rel);
 };
 

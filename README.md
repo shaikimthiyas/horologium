@@ -229,26 +229,32 @@ horologium/
 │   ├── CODEOWNERS                # Sovereign architecture codeownership
 │   ├── dependabot.yml            # Automated weekly dependency maintenance
 │   └── PULL_REQUEST_TEMPLATE.md  # Standardized production change verification checklist
-├── api-explorer/                 # Interactive OpenAPI 3.1 Swagger UI & Telemetry console
-├── developers/                   # Enterprise Developer Portal & Widget Studio
-├── docs/                         # Comprehensive engineering specifications & audits
-│   ├── architecture/             # Design tokens, typography & system architecture
-│   └── audit/                    # Executive summary & requirements traceability
-├── extension/                    # Chromium Browser Extension (Manifest V3)
+├── deploy/                       # Multi-stage Docker & production deployment manifests
+├── docs/                         # Consolidated engineering specifications & standards
+│   ├── ARCHITECTURE.md           # Master System Architecture & Calibre-01 Design System
+│   └── STANDARDS.md              # Quality Gates, RFC Compliance & Editorial Standards
+├── extension/                    # Chromium Browser Extension companion (Manifest V3)
 │   ├── manifest.json             # Manifest V3 service worker & permissions
 │   ├── popup.html                # Clean HUD popup for world clocks & overlap planning
 │   └── popup.js                  # Atomic time synchronization & quick converter
-├── flight-deck/                  # Planetary cartography & 3D WebGL globe console
-├── geodesic-registry/            # Sovereign territory directory & geodesic search
-├── horo/                         # Dedicated Horologium Hero Workbench console
-├── operator-gateway/             # Cryptographic operator clearance & station hub
 ├── packages/                     # Monorepo client libraries
 │   └── client/                   # @horologium/client Universal SDK (ESM/CJS/TypeScript)
 │       ├── index.d.ts            # Complete TypeScript typings & interfaces
 │       ├── index.js              # Universal client SDK implementation
 │       ├── package.json          # Monorepo package manifest & exports mapping
 │       └── README.md             # Package consumer documentation
-├── protocol-liaison/             # Operator inquiry & transmission dispatch queue
+├── pages/                        # Consolidated enterprise sub-consoles & secondary views
+│   ├── about/                    # Colophon, builder note & technical specifications
+│   ├── api-explorer/             # Interactive OpenAPI 3.1 Swagger UI & HUD console
+│   ├── developers/               # Developer Portal, API key management & Widget Studio
+│   ├── flight-deck/              # Planetary cartography & 3D WebGL globe console
+│   ├── geodesic-registry/        # Sovereign territory directory & geodesic search
+│   ├── horo/                     # Dedicated Horologium Hero Workbench console
+│   ├── operator-gateway/         # Operator clearance & telemetry console
+│   ├── privacy/                  # Zero-knowledge data sovereignty policy
+│   ├── protocol-liaison/         # Operator inquiry & transmission dispatch queue
+│   ├── status/                   # Live Kubernetes probes & SLA telemetry dashboard
+│   └── 404.html                  # Radar sweep temporal discontinuity recovery
 ├── public/                       # Static production assets, branding, and manifest
 │   ├── cover.png                 # Lossless high-resolution visual branding (2752×1536)
 │   ├── horologium.postman_collection.json # Official Postman collection (v2.1.0)
@@ -257,8 +263,6 @@ horologium/
 │   ├── sdk/                      # Standalone client SDK distribution (horologium.js)
 │   ├── sw.js                     # Service Worker with Network-First navigation
 │   └── widgets/                  # Standalone W3C Custom Element widgets
-├── scripts/                      # Enterprise maintenance & verification utilities
-│   └── verify-integrity.js      # Zero-breakage repository integrity validator
 ├── server/                       # Backend Node.js Express Gateway
 │   ├── app.js                    # Express application orchestrator & clean routing
 │   ├── cache/                    # Redis client & distributed rate limiters
@@ -274,7 +278,7 @@ horologium/
 │   └── utils/                    # ClockFSM, PWAManager, ErrorBoundary, AudioHaptics
 ├── tests/                        # Automated test suites (node:test)
 │   ├── integration/              # Health probes, API integration, and key governance tests
-│   └── unit/                     # 18 test suites · 123 tests (Marzullo, SDK, Widgets, UI/UX)
+│   └── unit/                     # 19 test suites · 127 tests (Marzullo, SDK, Widgets, UI/UX, Integrity)
 ├── CHANGELOG.md                  # Semantic Versioning release notes (v1.0.0 - v1.5.0)
 ├── Dockerfile                    # Multi-stage production container build (Go + Node)
 ├── docker-compose.yml            # Multi-container stack (Gateway, Timescale, Redis, Prom, Graf)
@@ -362,12 +366,10 @@ docker compose up -d --build
 
 ## 9. Deep Architectural Documentation
 
-- 📄 [Executive Engineering Audit](docs/audit/EXECUTIVE_SUMMARY.md)
-- 📋 [Requirement Traceability Matrix](docs/audit/REQUIREMENT_TRACEABILITY_MATRIX.md)
-- 🎯 [Master Production Standout Checklist](docs/audit/MASTER_PRODUCTION_STANDOUT_CHECKLIST.md)
-- 🎨 [Calibre-01 Design System & Typography](docs/architecture/DESIGN_SYSTEM.md)
-- 🏛️ [System Architecture & Roadmap](docs/architecture/SYSTEM_ARCHITECTURE.md)
-- 📮 [Postman Collection](public/horologium.postman_collection.json)
+- 🏛️ [Master System Architecture & Design System](docs/ARCHITECTURE.md)
+- 🎯 [Production Quality Standards & Editorial Guidelines](docs/STANDARDS.md)
+- 📮 [Official Postman Collection (v2.1.0)](public/horologium.postman_collection.json)
+- 🌐 [OpenAPI 3.1.0 Specification](public/openapi.json)
 
 ---
 

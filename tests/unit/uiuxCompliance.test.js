@@ -38,11 +38,11 @@ function calculateContrastRatio(hex1, hex2) {
 test('UI/UX & Cognitive Laws Compliance Suite (Sprint F / WCAG 2.2)', async (t) => {
   const CANONICAL_PAGE_PATHS = [
     'index.html',
-    'flight-deck/index.html',
-    'geodesic-registry/index.html',
-    'operator-gateway/index.html',
-    'protocol-liaison/index.html',
-    'api-explorer/index.html'
+    'pages/flight-deck/index.html',
+    'pages/geodesic-registry/index.html',
+    'pages/operator-gateway/index.html',
+    'pages/protocol-liaison/index.html',
+    'pages/api-explorer/index.html'
   ];
 
   await t.test('all canonical multi-page HTML documents exist on disk', () => {

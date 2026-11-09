@@ -31,6 +31,7 @@ Thumbs.db
 *.log
 
 # IDE & Editor
+.vscode/
 .idea/
 *.suo
 *.ntvs*

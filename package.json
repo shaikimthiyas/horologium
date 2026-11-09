@@ -10,7 +10,7 @@
     "build": "vite build",
     "start": "node server.js",
     "preview": "vite preview",
-    "verify": "node scripts/verify-integrity.js",
+    "verify": "node --test tests/unit/integrity.test.js",
     "test": "node --test --test-concurrency=1"
   },
   "devDependencies": {

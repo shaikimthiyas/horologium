@@ -39,8 +39,8 @@ describe('Sprint L: Builder Colophon, Live Status, Data Sovereignty & 404 Pages'
   });
 
   test('Colophon & Builder Note (about/index.html) verifies Shaik Imthiyas authorship & specs', () => {
-    const filePath = resolve(rootDir, 'about/index.html');
-    assert.ok(existsSync(filePath), 'about/index.html must exist on disk');
+    const filePath = resolve(rootDir, 'pages/about/index.html');
+    assert.ok(existsSync(filePath), 'pages/about/index.html must exist on disk');
 
     const html = readFileSync(filePath, 'utf8');
     assert.ok(html.includes('Shaik Imthiyas'), 'Must feature Shaik Imthiyas as architect/builder');
@@ -51,8 +51,8 @@ describe('Sprint L: Builder Colophon, Live Status, Data Sovereignty & 404 Pages'
   });
 
   test('Telemetry Status Dashboard (status/index.html) contains live probe controls & SLA metrics', () => {
-    const filePath = resolve(rootDir, 'status/index.html');
-    assert.ok(existsSync(filePath), 'status/index.html must exist on disk');
+    const filePath = resolve(rootDir, 'pages/status/index.html');
+    assert.ok(existsSync(filePath), 'pages/status/index.html must exist on disk');
 
     const html = readFileSync(filePath, 'utf8');
     assert.ok(html.includes('/healthz'), 'Must probe Kubernetes /healthz');
@@ -63,8 +63,8 @@ describe('Sprint L: Builder Colophon, Live Status, Data Sovereignty & 404 Pages'
   });
 
   test('Data Sovereignty Policy (privacy/index.html) defines zero-knowledge chronometry & RFC standards', () => {
-    const filePath = resolve(rootDir, 'privacy/index.html');
-    assert.ok(existsSync(filePath), 'privacy/index.html must exist on disk');
+    const filePath = resolve(rootDir, 'pages/privacy/index.html');
+    assert.ok(existsSync(filePath), 'pages/privacy/index.html must exist on disk');
 
     const html = readFileSync(filePath, 'utf8');
     assert.ok(html.includes('Zero-Tracking') || html.includes('Zero-Knowledge') || html.includes('zero-knowledge'), 'Must declare zero-knowledge policy');
@@ -73,8 +73,8 @@ describe('Sprint L: Builder Colophon, Live Status, Data Sovereignty & 404 Pages'
   });
 
   test('404 Temporal Discontinuity (404.html) contains radar sweep & navigation recovery', () => {
-    const filePath = resolve(rootDir, '404.html');
-    assert.ok(existsSync(filePath), '404.html must exist on disk');
+    const filePath = resolve(rootDir, 'pages/404.html');
+    assert.ok(existsSync(filePath), 'pages/404.html must exist on disk');
 
     const html = readFileSync(filePath, 'utf8');
     assert.ok(html.includes('404'), 'Must display 404 error code');
