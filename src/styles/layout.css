@@ -1365,10 +1365,10 @@ svg path.allPaths.selected-country {
 
 .tourbillon-assembly {
   position: relative;
-  width: min(84vh, calc(100vw - 440px));
-  height: min(84vh, calc(100vw - 440px));
-  max-width: 900px;
-  max-height: 900px;
+  width: min(88vh, calc(100vw - 380px));
+  height: min(88vh, calc(100vw - 380px));
+  max-width: 960px;
+  max-height: 960px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -1408,10 +1408,8 @@ svg path.allPaths.selected-country {
 }
 
 .tourbillon-canvas-wrapper .intro-globe-canvas {
-  width: 78%;
-  height: 78%;
-  max-width: 700px;
-  max-height: 700px;
+  width: 100%;
+  height: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
   cursor: grab;

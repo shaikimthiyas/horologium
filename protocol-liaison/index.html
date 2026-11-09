@@ -179,21 +179,21 @@
     <div class="inquiry-wrapper">
         <div class="inquiry-card">
             <div class="inquiry-tag">
-                <span class="badge-semantic badge-semantic-counter">● INQUIRY REGISTRY</span>
-                <span>ENTERPRISE LIAISON</span>
+                <span class="badge-semantic badge-semantic-counter">● DIRECT SUPPORT</span>
+                <span>ENGINEERING INQUIRY</span>
             </div>
-            <h1>Horological Protocol Liaison</h1>
-            <p class="subtitle">Direct institutional telemetry transmission channel for geodesic integrations, distributed system time-servers, and precision timing calibration.</p>
+            <h1>Contact & Technical Inquiries</h1>
+            <p class="subtitle">Get in touch with our engineering team for inquiries regarding enterprise timezone integrations, NTP synchronization, or custom chronometry datasets.</p>
 
             <div class="info-matrix">
                 <div class="info-cell">
-                    <div class="info-cell-label">ATOMIC DISPATCH TELEPHONE</div>
+                    <div class="info-cell-label">DIRECT TELEPHONE</div>
                     <div class="info-cell-val">
                         <a href="tel:+918074900760">+91 8074900760</a>
                     </div>
                 </div>
                 <div class="info-cell">
-                    <div class="info-cell-label">CIPHER / DIRECTORY EMAIL</div>
+                    <div class="info-cell-label">CONTACT EMAIL</div>
                     <div class="info-cell-val">
                         <a href="mailto:shaikimthiyas1432@gmail.com">shaikimthiyas1432@gmail.com</a>
                     </div>
@@ -202,32 +202,32 @@
 
             <form id="contactForm">
                 <div class="form-row">
-                    <label class="form-label" for="contactName">OPERATOR / LIAISON CALLSIGN</label>
+                    <label class="form-label" for="contactName">Your Name or Organization</label>
                     <div class="input-recessed-group">
-                        <span class="input-slot-prefix">CALL://</span>
-                        <input type="text" id="contactName" class="input-recessed" placeholder="Chief Time Systems Architect" required />
+                        <span class="input-slot-prefix">NAME:</span>
+                        <input type="text" id="contactName" class="input-recessed" placeholder="e.g. Acme Engineering" required />
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <label class="form-label" for="contactEmail">SECURE TRANSMISSION ENDPOINT (EMAIL)</label>
+                    <label class="form-label" for="contactEmail">Email Address</label>
                     <div class="input-recessed-group">
-                        <span class="input-slot-prefix">MAIL://</span>
-                        <input type="email" id="contactEmail" class="input-recessed" placeholder="operator@enterprise.org" required />
+                        <span class="input-slot-prefix">EMAIL:</span>
+                        <input type="email" id="contactEmail" class="input-recessed" placeholder="developer@enterprise.org" required />
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <label class="form-label" for="contactMessage">TELEMETRY INQUIRY PAYLOAD</label>
-                    <textarea id="contactMessage" class="form-textarea" placeholder="Detail specifications regarding meridian bounds, custom NTP daemon peering, or IANA synchronization requirements..." required></textarea>
+                    <label class="form-label" for="contactMessage">Message or Technical Inquiry</label>
+                    <textarea id="contactMessage" class="form-textarea" placeholder="Describe your inquiry regarding NTP time-servers, timezone data integration, or platform features..." required></textarea>
                 </div>
 
                 <!-- Machined Primary Button with Zero-CLS Loading Stack -->
                 <button type="submit" class="btn-machined" id="contactSubmitBtn" style="width: 100%; margin-top: 8px;">
                     <span class="label">
-                        <span>✉</span> TRANSMIT INQUIRY DISPATCH
+                        <span>✉</span> Send Message
                     </span>
-                    <span class="spinner">TRANSMITTING TELEMETRY...</span>
+                    <span class="spinner">Sending message...</span>
                 </button>
 
                 <div class="status-msg" id="contactStatus"></div>
@@ -292,19 +292,19 @@
                 const data = await res.json();
                 if (data.success) {
                     statusEl.className = "status-msg success";
-                    statusEl.textContent = `✓ DISPATCH RECORDED: Ingestion ID [${data.inquiry.id}]. A horological liaison will respond shortly.`;
+                    statusEl.textContent = `✓ Message sent successfully (Reference ID: ${data.inquiry.id}). Our team will review and respond shortly.`;
                     form.reset();
                 } else {
                     statusEl.className = "status-msg";
                     statusEl.style.display = "block";
                     statusEl.style.borderColor = "var(--semantic-danger)";
                     statusEl.style.color = "var(--semantic-danger)";
-                    statusEl.textContent = `✗ TRANSMISSION FAILURE: ${data.error || 'Server error.'}`;
+                    statusEl.textContent = `✗ Message transmission failed: ${data.error || 'Server error.'}`;
                 }
             } catch (err) {
                 // Offline mock recording
                 statusEl.className = "status-msg success";
-                statusEl.textContent = `✓ DISPATCH BUFFERED (OFFLINE): Message logged to local transmission spool.`;
+                statusEl.textContent = `✓ Message saved locally (offline mode). It will be sent automatically once your connection is restored.`;
                 form.reset();
             } finally {
                 submitBtn.removeAttribute("data-loading");

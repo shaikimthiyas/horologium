@@ -140,25 +140,25 @@
     <div class="auth-wrapper">
         <div class="auth-card">
             <div class="auth-tag">
-                <span class="badge-semantic badge-semantic-vermilion">● ACCESS WELL</span>
-                <span>CLEARANCE LEVEL-01</span>
+                <span class="badge-semantic badge-semantic-vermilion">● ACCOUNT ACCESS</span>
+                <span>OPERATOR CONSOLE</span>
             </div>
             <h1>Operator Authentication</h1>
-            <p class="subtitle">Authenticate cryptographic credentials to persist geodesic reticles, business hour windows, and multi-meridian telemetry logs.</p>
+            <p class="subtitle">Sign in to manage custom base stations, synchronize pinned timezones, and access persistent session preferences.</p>
 
             <form id="loginForm">
                 <div class="form-row">
-                    <label class="form-label" for="username">OPERATOR CALLSIGN / IDENTIFIER</label>
+                    <label class="form-label" for="username">Operator Username</label>
                     <div class="input-recessed-group">
-                        <span class="input-slot-prefix">OP://</span>
+                        <span class="input-slot-prefix">ID:</span>
                         <input type="text" id="username" class="input-recessed" placeholder="admin" required autocomplete="username" />
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <label class="form-label" for="password">ACCESS CIPHER / KEY</label>
+                    <label class="form-label" for="password">Password / Access Key</label>
                     <div class="input-recessed-group">
-                        <span class="input-slot-prefix">KEY://</span>
+                        <span class="input-slot-prefix">KEY:</span>
                         <input type="password" id="password" class="input-recessed" placeholder="••••••••" required autocomplete="current-password" />
                     </div>
                 </div>
@@ -166,13 +166,13 @@
                 <!-- Machined Primary Button with Zero-CLS Loading Stack -->
                 <button type="submit" class="btn-machined" id="authSubmitBtn" style="width: 100%; margin-top: 8px;">
                     <span class="label">
-                        <span>🔒</span> VERIFY ACCESS KEY
+                        <span>🔒</span> Sign In
                     </span>
-                    <span class="spinner">VERIFYING CLEARANCE...</span>
+                    <span class="spinner">Signing in...</span>
                 </button>
 
                 <div class="autofill-btn" id="demoAutofill">
-                    [ AUTOFILL DEMO OPERATOR: <code>admin</code> / <code>password123</code> ]
+                    [ Demo Account: <code>admin</code> / <code>password123</code> ]
                 </div>
 
                 <div class="auth-status" id="authStatus"></div>
@@ -245,25 +245,25 @@
                     localStorage.setItem("horologium_operator_token", data.token);
                     localStorage.setItem("horologium_operator_callsign", data.operator.callsign);
                     statusEl.className = "auth-status success";
-                    statusEl.textContent = `✓ CLEARANCE GRANTED (${data.operator.callsign.toUpperCase()}): Loading flight deck...`;
+                    statusEl.textContent = `✓ Signed in as ${data.operator.callsign}. Opening World Map...`;
                     setTimeout(() => {
                         window.location.href = "/flight-deck/";
                     }, 800);
                 } else {
                     statusEl.className = "auth-status error";
-                    statusEl.textContent = `✗ CREDENTIAL FAILURE: ${data.error || 'Invalid credentials.'}`;
+                    statusEl.textContent = `✗ Authentication failed: ${data.error || 'Invalid credentials.'}`;
                 }
             } catch (err) {
                 // Offline fallback for demo operator
                 if (username === "admin" && password === "password123") {
                     statusEl.className = "auth-status success";
-                    statusEl.textContent = "✓ CLEARANCE GRANTED (OFFLINE BUFFER): Loading telemetry...";
+                    statusEl.textContent = "✓ Signed in (Demo Mode). Opening World Map...";
                     setTimeout(() => {
                         window.location.href = "/flight-deck/";
                     }, 800);
                 } else {
                     statusEl.className = "auth-status error";
-                    statusEl.textContent = "✗ CREDENTIAL FAILURE: Access cipher not recognized.";
+                    statusEl.textContent = "✗ Authentication failed: Invalid username or password.";
                 }
             } finally {
                 submitBtn.removeAttribute("data-loading");

@@ -1,7 +1,7 @@
 /**
  * HOROLOGIUM UNIVERSAL JAVASCRIPT/TYPESCRIPT CLIENT SDK (@horologium/client)
  * Sub-5kB Zero-Dependency Universal Temporal SDK for Browser and Node.js
- * 
+ *
  * Features:
  * - Sub-millisecond Stratum-1 Atomic Time Fetching
  * - Cross-Border 24-Hour Working Overlap Calculator
@@ -147,3 +147,4 @@ export class HorologiumClient {
 if (typeof window !== 'undefined') {
   window.HorologiumClient = HorologiumClient;
 }
+

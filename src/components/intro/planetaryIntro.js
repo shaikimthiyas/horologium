@@ -122,10 +122,10 @@ export class PlanetaryIntroStage {
 
     // 4 Calibrated Initialization Milestones
     this.milestones = [
-      { timeMs: 0, id: 'introStep1', label: 'STRATUM-1 UTC REFERENCE SYNCED', statId: 'step1Stat', statText: 'LOCKED' },
-      { timeMs: 950, id: 'introStep2', label: '220 GEODESIC BOUNDARIES MAPPED', statId: 'step2Stat', statText: 'VERIFIED' },
-      { timeMs: 1900, id: 'introStep3', label: 'SOLAR TERMINATOR & ZENITH ALIGNED', statId: 'step3Stat', statText: 'RESOLVED' },
-      { timeMs: 2850, id: 'introStep4', label: 'MARZULLO 99.999% SLO NOMINAL', statId: 'step4Stat', statText: 'ARMED' }
+      { timeMs: 0, id: 'introStep1', label: 'STRATUM-1 UTC REFERENCE SYNCED', statId: 'step1Stat', statText: 'SYNCED' },
+      { timeMs: 950, id: 'introStep2', label: '220 TERRITORIAL BOUNDARIES LOADED', statId: 'step2Stat', statText: 'LOADED' },
+      { timeMs: 1900, id: 'introStep3', label: 'SOLAR TERMINATOR & ZENITH ALIGNED', statId: 'step3Stat', statText: 'ALIGNED' },
+      { timeMs: 2850, id: 'introStep4', label: 'MARZULLO 99.999% SLO NOMINAL', statId: 'step4Stat', statText: 'ACTIVE' }
     ];
 
     if (this.hasDom && this.options.autoStart) {
@@ -142,7 +142,9 @@ export class PlanetaryIntroStage {
 
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', () => this.resizeCanvas());
-      this.startSequence();
+      if (this.options.autoStart !== false) {
+        this.startSequence();
+      }
     }
   }
 
@@ -420,7 +422,8 @@ export class PlanetaryIntroStage {
 
     const cx = renderW / 2;
     const cy = renderH / 2;
-    const R = Math.min(renderW, renderH) * 0.45; // Globe sphere radius (massive tourbillon scale)
+    const scaleFactor = Math.min(renderW, renderH) / 800;
+    const R = Math.max(255 * scaleFactor, Math.min(renderW, renderH) * 0.32); // Exact Swiss Horological Tourbillon scale matching cover.png
 
     // Apply Inertia Momentum & Prograde Revolution Physics (West to East)
     if (!this.drag.isDragging) {

@@ -2,7 +2,7 @@
  * HOROLOGIUM ENTERPRISE WEB COMPONENTS (W3C Custom Elements)
  * Zero-dependency, lightweight, shadow-DOM encapsulated embeddable widgets
  * for third-party websites, dashboards, Notion, Confluence, and intranets.
- * 
+ *
  * Elements registered:
  * - <horologium-clock tz="Asia/Tokyo" city="Tokyo" theme="obsidian" format="24h"></horologium-clock>
  * - <horologium-overlap station-a="Europe/London" station-b="Asia/Tokyo" theme="obsidian"></horologium-overlap>
@@ -405,3 +405,4 @@ if (typeof window !== 'undefined' && 'customElements' in window) {
     customElements.define('horologium-overlap', HorologiumOverlapElement);
   }
 }
+
