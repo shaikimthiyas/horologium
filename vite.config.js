@@ -103,6 +103,42 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true
       },
+      '/embed/': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/widgets/': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/sdk/': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/healthz': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/readyz': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/startupz': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/metrics': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/openapi.json': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
+      '/horologium.postman_collection.json': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      },
       '^/ws/': {
         target: 'ws://localhost:3001',
         ws: true,
