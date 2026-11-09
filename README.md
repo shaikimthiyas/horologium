@@ -223,37 +223,44 @@ generating three concentric astronomical curves for Civil ($\alpha = -6^\circ$),
 
 ```text
 horologium/
-├── .github/                      # Enterprise CI/CD pipelines & issue templates
-│   └── workflows/ci.yml          # GitHub Actions test & build matrix (Node 20/22)
+├── .github/                      # Enterprise CI/CD, issue templates & governance
+│   ├── ISSUE_TEMPLATE/           # Structured bug & feature request templates
+│   ├── workflows/ci.yml          # GitHub Actions test & build matrix (Node 20/22)
+│   ├── CODEOWNERS                # Sovereign architecture codeownership
+│   ├── dependabot.yml            # Automated weekly dependency maintenance
+│   └── PULL_REQUEST_TEMPLATE.md  # Standardized production change verification checklist
 ├── api-explorer/                 # Interactive OpenAPI 3.1 Swagger UI & Telemetry console
 ├── developers/                   # Enterprise Developer Portal & Widget Studio
-│   └── index.html                # Visual widget configurator, API key provisioning & telemetry
+├── docs/                         # Comprehensive engineering specifications & audits
+│   ├── architecture/             # Design tokens, typography & system architecture
+│   └── audit/                    # Executive summary & requirements traceability
 ├── extension/                    # Chromium Browser Extension (Manifest V3)
-│   ├── manifest.json             # Manifest V3 configuration with service worker & permissions
+│   ├── manifest.json             # Manifest V3 service worker & permissions
 │   ├── popup.html                # Clean HUD popup for world clocks & overlap planning
-│   └── popup.js                  # Atomic time synchronization & quick converter logic
+│   └── popup.js                  # Atomic time synchronization & quick converter
 ├── flight-deck/                  # Planetary cartography & 3D WebGL globe console
 ├── geodesic-registry/            # Sovereign territory directory & geodesic search
 ├── horo/                         # Dedicated Horologium Hero Workbench console
-│   └── index.html                # 3-Zone Hick's Law dashboard, overlap planner, solar map
 ├── operator-gateway/             # Cryptographic operator clearance & station hub
-├── packages/                     # Published monorepo client libraries
-│   └── client/                   # @horologium/client Universal SDK (ESM/CJS)
-│       ├── package.json          # Package manifest & exports configuration
-│       └── index.js              # Full SDK implementation
+├── packages/                     # Monorepo client libraries
+│   └── client/                   # @horologium/client Universal SDK (ESM/CJS/TypeScript)
+│       ├── index.d.ts            # Complete TypeScript typings & interfaces
+│       ├── index.js              # Universal client SDK implementation
+│       ├── package.json          # Monorepo package manifest & exports mapping
+│       └── README.md             # Package consumer documentation
 ├── protocol-liaison/             # Operator inquiry & transmission dispatch queue
 ├── public/                       # Static production assets, branding, and manifest
 │   ├── cover.png                 # Lossless high-resolution visual branding (2752×1536)
 │   ├── horologium.postman_collection.json # Official Postman collection (v2.1.0)
 │   ├── manifest.webmanifest      # PWA Web App Manifest (standalone, shortcuts)
 │   ├── openapi.json              # OpenAPI 3.1.0 specification
-│   ├── sdk/                      # Standalone client SDK distribution
-│   │   └── horologium.js         # Browser UMD / ES module client library
-│   ├── sw.js                     # Service Worker with Network-First navigation & offline fallbacks
+│   ├── sdk/                      # Standalone client SDK distribution (horologium.js)
+│   ├── sw.js                     # Service Worker with Network-First navigation
 │   └── widgets/                  # Standalone W3C Custom Element widgets
-│       └── horologium-widgets.js # <horologium-clock> & <horologium-overlap> web components
+├── scripts/                      # Enterprise maintenance & verification utilities
+│   └── verify-integrity.js      # Zero-breakage repository integrity validator
 ├── server/                       # Backend Node.js Express Gateway
-│   ├── app.js                    # Express application orchestrator, probe aliases & routing
+│   ├── app.js                    # Express application orchestrator & clean routing
 │   ├── cache/                    # Redis client & distributed rate limiters
 │   ├── controllers/              # Developer & API key management controllers
 │   ├── db/                       # Tri-engine database layer (Turso, Timescale, SQLite WAL)
@@ -275,7 +282,7 @@ horologium/
 ├── package.json                  # Dependencies, scripts, and module metadata
 ├── README.md                     # Executive project presentation
 ├── server.js                     # Production entrypoint with graceful shutdown draining
-└── vite.config.js                # Vite multi-page build & WebSocket proxy configuration
+└── vite.config.js                # Vite multi-page build & clean alias routing
 ```
 
 ---

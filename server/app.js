@@ -132,6 +132,13 @@ app.get('/protocol-liaison/', (req, res) => res.sendFile(resolvePage('protocol-l
 app.get('/api-explorer/', (req, res) => res.sendFile(resolvePage('api-explorer/index.html')));
 app.get('/developers/', (req, res) => res.sendFile(resolvePage('developers/index.html')));
 
+// Clean URL Aliases & Forwarding to Canonical Consoles
+app.get(['/map', '/map/'], (req, res) => res.sendFile(resolvePage('flight-deck/index.html')));
+app.get(['/directory', '/directory/'], (req, res) => res.sendFile(resolvePage('geodesic-registry/index.html')));
+app.get(['/auth', '/auth/'], (req, res) => res.sendFile(resolvePage('operator-gateway/index.html')));
+app.get(['/contact', '/contact/'], (req, res) => res.sendFile(resolvePage('protocol-liaison/index.html')));
+app.get(['/docs', '/docs/'], (req, res) => res.sendFile(resolvePage('api-explorer/index.html')));
+
 app.use((req, res, next) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/ws')) {
     return next();

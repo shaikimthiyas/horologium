@@ -16,21 +16,26 @@ function enterpriseRoutePlugin() {
         const aliasMap = {
           '/horo': '/horo/',
           '/horologium': '/horo/',
-          '/flight-deck': '/map/',
-          '/map': '/map/',
-          '/geodesic-registry': '/directory/',
-          '/directory': '/directory/',
-          '/country': '/directory/',
-          '/operator-gateway': '/auth/',
-          '/operator': '/auth/',
-          '/security': '/auth/',
-          '/auth': '/auth/',
-          '/protocol-liaison': '/contact/',
-          '/liaison': '/contact/',
-          '/inquiry': '/contact/',
-          '/contact': '/contact/',
-          '/api-explorer': '/docs/',
-          '/docs': '/docs/',
+          '/flight-deck': '/flight-deck/',
+          '/map': '/flight-deck/',
+          '/map/': '/flight-deck/',
+          '/geodesic-registry': '/geodesic-registry/',
+          '/directory': '/geodesic-registry/',
+          '/directory/': '/geodesic-registry/',
+          '/country': '/geodesic-registry/',
+          '/operator-gateway': '/operator-gateway/',
+          '/operator': '/operator-gateway/',
+          '/security': '/operator-gateway/',
+          '/auth': '/operator-gateway/',
+          '/auth/': '/operator-gateway/',
+          '/protocol-liaison': '/protocol-liaison/',
+          '/liaison': '/protocol-liaison/',
+          '/inquiry': '/protocol-liaison/',
+          '/contact': '/protocol-liaison/',
+          '/contact/': '/protocol-liaison/',
+          '/api-explorer': '/api-explorer/',
+          '/docs': '/api-explorer/',
+          '/docs/': '/api-explorer/',
           '/about': '/about/',
           '/colophon': '/about/',
           '/author': '/about/',
@@ -63,12 +68,16 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    cors: true,
+    hmr: {
+      clientPort: 5173
+    },
     proxy: {
       '/api/': {
         target: 'http://localhost:3001',
         changeOrigin: true
       },
-      '/ws': {
+      '^/ws/': {
         target: 'ws://localhost:3001',
         ws: true,
         changeOrigin: true
@@ -82,13 +91,9 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         horo: resolve(__dirname, 'horo/index.html'),
-        map: resolve(__dirname, 'map/index.html'),
         flightDeck: resolve(__dirname, 'flight-deck/index.html'),
-        directory: resolve(__dirname, 'directory/index.html'),
         geodesicRegistry: resolve(__dirname, 'geodesic-registry/index.html'),
-        auth: resolve(__dirname, 'auth/index.html'),
         operatorGateway: resolve(__dirname, 'operator-gateway/index.html'),
-        contact: resolve(__dirname, 'contact/index.html'),
         protocolLiaison: resolve(__dirname, 'protocol-liaison/index.html'),
         apiExplorer: resolve(__dirname, 'api-explorer/index.html'),
         about: resolve(__dirname, 'about/index.html'),

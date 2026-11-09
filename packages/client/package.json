@@ -1,0 +1,32 @@
+{
+  "name": "@horologium/client",
+  "version": "1.0.0",
+  "description": "Universal JavaScript and TypeScript client SDK for Horologium planetary time, atomic synchronization, and timezone overlap matrix calculation.",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
+    }
+  },
+  "keywords": [
+    "horologium",
+    "atomic-time",
+    "stratum-1",
+    "marzullo",
+    "chronometry",
+    "timezone",
+    "overlap-matrix",
+    "solar-terminator"
+  ],
+  "author": "Shaik Imthiyas <shaik.imthiyas.t@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shaikimthiyas/horologium.git",
+    "directory": "packages/client"
+  }
+}
