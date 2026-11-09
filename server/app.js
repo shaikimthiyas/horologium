@@ -108,33 +108,41 @@ app.use('/api', apiRouter);
 
 // Production Static Distribution & Multi-Page Routing
 const distPath = resolve(__dirname, '../dist');
-if (existsSync(distPath)) {
-  app.use(express.static(distPath));
+const rootPath = resolve(__dirname, '../');
+const baseStatic = existsSync(distPath) ? distPath : rootPath;
 
-  // Explicit directory handlers to guarantee sub-page index resolution
-  app.get('/about/', (req, res) => res.sendFile(resolve(distPath, 'about/index.html')));
-  app.get('/status/', (req, res) => res.sendFile(resolve(distPath, 'status/index.html')));
-  app.get('/privacy/', (req, res) => res.sendFile(resolve(distPath, 'privacy/index.html')));
-  app.get('/horo/', (req, res) => res.sendFile(resolve(distPath, 'horo/index.html')));
-  app.get('/flight-deck/', (req, res) => res.sendFile(resolve(distPath, 'flight-deck/index.html')));
-  app.get('/geodesic-registry/', (req, res) => res.sendFile(resolve(distPath, 'geodesic-registry/index.html')));
-  app.get('/operator-gateway/', (req, res) => res.sendFile(resolve(distPath, 'operator-gateway/index.html')));
-  app.get('/protocol-liaison/', (req, res) => res.sendFile(resolve(distPath, 'protocol-liaison/index.html')));
-  app.get('/api-explorer/', (req, res) => res.sendFile(resolve(distPath, 'api-explorer/index.html')));
-  app.get('/developers/', (req, res) => res.sendFile(resolve(distPath, 'developers/index.html')));
+app.use(express.static(baseStatic));
 
-  app.use((req, res, next) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/ws')) {
-      return next();
-    }
-    const notFoundPath = resolve(distPath, '404.html');
-    if (existsSync(notFoundPath)) {
-      return res.status(404).sendFile(notFoundPath);
-    }
-    // Route to root index for unmapped front-end paths
-    res.sendFile(resolve(distPath, 'index.html'));
-  });
-}
+// Explicit directory handlers to guarantee sub-page index resolution
+const resolvePage = (rel) => {
+  const inDist = resolve(distPath, rel);
+  if (existsSync(inDist)) return inDist;
+  return resolve(rootPath, rel);
+};
+
+app.get('/', (req, res) => res.sendFile(resolvePage('index.html')));
+app.get('/horo/', (req, res) => res.sendFile(resolvePage('horo/index.html')));
+app.get('/about/', (req, res) => res.sendFile(resolvePage('about/index.html')));
+app.get('/status/', (req, res) => res.sendFile(resolvePage('status/index.html')));
+app.get('/privacy/', (req, res) => res.sendFile(resolvePage('privacy/index.html')));
+app.get('/flight-deck/', (req, res) => res.sendFile(resolvePage('flight-deck/index.html')));
+app.get('/geodesic-registry/', (req, res) => res.sendFile(resolvePage('geodesic-registry/index.html')));
+app.get('/operator-gateway/', (req, res) => res.sendFile(resolvePage('operator-gateway/index.html')));
+app.get('/protocol-liaison/', (req, res) => res.sendFile(resolvePage('protocol-liaison/index.html')));
+app.get('/api-explorer/', (req, res) => res.sendFile(resolvePage('api-explorer/index.html')));
+app.get('/developers/', (req, res) => res.sendFile(resolvePage('developers/index.html')));
+
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/ws')) {
+    return next();
+  }
+  const notFoundPath = resolvePage('404.html');
+  if (existsSync(notFoundPath)) {
+    return res.status(404).sendFile(notFoundPath);
+  }
+  // Route to root index for unmapped front-end paths
+  res.sendFile(resolvePage('index.html'));
+});
 
 // RFC 7807 Standardized Problem Details Error Middleware
 app.use(problemDetailsErrorHandler);

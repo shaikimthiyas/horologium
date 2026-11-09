@@ -130,3 +130,4 @@ describe('Universal Client SDK (@horologium/client)', () => {
     assert.ok(cdnContent.includes('window.HorologiumClient = HorologiumClient'), 'Must support browser script tag inclusion');
   });
 });
+

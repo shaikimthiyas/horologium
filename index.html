@@ -1226,8 +1226,8 @@
   box-shadow: 0 0 24px rgba(59, 130, 246, 0.75);
 }
 @keyframes enterPulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 16px rgba(59, 130, 246, 0.5); }
-  50% { transform: scale(1.03); box-shadow: 0 0 28px rgba(59, 130, 246, 0.9); }
+  0%, 100% { box-shadow: 0 0 16px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 28px rgba(59, 130, 246, 0.9); }
 }
 
     </style>
@@ -1538,7 +1538,7 @@
 
                     <!-- Layer D: Centerpiece Interactive 3D Diagonal-Slanted Geodesic Globe Canvas -->
                     <div class="intro-globe-wrapper tourbillon-canvas-wrapper">
-                        <canvas id="introGlobeCanvas" class="intro-globe-canvas" width="680" height="680" title="Click and drag to rotate the 3D Geodesic Tourbillon" aria-label="3D Rotating Planetary Map and Solar Terminator"></canvas>
+                        <canvas id="introGlobeCanvas" class="intro-globe-canvas" width="800" height="800" title="Click and drag to rotate the 3D Geodesic Tourbillon" aria-label="3D Rotating Planetary Map and Solar Terminator"></canvas>
                     </div>
                 </div>
             </div>
@@ -1592,7 +1592,7 @@
         <!-- Zone 2: Segmented View Tabs (Hick's Law Consolidated) -->
         <nav class="telemetry-center" aria-label="Views">
             <div class="segmented-view-track" role="tablist">
-                <a href="/" class="segmented-tab active" role="tab" aria-selected="true">Overview</a>
+                <a href="/horo/" class="segmented-tab active" role="tab" aria-selected="true">Overview</a>
                 <a href="/flight-deck/" class="segmented-tab" role="tab">World Map</a>
                 <a href="/geodesic-registry/" class="segmented-tab" role="tab">Directory</a>
             </div>
@@ -2009,49 +2009,39 @@
         }
 
         // Route-aware initialization: / is the Intro Experience; /horo/ is the Hero Workbench
-        const isHoroRoute = window.location.pathname.startsWith('/horo');
+        const isHoroRoute = false; // Root index.html always launches the Swiss Planetary Tourbillon Intro
         let planetaryIntro = null;
 
-        if (isHoroRoute) {
-            const stage = document.getElementById('introStage');
-            if (stage) {
-                stage.classList.add('dismissed');
-                stage.style.display = 'none';
+        const stage = document.getElementById('introStage');
+        if (stage) {
+            stage.classList.remove('dismissed');
+            stage.style.display = 'flex';
+        }
+        planetaryIntro = initPlanetaryIntro({
+            durationMs: 3800,
+            autoStart: true,
+            autoDismiss: false,
+            onComplete: () => {
+                // Milestone completion: highlight enter button
+                const enterBtn = document.getElementById('btnEnterHoro');
+                if (enterBtn) enterBtn.classList.add('ready-pulse');
             }
-            planetaryIntro = initPlanetaryIntro({ durationMs: 3800, autoStart: false });
-        } else {
-            // Root route (/) stays on the Swiss Planetary Tourbillon Intro
-            const stage = document.getElementById('introStage');
-            if (stage) {
-                stage.classList.remove('dismissed');
-                stage.style.display = 'flex';
-            }
-            planetaryIntro = initPlanetaryIntro({
-                durationMs: 3800,
-                autoStart: true,
-                autoDismiss: false,
-                onComplete: () => {
-                    // Milestone completion: highlight enter button
-                    const enterBtn = document.getElementById('btnEnterHoro');
-                    if (enterBtn) enterBtn.classList.add('ready-pulse');
-                }
+        });
+
+        const btnSkip = document.getElementById('btnSkipIntro');
+        if (btnSkip) {
+            btnSkip.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '/horo/';
             });
+        }
 
-            const btnSkip = document.getElementById('btnSkipIntro');
-            if (btnSkip) {
-                btnSkip.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.location.href = '/horo/';
-                });
-            }
-
-            const btnEnter = document.getElementById('btnEnterHoro');
-            if (btnEnter) {
-                btnEnter.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.location.href = '/horo/';
-                });
-            }
+        const btnEnter = document.getElementById('btnEnterHoro');
+        if (btnEnter) {
+            btnEnter.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '/horo/';
+            });
         }
         window.__HOROLOGIUM_INTRO__ = planetaryIntro;
 

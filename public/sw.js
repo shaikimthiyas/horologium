@@ -11,6 +11,10 @@ const CACHE_NAME = 'horologium-core-v1.4.0';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
+  '/horo/',
+  '/horo/index.html',
+  '/developers/',
+  '/developers/index.html',
   '/flight-deck/',
   '/flight-deck/index.html',
   '/geodesic-registry/',
@@ -109,7 +113,23 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-First for static assets, scripts, styles, images, and HTML shell
+  // Network-First for Navigation (HTML) ensures developers and users immediately receive latest updates
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        if (networkResponse.status === 200) {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return networkResponse;
+      }).catch(() => {
+        return caches.match(event.request).then((cached) => cached || caches.match('/index.html') || caches.match('/'));
+      })
+    );
+    return;
+  }
+
+  // Cache-First with Background Revalidation for static assets, scripts, styles, images
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {

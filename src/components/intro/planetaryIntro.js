@@ -142,7 +142,9 @@ export class PlanetaryIntroStage {
 
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', () => this.resizeCanvas());
-      this.startSequence();
+      if (this.options.autoStart !== false) {
+        this.startSequence();
+      }
     }
   }
 
@@ -420,7 +422,8 @@ export class PlanetaryIntroStage {
 
     const cx = renderW / 2;
     const cy = renderH / 2;
-    const R = Math.min(renderW, renderH) * 0.45; // Globe sphere radius (massive tourbillon scale)
+    const scaleFactor = Math.min(renderW, renderH) / 800;
+    const R = Math.max(255 * scaleFactor, Math.min(renderW, renderH) * 0.32); // Exact Swiss Horological Tourbillon scale matching cover.png
 
     // Apply Inertia Momentum & Prograde Revolution Physics (West to East)
     if (!this.drag.isDragging) {

@@ -55,3 +55,4 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClocks();
   setInterval(updateClocks, 1000);
 });
+
