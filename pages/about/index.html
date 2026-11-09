@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // Colophon & Builder's Note — Shaik Imthiyas</title>
-    <meta name="description" content="Engineering manifesto, design colophon, and technical specifications for Horologium, conceived and built by Shaik Imthiyas." />
+    <title>HOROLOGIUM // About & Technical Specifications — Shaik Imthiyas</title>
+    <meta name="description" content="Design principles, builder's note, and technical specifications for Horologium, conceived and built by Shaik Imthiyas." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="/src/styles/main.css"/>
@@ -182,7 +182,8 @@
             font-family: var(--font-mono);
             font-size: 11px;
             letter-spacing: 0.08em;
-            padding: 9px 18px;
+            padding: 0 18px;
+            height: var(--ctrl-md, 36px);
             border-radius: var(--radius-xs);
             border: 1px solid var(--border-hairline);
             background: var(--bg-2);
@@ -190,6 +191,8 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
             gap: 8px;
             transition: all 120ms ease;
         }
@@ -222,7 +225,7 @@
                 <span class="brand-dot"></span>
                 <span>HOROLOGIUM</span>
             </a>
-            <span class="telemetry-title">Colophon & Builder's Note</span>
+            <span class="telemetry-title">About Horologium</span>
         </div>
 
         <div class="telemetry-center">
@@ -241,20 +244,20 @@
                 <div style="margin-bottom: 12px;">
                     <span class="builder-chip">
                         <span class="pip"></span>
-                        <span>ARCHITECT & LEAD BUILDER // SHAIK IMTHIYAS</span>
+                        <span>CREATED BY SHAIK IMTHIYAS</span>
                     </span>
                 </div>
                 <h1 style="font-size: 32px; font-weight: 500; color: var(--fg-0); margin: 0 0 12px; letter-spacing: -0.02em;">
-                    Colophon & Builder's Note
+                    About Horologium & Builder's Note
                 </h1>
                 <p style="font-size: 15px; color: var(--fg-1); margin: 0; line-height: 1.6;">
-                    Horologium was conceived, designed, and engineered from first principles by <strong>Shaik Imthiyas</strong>. It represents an uncompromised fusion of Swiss mechanical horology, distributed consensus algorithms, and sovereign client-side architecture.
+                    Horologium was conceived, designed, and engineered from first principles by <strong>Shaik Imthiyas</strong>. It brings together precision timekeeping, distributed consensus algorithms, and privacy-first client-side architecture.
                 </p>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
-                <span class="badge-semantic badge-semantic-success">● PRODUCTION CALIBRE-01</span>
-                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">RELEASE v1.4.0-PRO</span>
+                <span class="badge-semantic badge-semantic-success">● CALIBRE-01 RELEASE</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">VERSION 1.4.0</span>
                 <span style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);" id="colophonUtcClock">--:--:-- UTC</span>
             </div>
         </section>
@@ -263,7 +266,7 @@
         <article class="colophon-card">
             <div class="section-tag">
                 <span>01</span>
-                <span>// THE ENGINEERING MANIFESTO</span>
+                <span>// ENGINEERING PHILOSOPHY</span>
             </div>
             <h2 class="section-title">Why Time is Broken on the Web — And How We Solved It</h2>
             <div class="manifesto-body">
@@ -274,10 +277,10 @@
                     In 1759, carpenter and watchmaker <strong>John Harrison</strong> solved longitude at sea by inventing the H4 marine chronometer — a mechanical instrument so stable it operated as an autonomous sovereign reference. <strong>Horologium is the modern software heir to that philosophy.</strong>
                 </p>
                 <p>
-                    Rather than trusting a single external server, Horologium implements <strong>Marzullo's Intersection Algorithm</strong> to query multiple Stratum-1 atomic reference clocks simultaneously, identify and discard statistical falsetickers, and lock onto verified consensus. When offset drifts, a continuous <strong>Linux <code>adjtime</code>-style slew controller</strong> gradually steers time back to atomic synchronization without ever allowing the client clock to tick backwards.
+                    Rather than trusting a single external server, Horologium implements <strong>Marzullo's Intersection Algorithm</strong> to query multiple Stratum-1 atomic reference clocks simultaneously, identify and discard statistical falsetickers, and lock onto verified consensus. When offset drifts, a continuous <strong>slew controller</strong> gradually steers time back to atomic synchronization without ever allowing the client clock to tick backwards.
                 </p>
                 <p>
-                    When network connectivity is completely severed, Horologium’s <strong>Progressive Web App engine</strong> transitions into sovereign flight mode, executing microsecond-level temperature-compensated crystal oscillator (TCXO) mathematical drift compensation.
+                    When network connectivity is completely severed, Horologium’s <strong>Progressive Web App engine</strong> transitions into offline flight mode, running client-side astronomical algorithms with zero network reliance.
                 </p>
             </div>
         </article>
@@ -286,45 +289,45 @@
         <article class="colophon-card">
             <div class="section-tag">
                 <span>02</span>
-                <span>// ARCHITECTURAL SPECIFICATIONS</span>
+                <span>// TECHNICAL SPECIFICATIONS</span>
             </div>
-            <h2 class="section-title">Calibre-01 Horological Chassis Specifications</h2>
+            <h2 class="section-title">Calibre-01 Architecture & Specifications</h2>
             
             <div class="spec-grid">
                 <div class="spec-item">
                     <span class="spec-label">Time Consensus Engine</span>
-                    <span class="spec-val">Marzullo's Truechimer</span>
-                    <span class="spec-desc">Evaluates concurrent UDP NTP packets; rejects rogue falsetickers via strict geometric intersection.</span>
+                    <span class="spec-val">Marzullo's Algorithm</span>
+                    <span class="spec-desc">Evaluates concurrent NTP packets and rejects rogue falsetickers via strict geometric intersection.</span>
                 </div>
 
                 <div class="spec-item">
-                    <span class="spec-label">Clock Discontinuity Control</span>
+                    <span class="spec-label">Clock Slew Rate</span>
                     <span class="spec-val">Monotonic Slewing</span>
-                    <span class="spec-desc">Emulates Linux <code>adjtime</code> at ±0.5 ms/s slew rate. Strictly guarantees d/dt > 0.</span>
+                    <span class="spec-desc">Adjusts clock offset at ±0.5 ms/s slew rate, guaranteeing the clock never ticks backwards.</span>
                 </div>
 
                 <div class="spec-item">
-                    <span class="spec-label">Offline Drift Model</span>
-                    <span class="spec-val">Parabolic TCXO Quartz</span>
-                    <span class="spec-desc">Calculates Δf/f = -0.034 ppm/°C² · (T - T₀)² + aging when disconnected from satellite/NTP.</span>
+                    <span class="spec-label">Offline Mode</span>
+                    <span class="spec-val">Local Solar Math</span>
+                    <span class="spec-desc">Calculates solar declination and subsolar coordinates locally without requiring internet access.</span>
                 </div>
 
                 <div class="spec-item">
-                    <span class="spec-label">Persistence Tri-Engine</span>
-                    <span class="spec-val">Turso + Timescale + SQLite</span>
-                    <span class="spec-desc">Zero-pause edge LibSQL, enterprise TimescaleDB hypertables, and embedded SQLite WAL mode.</span>
+                    <span class="spec-label">Persistence</span>
+                    <span class="spec-val">Local SQLite + Turso</span>
+                    <span class="spec-desc">Fast local SQLite database with optional cloud sync for saved locations and preferences.</span>
                 </div>
 
                 <div class="spec-item">
-                    <span class="spec-label">Accessibility Compliance</span>
+                    <span class="spec-label">Accessibility</span>
                     <span class="spec-val">WCAG 2.2 AAA</span>
-                    <span class="spec-desc">Mathematical contrast verification (≥ 7:1) across Obsidian Rhodium and Silvered Dial themes.</span>
+                    <span class="spec-desc">High contrast ratios (≥ 7:1) across Obsidian Dark and Silvered Light themes.</span>
                 </div>
 
                 <div class="spec-item">
-                    <span class="spec-label">Quality & Verification</span>
-                    <span class="spec-val">74 Tests (9 Suites)</span>
-                    <span class="spec-desc">Automated unit, integration, and chaos drift suites running on Node 20.x, 22.x, and Go 1.22.</span>
+                    <span class="spec-label">Verification</span>
+                    <span class="spec-val">127 Tests (19 Suites)</span>
+                    <span class="spec-desc">Automated unit, integration, and drift test suites running across Node.js environments.</span>
                 </div>
             </div>
         </article>
@@ -333,18 +336,18 @@
         <article class="colophon-card">
             <div class="section-tag">
                 <span>03</span>
-                <span>// DESIGN COLOPHON & TYPOGRAPHY</span>
+                <span>// DESIGN & TYPOGRAPHY</span>
             </div>
-            <h2 class="section-title">Swiss Industrial Precision & Optical Ergonomics</h2>
+            <h2 class="section-title">Design Principles & Typography</h2>
             <div class="manifesto-body">
                 <p>
-                    Horologium’s visual language is modeled on 20th-century marine chronometers, aeronautical flight instruments, and Swiss horological movements:
+                    Horologium’s visual language is modeled on marine chronometers, flight navigation instruments, and precision Swiss horological dials:
                 </p>
                 <ul>
                     <li><strong>Monospace Numeral Dial:</strong> Set in <code>JetBrains Mono</code> with tabular figures (<code>font-variant-numeric: tabular-nums</code>) to guarantee zero character jitter during high-frequency millisecond ticks.</li>
                     <li><strong>Primary Interface:</strong> Set in <code>Syne</code> and <code>Instrument Sans</code> for high-legibility architectural contrast.</li>
-                    <li><strong>Color System:</strong> Obsidian Rhodium (<code>#0A0D10</code> deep background), Specular Vermilion (<code>#FF4400</code> for 1px indicator needles and atomic alerts), and Silvered Dial (<code>#ECEFF1</code>).</li>
-                    <li><strong>Optical Halation Compensation:</strong> Negative sub-pixel tracking and anti-aliasing smoothing prevent optical text vibration against pitch-black OLED displays.</li>
+                    <li><strong>Color System:</strong> Obsidian Rhodium (<code>#0A0D10</code> deep background), Specular Vermilion (<code>#FF4400</code> for indicator needles and alerts), and Silvered Dial (<code>#ECEFF1</code>).</li>
+                    <li><strong>High-Resolution Display:</strong> Sub-pixel anti-aliasing smoothing prevents optical text vibration on dark screens.</li>
                 </ul>
             </div>
         </article>
@@ -353,38 +356,38 @@
         <section class="profile-card">
             <div>
                 <div style="margin-bottom: 6px;">
-                    <span class="section-tag">04 // AUTHOR & CRAFTSMAN</span>
+                    <span class="section-tag">04 // CREATOR & DEVELOPER</span>
                 </div>
                 <h2 style="font-size: 24px; font-weight: 600; color: var(--fg-0); margin: 0 0 6px;">
                     Shaik Imthiyas
                 </h2>
                 <p style="font-size: 13px; color: var(--fg-1); margin: 0; max-width: 52ch; line-height: 1.5;">
-                    Full-Stack & Distributed Systems Engineer specializing in low-latency reactive applications, resilient database persistence, and human-factors engineering.
+                    Software engineer specializing in high-performance web applications, distributed systems, and clean user interfaces.
                 </p>
             </div>
 
             <div class="profile-links">
                 <a href="https://github.com/shaikimthiyas/horologium" target="_blank" rel="noopener noreferrer" class="btn-profile-action">
-                    <span>🐙</span> GITHUB REPOSITORY
+                    <span>🐙</span> GitHub Repository
                 </a>
                 <a href="https://github.com/shaikimthiyas" target="_blank" rel="noopener noreferrer" class="btn-profile-action">
-                    <span>👤</span> BUILDER GITHUB
+                    <span>👤</span> Shaik Imthiyas Profile
                 </a>
                 <a href="/public/horologium.postman_collection.json" download class="btn-profile-action primary">
-                    <span>⬇</span> POSTMAN COLLECTION
+                    <span>⬇</span> Download Postman API Spec
                 </a>
             </div>
         </section>
     </main>
 
     <footer style="text-align: center; padding: 24px 20px 48px; border-top: 1px solid var(--border-hairline); font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);">
-        <p style="margin: 0 0 8px;">HOROLOGIUM // CONCEIVED & ENGINEERED BY SHAIK IMTHIYAS // MIT OPEN SOURCE LICENSE</p>
+        <p style="margin: 0 0 8px;">HOROLOGIUM · CREATED BY SHAIK IMTHIYAS · OPEN SOURCE (MIT)</p>
         <div style="display: flex; gap: 16px; justify-content: center;">
-            <a href="/flight-deck/" style="color: var(--fg-1); text-decoration: none;">Flight Deck</a>
-            <a href="/geodesic-registry/" style="color: var(--fg-1); text-decoration: none;">Geodesic Registry</a>
-            <a href="/status/" style="color: var(--fg-1); text-decoration: none;">System Status</a>
-            <a href="/privacy/" style="color: var(--fg-1); text-decoration: none;">Privacy & Legal</a>
-            <a href="/api-explorer/" style="color: var(--fg-1); text-decoration: none;">OpenAPI 3.1</a>
+            <a href="/flight-deck/" style="color: var(--fg-1); text-decoration: none;">World Map</a>
+            <a href="/geodesic-registry/" style="color: var(--fg-1); text-decoration: none;">Directory</a>
+            <a href="/status/" style="color: var(--fg-1); text-decoration: none;">Status</a>
+            <a href="/privacy/" style="color: var(--fg-1); text-decoration: none;">Privacy</a>
+            <a href="/api-explorer/" style="color: var(--fg-1); text-decoration: none;">API Docs</a>
         </div>
     </footer>
 

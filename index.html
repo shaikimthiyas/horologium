@@ -388,6 +388,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            line-height: 1;
             text-decoration: none;
             white-space: nowrap;
             transition: opacity 120ms ease;
@@ -411,6 +413,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            line-height: 1;
             text-decoration: none;
             white-space: nowrap;
             transition: all 120ms ease;
@@ -434,6 +438,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            line-height: 1;
             text-decoration: none;
             white-space: nowrap;
             cursor: pointer;
@@ -1252,24 +1258,24 @@
                 <span class="intro-brand-title">HOROLOGIUM</span>
                 <span class="intro-brand-slash">//</span>
                 <span class="intro-brand-calibre">CALIBRE-01</span>
-                <span class="intro-brand-tag">STRATUM-1 TELEMETRY</span>
+                <span class="intro-brand-tag">WORLD CLOCK</span>
             </div>
             <div class="intro-telemetry-center">
                 <div id="introStatusPill" class="intro-status-pill">
                     <span class="status-pulse-dot" aria-hidden="true"></span>
-                    <span class="status-label">SYSTEM OPERATIONAL</span>
+                    <span class="status-label">ALL SYSTEMS OPERATIONAL</span>
                     <span class="status-sep">·</span>
-                    <span class="status-sla">99.999% SLA</span>
+                    <span class="status-sla">99.99% ACCURACY</span>
                     <span class="status-sep">·</span>
-                    <span class="status-loc">GENEVA STRATUM-1</span>
+                    <span class="status-loc">ATOMIC TIME SYNC</span>
                 </div>
             </div>
             <div class="intro-top-actions">
-                <button type="button" class="btn-intro-audio" id="introSoundToggle" title="Toggle Audio [M]" aria-label="Toggle Audio">
+                <button type="button" class="btn-intro-audio" id="introSoundToggle" title="Toggle Sound [M]" aria-label="Toggle Audio">
                     <span class="sound-icon">🔊</span>
-                    <span class="sound-text">AUDIO ON</span>
+                    <span class="sound-text">SOUND ON</span>
                 </button>
-                <span class="intro-author-pill">ARCHITECT: SHAIK IMTHIYAS</span>
+                <span class="intro-author-pill">CREATED BY SHAIK IMTHIYAS</span>
                 <a href="/horo/" class="btn-intro-enter" id="btnEnterHoro" title="Enter Horologium Console">
                     <span>ENTER HOROLOGIUM</span>
                     <kbd>SPACE</kbd>
@@ -1326,7 +1332,7 @@
                 <!-- Swiss Horological Typography Block -->
                 <div class="intro-swiss-typography">
                     <h1 class="intro-brand-heading">HOROLOGIUM // CALIBRE-01</h1>
-                    <p class="intro-brand-strapline">SWISS HOROLOGICAL PLANETARY TELEMETRY ENGINE</p>
+                    <p class="intro-brand-strapline">HIGH-PRECISION GLOBAL TIME & TIMEZONE ATLAS</p>
 
                     <!-- Master UTC & Interactive Coordinates Readout -->
                     <div class="intro-telemetry-readout-rows">
@@ -1336,9 +1342,9 @@
 
                     <!-- Glowing Cyan Hardware Status Pills -->
                     <div class="intro-cyan-pills-row">
-                        <span class="intro-cyan-pill">[ STRATUM-1 SYNC: 99.999% ]</span>
-                        <span class="intro-cyan-pill">[ NTP ]</span>
-                        <span class="intro-cyan-pill">[ 220+ NATIONS ]</span>
+                        <span class="intro-cyan-pill">[ ATOMIC TIME SYNC ]</span>
+                        <span class="intro-cyan-pill">[ LIVE UTC ]</span>
+                        <span class="intro-cyan-pill">[ 220+ COUNTRIES ]</span>
                     </div>
 
                     <!-- Preserved Landmarks for Test Suite Assertions -->
@@ -1544,24 +1550,24 @@
             </div>
         </div>
 
-        <!-- 3. Bottom Telemetry Progress Bar & Stratum-1 Checklist -->
+        <!-- 3. Bottom Progress Bar & Checklist -->
         <footer class="intro-bottom-timeline tourbillon-bottom-checklist">
             <div class="tourbillon-milestones-row font-mono">
                 <div class="milestone-chip" id="introStep1">
                     <span class="chip-status" id="step1Stat">[SYNC]</span>
-                    <span>[01/04] STRATUM-1 UTC REFERENCE SYNCED</span>
+                    <span>[01/04] Synchronizing Global Atomic Time</span>
                 </div>
                 <div class="milestone-chip" id="introStep2">
                     <span class="chip-status" id="step2Stat">[SYNC]</span>
-                    <span>[02/04] 220 SOVEREIGN GEODESIC BOUNDARIES</span>
+                    <span>[02/04] Loading 220 Country Time Zones</span>
                 </div>
                 <div class="milestone-chip" id="introStep3">
                     <span class="chip-status" id="step3Stat">[SYNC]</span>
-                    <span>[03/04] ASTRONOMICAL SOLAR TERMINATOR</span>
+                    <span>[03/04] Calculating Sun Position & Daylight</span>
                 </div>
                 <div class="milestone-chip" id="introStep4">
                     <span class="chip-status" id="step4Stat">[SYNC]</span>
-                    <span>[04/04] MARZULLO 99.999% SLO NOMINAL</span>
+                    <span>[04/04] Verifying Accuracy · Ready</span>
                 </div>
             </div>
 

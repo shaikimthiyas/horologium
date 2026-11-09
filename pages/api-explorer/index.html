@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // OpenAPI 3.1 Specification & Telemetry Explorer</title>
+    <title>HOROLOGIUM // Interactive API Explorer & Docs</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="/src/styles/main.css"/>
@@ -210,7 +210,7 @@
                 <span class="brand-dot"></span>
                 <span>HOROLOGIUM</span>
             </a>
-            <span class="telemetry-title">OpenAPI 3.1 & Telemetry Sandbox</span>
+            <span class="telemetry-title">API Explorer & Documentation</span>
         </div>
 
         <div class="telemetry-center">
@@ -227,19 +227,19 @@
         <section class="docs-masthead">
             <div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
-                    <span class="badge-semantic badge-semantic-vermilion">● OPENAPI 3.1.0</span>
-                    <span style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">RFC-9557 & RFC-7807 COMPLIANT REST + WEBSOCKET SNTP</span>
+                    <span class="badge-semantic badge-semantic-vermilion">● OPENAPI 3.1</span>
+                    <span style="font-family: var(--font-mono); font-size: 10px; color: var(--fg-2);">RFC-9557 & RFC-7807 REST + WEBSOCKET SNTP</span>
                 </div>
-                <h1 style="font-size: 26px; font-weight: 500; color: var(--fg-0); margin: 0 0 8px;">Horologium Telemetry API Explorer</h1>
+                <h1 style="font-size: 26px; font-weight: 500; color: var(--fg-0); margin: 0 0 8px;">API Explorer & Testing Sandbox</h1>
                 <p style="font-size: 13px; color: var(--fg-1); margin: 0; max-width: 72ch; line-height: 1.5;">
-                    Standardized interfaces for distributed temporal synchronization, atomic stratum-1 NTP offset tracking, 24-hour meeting overlap calculations, Kubernetes health probes, and geodesic territory queries.
+                    Explore and test Horologium endpoints for time synchronization, meeting overlap calculation, health checks, and country directory data.
                 </p>
             </div>
 
             <div style="display: flex; gap: 10px; flex-direction: column; align-items: flex-end;">
                 <!-- Action Dock -->
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
-                    <a href="/openapi.json" target="_blank" class="nav-action-btn">RAW OPENAPI.JSON</a>
+                    <a href="/openapi.json" target="_blank" class="nav-action-btn">OPENAPI JSON</a>
                     <a href="/horologium.postman_collection.json" download="horologium.postman_collection.json" class="nav-action-btn" style="border-color: var(--accent-primary); color: var(--accent-primary);">
                         <span>⬇</span> POSTMAN COLLECTION
                     </a>
@@ -247,7 +247,7 @@
 
                 <!-- View Switcher -->
                 <div class="view-switch-dock">
-                    <button type="button" class="view-switch-btn active" id="btnViewHud" onclick="switchView('hud')">CALIBRE-01 HUD</button>
+                    <button type="button" class="view-switch-btn active" id="btnViewHud" onclick="switchView('hud')">API CONSOLE</button>
                     <button type="button" class="view-switch-btn" id="btnViewSwagger" onclick="switchView('swagger')">SWAGGER UI</button>
                 </div>
             </div>
@@ -264,7 +264,7 @@
                         <span class="badge-semantic badge-semantic-success" style="font-size: 9px;">KUBE-LIVENESS</span>
                     </div>
                     <button class="btn-try-endpoint" onclick="testEndpoint('/healthz', 'resHealthz')">
-                        <span>⚡</span> EXECUTE TEST
+                        <span>⚡</span> TEST ENDPOINT
                     </button>
                 </div>
                 <p style="font-size: 13px; color: var(--fg-1); margin: 0;">
@@ -282,7 +282,7 @@
                         <span class="badge-semantic badge-semantic-success" style="font-size: 9px;">KUBE-READINESS</span>
                     </div>
                     <button class="btn-try-endpoint" onclick="testEndpoint('/readyz', 'resReadyz')">
-                        <span>⚡</span> EXECUTE TEST
+                        <span>⚡</span> TEST ENDPOINT
                     </button>
                 </div>
                 <p style="font-size: 13px; color: var(--fg-1); margin: 0;">
@@ -300,7 +300,7 @@
                         <span class="badge-semantic badge-semantic-vermilion" style="font-size: 9px;">MARZULLO CONSENSUS</span>
                     </div>
                     <button class="btn-try-endpoint" onclick="testEndpoint('/api/v1/stratum1/sync', 'resStratum1')">
-                        <span>⚡</span> EXECUTE TEST
+                        <span>⚡</span> TEST ENDPOINT
                     </button>
                 </div>
                 <p style="font-size: 13px; color: var(--fg-1); margin: 0;">
@@ -317,7 +317,7 @@
                         <span class="endpoint-path">/api/v1/time?timezone=Europe/Zurich</span>
                     </div>
                     <button class="btn-try-endpoint" onclick="testEndpoint('/api/v1/time?timezone=Europe/Zurich', 'resTime')">
-                        <span>⚡</span> EXECUTE TEST
+                        <span>⚡</span> TEST ENDPOINT
                     </button>
                 </div>
                 <p style="font-size: 13px; color: var(--fg-1); margin: 0;">

@@ -388,6 +388,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            line-height: 1;
             text-decoration: none;
             white-space: nowrap;
             transition: opacity 120ms ease;
@@ -411,6 +413,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            line-height: 1;
             text-decoration: none;
             white-space: nowrap;
             transition: all 120ms ease;
@@ -434,6 +438,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            line-height: 1;
             text-decoration: none;
             white-space: nowrap;
             cursor: pointer;
@@ -1622,25 +1628,25 @@
             <div class="masthead-primary-cell">
                 <div class="hero-eyebrow-pill">
                     <span class="hero-live-pip"></span>
-                    <span>CALIBRE-01 TELEMETRY // REAL-TIME MERIDIAN ATLAS</span>
+                    <span>GLOBAL TIME & DAYLIGHT ATLAS</span>
                 </div>
 
                 <div class="masthead-copy-wrap">
                     <h1 class="masthead-title">The world's time, mapped to the second.</h1>
                     <p class="masthead-subtitle">
-                        Compare global time zones, find overlapping business hours, and track live solar illumination across 220 sovereign territories.
+                        Compare global time zones, find overlapping business hours, and track live daylight across 220 countries and regions.
                     </p>
                 </div>
 
                 <div class="hero-feature-ribbon">
                     <span class="hero-feature-pill">
-                        <span>🌐</span> 220 Sovereign Nations
+                        <span>🌐</span> 220 Countries
                     </span>
                     <span class="hero-feature-pill">
-                        <span>⏱</span> Stratum-1 Atomic Precision
+                        <span>⏱</span> Atomic Clock Accuracy
                     </span>
                     <span class="hero-feature-pill">
-                        <span>☀️</span> Real-time Solar Terminator
+                        <span>☀️</span> Live Day & Night Map
                     </span>
                 </div>
 
@@ -1728,7 +1734,7 @@
                     <!-- Station A (Base Station) -->
                     <div class="station-box">
                         <div class="station-title-row">
-                            <span class="station-label">Station A (Base)</span>
+                            <span class="station-label">Your Location</span>
                             <select id="stationASelect" class="station-select">
                                 <option value="Europe/London" selected>🇬🇧 London (UTC+0)</option>
                                 <option value="America/New_York">🇺🇸 New York (UTC-5)</option>
@@ -1743,14 +1749,14 @@
                         </div>
                         <div class="station-time-display font-mono" id="stationATime">--:--:--</div>
                         <div class="station-meta-info" id="stationADate">
-                            Business Hours: 09:00 – 18:00
+                            Working Hours: 09:00 – 18:00
                         </div>
                     </div>
 
                     <!-- Station B (Remote Station) -->
                     <div class="station-box">
                         <div class="station-title-row">
-                            <span class="station-label">Station B (Remote)</span>
+                            <span class="station-label">Remote Location</span>
                             <select id="stationBSelect" class="station-select">
                                 <option value="Asia/Tokyo" selected>🇯🇵 Tokyo (UTC+9)</option>
                                 <option value="Europe/London">🇬🇧 London (UTC+0)</option>
@@ -1765,7 +1771,7 @@
                         </div>
                         <div class="station-time-display font-mono" id="stationBTime" style="color: var(--accent-secondary);">--:--:--</div>
                         <div class="station-meta-info" id="stationBDate">
-                            Delta Calculation...
+                            Time Difference...
                         </div>
                     </div>
                 </div>
@@ -1774,7 +1780,7 @@
                 <div class="overlap-timeline-wrap">
                     <div class="overlap-timeline-header">
                         <span>24-Hour Timeline</span>
-                        <span id="scrubCurrentHourLabel" class="font-mono" style="color: var(--text-primary); font-weight: 500;">Scrubbed Hour: 12:00</span>
+                        <span id="scrubCurrentHourLabel" class="font-mono" style="color: var(--text-primary); font-weight: 500;">Selected Time: 12:00</span>
                     </div>
 
                     <!-- Ribbon Cells 00 to 23 -->
