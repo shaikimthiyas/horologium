@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // Geodesic Country & Timezone Directory</title>
+    <title>HOROLOGIUM // Country & Timezone Directory</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/src/styles/main.css"/>
     <style>
@@ -193,42 +193,42 @@
                 <span class="brand-dot"></span>
                 <span>HOROLOGIUM</span>
             </a>
-            <span class="telemetry-title">Geodesic Country & Timezone Directory</span>
+            <span class="telemetry-title">Country & Timezone Directory</span>
         </div>
 
         <div class="telemetry-center">
             <div class="utc-master-clock">
-                <span class="utc-label">UTC MASTER</span>
+                <span class="utc-label">UTC TIME</span>
                 <span id="dirUtcClock" class="font-mono">--:--:-- UTC</span>
             </div>
         </div>
 
         <div class="telemetry-right">
             <button type="button" class="telemetry-btn" id="dirThemeToggle" title="Toggle Theme">OBSIDIAN</button>
-            <a href="/flight-deck/" class="nav-action-btn">⊕ FLIGHT DECK</a>
-            <a href="/" class="nav-action-btn">OVERVIEW</a>
+            <a href="/flight-deck/" class="nav-action-btn">WORLD MAP</a>
+            <a href="/index.html" class="nav-action-btn">HOME</a>
         </div>
     </header>
 
     <div class="directory-container">
         <div class="directory-header">
             <div class="directory-tag">
-                <span class="badge-semantic badge-semantic-counter">● IANA 2026.10</span>
-                <span>GLOBAL TIMEZONE & COUNTRY DIRECTORY</span>
+                <span class="badge-semantic badge-semantic-counter">● IANA 2026</span>
+                <span>COUNTRY & TIMEZONE DIRECTORY</span>
             </div>
-            <h1>Global Timezone & Country Directory</h1>
-            <p>Standard reference catalog indexing meridians, daylight saving status, ISO-3166 territory codes, and UTC offsets across 220 countries and territories.</p>
+            <h1>Global Country & Timezone Directory</h1>
+            <p>Browse real-time local times, daylight saving status, country codes, and UTC offsets across 220 countries and territories.</p>
         </div>
 
         <div class="directory-filter-bar">
             <!-- Recessed Instrument Input with Monospace Prefix Slot -->
             <div class="input-recessed-group" style="flex: 1; max-width: 580px;">
                 <span class="input-slot-prefix">⌕</span>
-                <input type="text" id="dirSearchInput" class="input-recessed" placeholder="Search by country, capital, ISO code, or UTC offset (e.g. Japan, Paris, UTC+5)..." />
+                <input type="text" id="dirSearchInput" class="input-recessed" placeholder="Search by country, capital, code, or UTC offset (e.g. Japan, Paris, UTC+5)..." />
             </div>
 
             <div class="filter-counter">
-                TOTAL: <strong id="dirCounter">0</strong> TERRITORIES
+                TOTAL: <strong id="dirCounter">0</strong> COUNTRIES
             </div>
         </div>
 
@@ -237,11 +237,11 @@
                 <thead>
                     <tr>
                         <th>Country & Capital</th>
-                        <th style="width: 80px;">ISO</th>
-                        <th>IANA TIMEZONE KEY</th>
-                        <th style="width: 120px;">OFFSET</th>
-                        <th style="width: 140px;">LIVE CIVIL TIME</th>
-                        <th style="width: 100px; text-align: right;">ACTION</th>
+                        <th style="width: 80px;">Code</th>
+                        <th>Timezone</th>
+                        <th style="width: 120px;">UTC Offset</th>
+                        <th style="width: 140px;">Current Time</th>
+                        <th style="width: 110px; text-align: right;">Action</th>
                     </tr>
                 </thead>
                 <tbody id="directoryTableBody">
@@ -254,16 +254,12 @@
     <!-- 24px Fixed Bottom Telemetry Ribbon -->
     <footer class="telemetry-ribbon-bottom">
         <div class="telemetry-ribbon-item">
-            <span class="badge-semantic badge-semantic-success">● [SYNC]</span>
-            <span>DIRECTORY INDEX ACTIVE</span>
-            <span>·</span>
-            <span>LATENCY: <span class="tnum">12ms</span></span>
+            <span class="badge-semantic badge-semantic-success">● SYNCHRONIZED</span>
+            <span>DIRECTORY ACTIVE</span>
         </div>
         <div class="telemetry-ribbon-item">
-            <span>UTC MASTER:</span>
+            <span>UTC TIME:</span>
             <span id="dirBottomUtc" class="tnum" style="color: var(--fg-0); font-weight: 500;">--:--:-- UTC</span>
-            <span>·</span>
-            <span class="badge-semantic badge-semantic-counter">CALIBRE-01</span>
         </div>
         <div class="telemetry-ribbon-item">
             <span>SHORTCUTS:</span>
@@ -291,7 +287,7 @@
             counterEl.textContent = items.length;
 
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 32px; color: var(--fg-2); font-family: var(--font-mono);">NO MATCHING GEODESIC RECORDS FOUND</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 32px; color: var(--fg-2); font-family: var(--font-mono);">No matching countries or timezones found.</td></tr>`;
                 return;
             }
 
@@ -303,7 +299,7 @@
                         <div class="country-title-box">
                             <span style="font-size: 14px;">${c.flag || '🌐'}</span>
                             <span class="country-name">${c.name}</span>
-                            <span class="country-capital-editorial">${c.capital ? '// ' + c.capital : ''}</span>
+                            <span class="country-capital-editorial">${c.capital ? '· ' + c.capital : ''}</span>
                         </div>
                     </td>
                     <td class="font-mono" style="color: var(--fg-2);">${c.code || '--'}</td>
@@ -312,11 +308,11 @@
                     <td>
                         <span class="table-clock-val">
                             <span class="dir-live-clock" data-country="${c.name}">${live.time}</span>
-                            <span style="font-size: 10px; color: var(--fg-2); margin-left: 4px;">${live.dayPart}</span>
+                            <span style="font-size: 10px; color: var(--fg-2); margin-left: 4px;">${live.tzCode || ''}</span>
                         </span>
                     </td>
                     <td class="action-cell">
-                        <a href="/flight-deck/?country=${encodeURIComponent(c.name)}">TRACK ➔</a>
+                        <a href="/flight-deck/?country=${encodeURIComponent(c.name)}">VIEW MAP ➔</a>
                     </td>
                 `;
                 tbody.appendChild(tr);

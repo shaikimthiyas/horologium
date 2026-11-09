@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // Operator Authentication</title>
+    <title>HOROLOGIUM // Account & Access</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/src/styles/main.css"/>
     <style>
@@ -126,14 +126,14 @@
                 <span class="brand-dot"></span>
                 <span>HOROLOGIUM</span>
             </a>
-            <span class="telemetry-title">Security & Operator Gateway</span>
+            <span class="telemetry-title">Account & Access</span>
         </div>
 
         <div class="telemetry-right">
             <button type="button" class="telemetry-btn" id="loginThemeToggle">OBSIDIAN</button>
-            <a href="/flight-deck/" class="nav-action-btn">⊕ FLIGHT DECK</a>
+            <a href="/flight-deck/" class="nav-action-btn">WORLD MAP</a>
             <a href="/geodesic-registry/" class="nav-action-btn">DIRECTORY</a>
-            <a href="/" class="nav-action-btn">OVERVIEW</a>
+            <a href="/index.html" class="nav-action-btn">HOME</a>
         </div>
     </header>
 
@@ -141,14 +141,14 @@
         <div class="auth-card">
             <div class="auth-tag">
                 <span class="badge-semantic badge-semantic-vermilion">● ACCOUNT ACCESS</span>
-                <span>OPERATOR CONSOLE</span>
+                <span>SIGN IN</span>
             </div>
-            <h1>Operator Authentication</h1>
-            <p class="subtitle">Sign in to manage custom base stations, synchronize pinned timezones, and access persistent session preferences.</p>
+            <h1>Sign In to Horologium</h1>
+            <p class="subtitle">Sign in to save preferred locations, manage your API keys, and customize your timezone display settings.</p>
 
             <form id="loginForm">
                 <div class="form-row">
-                    <label class="form-label" for="username">Operator Username</label>
+                    <label class="form-label" for="username">Username or Email</label>
                     <div class="input-recessed-group">
                         <span class="input-slot-prefix">ID:</span>
                         <input type="text" id="username" class="input-recessed" placeholder="admin" required autocomplete="username" />
@@ -156,7 +156,7 @@
                 </div>
 
                 <div class="form-row">
-                    <label class="form-label" for="password">Password / Access Key</label>
+                    <label class="form-label" for="password">Password</label>
                     <div class="input-recessed-group">
                         <span class="input-slot-prefix">KEY:</span>
                         <input type="password" id="password" class="input-recessed" placeholder="••••••••" required autocomplete="current-password" />
@@ -172,7 +172,7 @@
                 </button>
 
                 <div class="autofill-btn" id="demoAutofill">
-                    [ Demo Account: <code>admin</code> / <code>password123</code> ]
+                    Fill Demo Credentials (<code>admin</code> / <code>password123</code>)
                 </div>
 
                 <div class="auth-status" id="authStatus"></div>
@@ -183,16 +183,12 @@
     <!-- 24px Fixed Bottom Telemetry Ribbon -->
     <footer class="telemetry-ribbon-bottom">
         <div class="telemetry-ribbon-item">
-            <span class="badge-semantic badge-semantic-success">● [SECURE]</span>
-            <span>TLS ENCRYPTED CHANNEL</span>
-            <span>·</span>
-            <span>PORT: <span class="tnum">3001</span></span>
+            <span class="badge-semantic badge-semantic-success">● SECURE CONNECTION</span>
+            <span>TLS ENCRYPTED</span>
         </div>
         <div class="telemetry-ribbon-item">
-            <span>UTC MASTER:</span>
+            <span>UTC TIME:</span>
             <span id="authBottomUtc" class="tnum" style="color: var(--fg-0); font-weight: 500;">--:--:-- UTC</span>
-            <span>·</span>
-            <span class="badge-semantic badge-semantic-counter">CALIBRE-01</span>
         </div>
         <div class="telemetry-ribbon-item">
             <span>SHORTCUTS:</span>

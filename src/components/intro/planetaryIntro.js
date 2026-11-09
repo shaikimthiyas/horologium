@@ -122,10 +122,10 @@ export class PlanetaryIntroStage {
 
     // 4 Calibrated Initialization Milestones
     this.milestones = [
-      { timeMs: 0, id: 'introStep1', label: 'STRATUM-1 UTC REFERENCE SYNCED', statId: 'step1Stat', statText: 'SYNCED' },
-      { timeMs: 950, id: 'introStep2', label: '220 TERRITORIAL BOUNDARIES LOADED', statId: 'step2Stat', statText: 'LOADED' },
-      { timeMs: 1900, id: 'introStep3', label: 'SOLAR TERMINATOR & ZENITH ALIGNED', statId: 'step3Stat', statText: 'ALIGNED' },
-      { timeMs: 2850, id: 'introStep4', label: 'MARZULLO 99.999% SLO NOMINAL', statId: 'step4Stat', statText: 'ACTIVE' }
+      { timeMs: 0, id: 'introStep1', label: 'GLOBAL ATOMIC TIME SYNCHRONIZED', statId: 'step1Stat', statText: 'SYNCED' },
+      { timeMs: 950, id: 'introStep2', label: '220 COUNTRY TIMEZONES LOADED', statId: 'step2Stat', statText: 'READY' },
+      { timeMs: 1900, id: 'introStep3', label: 'DAYLIGHT & SUN POSITION CALCULATED', statId: 'step3Stat', statText: 'ACTIVE' },
+      { timeMs: 2850, id: 'introStep4', label: 'ACCURACY VERIFIED · SYSTEM READY', statId: 'step4Stat', statText: 'ONLINE' }
     ];
 
     if (this.hasDom && this.options.autoStart) {
@@ -365,7 +365,7 @@ export class PlanetaryIntroStage {
     });
 
     if (progress >= 0.95 && this.statusPillEl) {
-      this.statusPillEl.innerHTML = '<span class="status-pulse-dot" aria-hidden="true"></span> <span class="status-label">SYSTEM OPERATIONAL</span> <span class="status-sep">·</span> <span class="status-sla">99.999% SLA</span> <span class="status-sep">·</span> <span class="status-loc">GENEVA STRATUM-1</span>';
+      this.statusPillEl.innerHTML = '<span class="status-pulse-dot" aria-hidden="true"></span> <span class="status-label">ALL SYSTEMS OPERATIONAL</span> <span class="status-sep">·</span> <span class="status-sla">99.99% ACCURACY</span> <span class="status-sep">·</span> <span class="status-loc">ATOMIC TIME SYNC</span>';
     }
   }
 

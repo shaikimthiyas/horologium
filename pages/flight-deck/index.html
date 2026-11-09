@@ -24,30 +24,30 @@
 
         <div class="telemetry-center">
             <div class="utc-master-clock">
-                <span class="utc-label">UTC MASTER</span>
+                <span class="utc-label">UTC TIME</span>
                 <span id="utcClockMaster" class="font-mono">--:--:-- UTC</span>
             </div>
             <div class="solar-declination" id="solarDeclination">
-                <span>SOLAR DEC:</span>
+                <span>SUN ANGLE:</span>
                 <span id="solarDecVal" class="font-mono">CALCULATING...</span>
             </div>
             <div class="sntp-badge-container" style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; border-left: 1px solid var(--border-hairline); padding-left: 12px; height: 24px;">
-                <span style="color: var(--fg-2);">SNTP DELAY:</span>
-                <span id="mapSntpDelay" style="color: var(--semantic-success);">CONNECTING...</span>
+                <span style="color: var(--fg-2);">SYNC DELAY:</span>
+                <span id="mapSntpDelay" style="color: var(--semantic-success);">CONNECTED</span>
                 <span id="mapSntpDrift" style="color: var(--fg-1); margin-left: 4px;">±0.0ms</span>
             </div>
         </div>
 
         <div class="telemetry-right">
             <button type="button" class="search-command-trigger" id="searchTriggerBtn">
-                <span>Search cities or coordinates...</span>
+                <span>Search cities...</span>
                 <span class="kbd-shortcut">⌘K</span>
             </button>
             <button type="button" class="telemetry-btn" id="formatToggleBtn" title="Toggle 12-Hour / 24-Hour Format">24H</button>
-            <button type="button" class="telemetry-btn" id="themeToggleBtn" title="Toggle Avionics Night Deck / Paper Atlas">DECK</button>
+            <button type="button" class="telemetry-btn" id="themeToggleBtn" title="Toggle Dark / Light Theme">Theme</button>
+            <a href="/horo/" class="nav-action-btn">Workbench</a>
             <a href="/geodesic-registry/" class="nav-action-btn">Directory</a>
-            <a href="/api-explorer/" class="nav-action-btn">API Docs</a>
-            <a href="/" class="nav-action-btn">Overview</a>
+            <a href="/api-explorer/" class="nav-action-btn">API</a>
         </div>
     </header>
 
@@ -1642,7 +1642,7 @@
                         <span>LIVE</span>
                     </button>
                 </div>
-                <span id="simulatedOffsetLabel" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 11px;">OFFSET: ±00:00 (LIVE STRATUM-1)</span>
+                <span id="simulatedOffsetLabel" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 11px;">OFFSET: ±00:00 (LIVE TIME)</span>
             </div>
         </div>
         <div class="matrix-grid" id="matrixGrid">
@@ -1655,29 +1655,29 @@
         <div class="search-command-box">
             <div class="search-modal-header">
                 <span style="font-size: 13px; color: var(--text-tertiary); font-family: var(--font-mono);">⌕</span>
-                <input type="text" id="commandSearchInput" class="search-modal-input" placeholder="Search 220+ nations, cities, or UTC offsets..." autocomplete="off" />
+                <input type="text" id="commandSearchInput" class="search-modal-input" placeholder="Search 220+ countries, cities, or time offsets..." autocomplete="off" />
                 <span class="kbd-shortcut">ESC</span>
             </div>
             <div class="search-modal-results" id="commandSearchResults"></div>
         </div>
     </div>
 
-    <!-- 6. HOROLOGIUM WORKBENCH TELEMETRY RIBBON (24px Fixed Bottom Bar) -->
+    <!-- 6. BOTTOM TELEMETRY RIBBON (24px Fixed Bottom Bar) -->
     <footer class="telemetry-ribbon-bottom">
         <div class="telemetry-ribbon-item">
             <span class="badge-semantic badge-semantic-success">● [SYNC]</span>
-            <span>MERIDIAN LOCKED</span>
+            <span>SYNCHRONIZED</span>
             <span>·</span>
             <span>LATENCY: <span id="telemetryLatency" class="tnum">12ms</span></span>
         </div>
         <div class="telemetry-ribbon-item">
-            <span>UTC MASTER:</span>
+            <span>UTC TIME:</span>
             <span id="bottomUtcClock" class="tnum" style="color: var(--fg-0); font-weight: 500;">--:--:-- UTC</span>
             <span>·</span>
             <span class="badge-semantic badge-semantic-counter">CALIBRE-01</span>
         </div>
         <div class="telemetry-ribbon-item">
-            <span>KEYBOARD:</span>
+            <span>SHORTCUTS:</span>
             <kbd>⌘K</kbd> <span>SEARCH</span>
             <kbd>SPACE</kbd> <span>LIVE</span>
             <kbd>T</kbd> <span>THEME</span>

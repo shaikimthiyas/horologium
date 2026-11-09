@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horologium // Developer Portal & Temporal Infrastructure</title>
-  <meta name="description" content="Production-ready public APIs, embeddable Web Component widgets, and Stratum-1 time synchronization for global enterprise applications." />
+  <title>Horologium // Developer Platform & APIs</title>
+  <meta name="description" content="Public APIs, embeddable clock widgets, and atomic time synchronization for modern web applications." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="stylesheet" href="/src/styles/main.css" />
   <style>
@@ -240,18 +240,18 @@
     <section class="dev-hero">
       <div class="dev-eyebrow">
         <span>●</span>
-        <span>Public Temporal Infrastructure · Enterprise Layer</span>
+        <span>Developer Platform & Integrations</span>
       </div>
-      <h1 class="dev-title">Temporal Infrastructure for Global Systems.</h1>
+      <h1 class="dev-title">Accurate Global Time for Modern Applications.</h1>
       <p class="dev-subtitle">
-        High-precision Stratum-1 time synchronization, cross-border meeting overlap algorithms, and embeddable Web Component widgets designed to power calendars, CRMs, logistics, and SaaS platforms worldwide.
+        High-precision atomic clock time synchronization, cross-border meeting overlap calculations, and embeddable widgets designed to power calendars, CRMs, and international web apps.
       </p>
       <div class="dev-badges-row">
-        <span class="dev-badge"><strong style="color:#10B981;">99.999% SLA</strong> Uptime</span>
-        <span class="dev-badge"><strong style="color:#00F5D4;">RFC 5905</strong> SNTP v4</span>
-        <span class="dev-badge"><strong style="color:#38BDF8;">Marzullo</strong> Consensus</span>
-        <span class="dev-badge">Zero-Knowledge Privacy</span>
-        <span class="dev-badge">Free Public Utility Tier</span>
+        <span class="dev-badge"><strong style="color:#10B981;">99.99%</strong> Uptime</span>
+        <span class="dev-badge"><strong style="color:#00F5D4;">Atomic Clock</strong> Accuracy</span>
+        <span class="dev-badge"><strong style="color:#38BDF8;">220+</strong> Countries</span>
+        <span class="dev-badge">Privacy First</span>
+        <span class="dev-badge">Free & Open Source</span>
       </div>
     </section>
 
@@ -261,24 +261,24 @@
       <section class="card-panel">
         <h2 class="card-title">
           <span>🔑</span>
-          <span>Generate Developer API Key</span>
+          <span>Generate Free API Key</span>
         </h2>
         <p style="font-size:13px; color:#8E95A2; line-height:1.4;">
-          Instant self-service provisioning for developers. Provides 1,200 requests/minute, domain origin scoping, and platform metrics telemetry. No credit card required.
+          Instant self-service setup. Includes 1,200 requests per minute with domain security controls. No credit card required.
         </p>
 
         <form id="keyForm" style="display:flex; flex-direction:column; gap:12px;">
           <div class="form-group">
             <label class="form-label" for="tenantName">Organization or Project Name</label>
-            <input type="text" id="tenantName" class="form-input" placeholder="e.g. Acme SaaS" required />
+            <input type="text" id="tenantName" class="form-input" placeholder="e.g. Acme App" required />
           </div>
           <div class="form-group">
-            <label class="form-label" for="tenantEmail">Developer Email Address</label>
-            <input type="email" id="tenantEmail" class="form-input" placeholder="developer@acme.com" required />
+            <label class="form-label" for="tenantEmail">Your Email Address</label>
+            <input type="email" id="tenantEmail" class="form-input" placeholder="you@company.com" required />
           </div>
           <div class="form-group">
-            <label class="form-label" for="allowedDomains">Allowed Origin Domains (CORS)</label>
-            <input type="text" id="allowedDomains" class="form-input" placeholder="* (or app.acme.com)" value="*" />
+            <label class="form-label" for="allowedDomains">Allowed Domains (CORS)</label>
+            <input type="text" id="allowedDomains" class="form-input" placeholder="* (or app.example.com)" value="*" />
           </div>
           <button type="submit" class="btn-primary" id="btnSubmitKey">
             <span>Generate Free API Key</span>
@@ -287,12 +287,12 @@
         </form>
 
         <div id="keyResult" style="display:none; flex-direction:column; gap:10px; margin-top:10px;">
-          <span style="font-size:12px; font-weight:600; color:#10B981;">✓ API Key Provisioned Successfully</span>
+          <span style="font-size:12px; font-weight:600; color:#10B981;">✓ API Key Created Successfully</span>
           <div class="code-box">
             <button type="button" class="copy-btn" id="btnCopyKey">Copy</button>
             <code id="rawKeyText">hlg_live_...</code>
           </div>
-          <p style="font-size:11px; color:#94A3B8;">Pass this key via <code style="color:#00F5D4;">X-Horologium-Key</code> or <code style="color:#00F5D4;">Authorization: Bearer</code>.</p>
+          <p style="font-size:11px; color:#94A3B8;">Pass this key via <code style="color:#00F5D4;">X-Horologium-Key</code> or <code style="color:#00F5D4;">Authorization: Bearer</code> header.</p>
         </div>
       </section>
 
@@ -300,10 +300,10 @@
       <section class="card-panel">
         <h2 class="card-title">
           <span>🧩</span>
-          <span>Embeddable Widget Studio</span>
+          <span>Embeddable Clock Widgets</span>
         </h2>
         <p style="font-size:13px; color:#8E95A2; line-height:1.4;">
-          Embed responsive world clocks and meeting planners into Notion, Confluence, WordPress, React, or custom dashboards.
+          Embed responsive world clocks and meeting overlap tools into Notion, Confluence, WordPress, React, or custom dashboards.
         </p>
 
         <!-- Studio Controls -->
@@ -351,31 +351,31 @@
     <section class="card-panel">
       <h2 class="card-title">
         <span>⚡</span>
-        <span>Stratum-1 REST & WebSocket Endpoints</span>
+        <span>Core REST & WebSocket Endpoints</span>
       </h2>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
         <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
           <div style="font-family:var(--font-mono); font-size:12px; color:#10B981; font-weight:600; margin-bottom:4px;">GET /api/v1/time</div>
-          <p style="font-size:12px; color:#8E95A2;">Synchronized atomic UTC timestamp, ISO string, solar declination, and subsolar meridian coordinates.</p>
+          <p style="font-size:12px; color:#8E95A2;">Real-time atomic UTC timestamp, ISO format, and solar coordinates.</p>
         </div>
         <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
           <div style="font-family:var(--font-mono); font-size:12px; color:#00F5D4; font-weight:600; margin-bottom:4px;">GET /api/v1/zones/overlap</div>
-          <p style="font-size:12px; color:#8E95A2;">24-hour mutual working hour overlap calculation between any two global IANA timezones.</p>
+          <p style="font-size:12px; color:#8E95A2;">Working hour overlap calculations between any two timezones.</p>
         </div>
         <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
           <div style="font-family:var(--font-mono); font-size:12px; color:#38BDF8; font-weight:600; margin-bottom:4px;">GET /api/v1/stratum1/sync</div>
-          <p style="font-size:12px; color:#8E95A2;">Marzullo truechimer consensus diagnostics, cluster jitter, and clock skew telemetry.</p>
+          <p style="font-size:12px; color:#8E95A2;">Atomic time synchronization and clock health metrics.</p>
         </div>
         <div style="background:var(--dev-surface-2); border:1px solid var(--dev-border); border-radius:8px; padding:16px;">
           <div style="font-family:var(--font-mono); font-size:12px; color:#F59E0B; font-weight:600; margin-bottom:4px;">WS /ws/sntp</div>
-          <p style="font-size:12px; color:#8E95A2;">Bidirectional RFC 4330 SNTP packet exchange over WebSockets with sub-millisecond round-trip time calibration.</p>
+          <p style="font-size:12px; color:#8E95A2;">Live real-time time synchronization over WebSockets.</p>
         </div>
       </div>
     </section>
   </main>
 
   <footer style="margin-top:auto; border-top:1px solid var(--dev-border); padding:24px; text-align:center; font-size:12px; color:#64748B;">
-    Horologium // Calibre-01 · Handcrafted by Shaik Imthiyas · Zero-Knowledge Temporal Infrastructure · 99.999% SLA
+    Horologium · Created by Shaik Imthiyas · Free & Open Source Time Platform
   </footer>
 
   <script>

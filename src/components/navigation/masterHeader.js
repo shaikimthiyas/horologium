@@ -21,12 +21,12 @@ import { haptics } from '../../utils/audioHaptics.js';
 import { pwaManager } from '../../utils/pwaManager.js';
 
 export const CANONICAL_PAGES = [
-  { id: 'gateway', label: 'GATEWAY', href: '/', shortcut: '1' },
-  { id: 'flight-deck', label: 'FLIGHT DECK', href: '/flight-deck/', shortcut: '2' },
-  { id: 'geodesic-registry', label: 'REGISTRY', href: '/geodesic-registry/', shortcut: '3' },
-  { id: 'operator-gateway', label: 'OPERATOR', href: '/operator-gateway/', shortcut: '4' },
-  { id: 'protocol-liaison', label: 'LIAISON', href: '/protocol-liaison/', shortcut: '5' },
-  { id: 'api-explorer', label: 'API DOCS', href: '/api-explorer/', shortcut: '6' }
+  { id: 'gateway', label: 'Home', href: '/', shortcut: '1' },
+  { id: 'flight-deck', label: 'World Map', href: '/flight-deck/', shortcut: '2' },
+  { id: 'geodesic-registry', label: 'Directory', href: '/geodesic-registry/', shortcut: '3' },
+  { id: 'operator-gateway', label: 'Access', href: '/operator-gateway/', shortcut: '4' },
+  { id: 'protocol-liaison', label: 'Contact', href: '/protocol-liaison/', shortcut: '5' },
+  { id: 'api-explorer', label: 'API Docs', href: '/api-explorer/', shortcut: '6' }
 ];
 
 export class MasterHeaderController {

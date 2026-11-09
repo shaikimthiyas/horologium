@@ -176,13 +176,13 @@ class WebSocketSntpClient {
       // Update telemetry badges if present on page
       const latencyElements = document.querySelectorAll('.sntp-latency-readout, #sntpLatency, #homeLatencyVal, #mapSntpDelay');
       latencyElements.forEach(el => {
-        el.textContent = `${this.roundTripDelayMs.toFixed(1)}ms (${this.oneWayDelayMs.toFixed(1)}ms 1-WAY)`;
+        el.textContent = `${this.roundTripDelayMs.toFixed(1)}ms`;
       });
 
       const skewElements = document.querySelectorAll('.sntp-skew-readout, #sntpSkew, #homeDriftVal, #mapSntpDrift');
       skewElements.forEach(el => {
         const sign = this.clockOffsetMs >= 0 ? '+' : '';
-        el.textContent = `${sign}${this.clockOffsetMs.toFixed(2)}ms (STRATUM-${this.stratum})`;
+        el.textContent = `${sign}${this.clockOffsetMs.toFixed(1)}ms`;
       });
     }
   }
