@@ -99,8 +99,8 @@ describe('Sprint I: OpenAPI 3.1 Specification, Swagger UI & Postman Collection',
   });
 
   test('API Explorer HTML: Dual-view HUD and Swagger UI integration', () => {
-    const htmlPath = resolve(rootDir, 'api-explorer/index.html');
-    assert.ok(existsSync(htmlPath), 'api-explorer/index.html must exist');
+    const htmlPath = resolve(rootDir, 'pages/api-explorer/index.html');
+    assert.ok(existsSync(htmlPath), 'pages/api-explorer/index.html must exist');
 
     const html = readFileSync(htmlPath, 'utf8');
     assert.ok(html.includes('swaggerUiContainer'), 'Must contain Swagger UI container element');

@@ -118,8 +118,8 @@ describe('Enterprise Developer Platform & Key Governance', () => {
   });
 
   test('Developer portal HTML file exists with Widget Studio and API quickstarts', () => {
-    const devHtmlPath = resolve(rootDir, 'developers/index.html');
-    assert.ok(existsSync(devHtmlPath), 'developers/index.html must exist on disk');
+    const devHtmlPath = resolve(rootDir, 'pages/developers/index.html');
+    assert.ok(existsSync(devHtmlPath), 'pages/developers/index.html must exist on disk');
 
     const html = readFileSync(devHtmlPath, 'utf8');
     assert.ok(html.includes('DEVELOPER PLATFORM') || html.includes('Developer Portal'), 'Must include Developer Portal header');
