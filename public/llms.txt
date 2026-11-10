@@ -1,0 +1,134 @@
+# Horologium // Planetary Time & Distributed Chronometry
+> An enterprise-grade astronomical chronometry, world timezone atlas, and distributed time synchronization architecture conceived and built by Shaik Imthiyas.
+
+Website: https://horologium.telemetry.org
+API Base: https://horologium.telemetry.org/api/v1
+WebSocket SNTP: wss://horologium.telemetry.org/ws/sntp
+Author: Shaik Imthiyas
+License: MIT
+Repository: https://github.com/shaikimthiyas/horologium
+
+---
+
+## 1. System Overview
+
+Horologium is a sovereign precision time platform designed for distributed systems, mission-critical operations, and cross-border teams. It unifies:
+1. **Interactive Planetary Flight Deck:** 3D orthographic globe and 2D equirectangular solar terminator tracking live astronomical daylight across 220 countries and 400+ IANA timezones.
+2. **Stratum-1 SNTP Telemetry Gateway:** RFC 4330 / RFC 5905 compliant time synchronization with Marzullo's intersection algorithm for truechimer consensus across reference atomic clocks.
+3. **Marine Chronometer Offline Engine (PWA):** Temperature-Compensated Crystal Oscillator (TCXO) mathematical drift emulation ($\pm 2.0\text{ ppm}$) with quadratic temperature curve ($f(T) = \beta(T - T_0)^2$).
+4. **Developer Platform & SDK:** Universal `@horologium/client` SDK, embeddable micro-widgets, and Web Components (`<horologium-clock>`, `<horologium-overlap>`).
+
+---
+
+## 2. Core API Endpoints
+
+All responses conform to standard JSON or RFC 7807 Problem Details on error.
+
+### GET /api/v1/time
+Returns synchronized UTC time, epoch milliseconds, subsolar coordinates, and active daylight statistics.
+- **Query Params:** none
+- **Response Payload:**
+  - `utc`: ISO 8601 UTC timestamp string
+  - `epoch_ms`: Monotonic millisecond timestamp
+  - `solar`: `{ declination: number, subsolar_lon: number, equation_of_time_min: number }`
+  - `active_stations_count`: number
+
+### GET /api/v1/zones/overlap
+Computes golden overlapping business hours and 24-hour delta matrix between two IANA timezones.
+- **Query Params:**
+  - `stationA` (required): IANA timezone string (e.g. `Europe/London`)
+  - `stationB` (required): IANA timezone string (e.g. `Asia/Tokyo`)
+- **Response Payload:**
+  - `stationA`, `stationB`: Zone identifiers
+  - `offsetA`, `offsetB`: Canonical RFC 9557 offset strings (e.g. `UTC+00:00`, `UTC+09:00`)
+  - `deltaHours`: Numerical time difference in hours
+  - `goldenHours`: Array of UTC hours where both regions fall within standard business windows (09:00–18:00 local)
+  - `matrix24`: 24-entry array with `{ utcHour, localHourA, localHourB, isMutualBusinessHour }`
+
+### GET /api/v1/stratum1/sync
+Executes Marzullo consensus across reference atomic time sources and returns stratum diagnostics.
+- **Response Payload:**
+  - `consensus_utc`: ISO timestamp
+  - `truechimers_count`: Active reference chimers
+  - `falsetickers_detected`: Rejected outliers
+  - `tightest_interval_ms`: Consensus confidence window in milliseconds
+
+### GET /api/v1/countries
+Paginated registry of 220 sovereign territories with primary IANA timezones and bounding boxes.
+- **Query Params:** `query` (optional filter), `limit`, `offset`
+
+### POST /api/v1/developers/keys
+Provisions scoped API access keys (`hlg_live_*`) with rate limiting and domain CORS restrictions.
+- **Request Body:** `{ owner_email: string, tier: "starter" | "pro" | "partner", allowed_origins?: string[] }`
+- **Response Payload:** `{ apiKey: string, keyPrefix: string, tier: string, rateLimitRpm: number }`
+
+---
+
+## 3. Mathematical Foundations
+
+### Marzullo's Intersection Algorithm
+Given $N$ independent clock sources where each source provides an interval $[c_i - d_i, c_i + d_i]$ ($c_i$ = measured offset, $d_i$ = round-trip dispersion), with at most $f$ faulty clocks (falsetickers):
+The truechimer consensus interval is bounded by the smallest interval containing points where at least $N - f$ intervals intersect.
+
+### Solar Terminator & Declination
+$$\delta = -23.44^\circ \times \cos\left(\frac{360^\circ}{365} \times (d + 10)\right)$$
+$$\lambda_{\text{subsolar}} = -(15^\circ \times (\text{UTC}_{\text{hour}} + \frac{\text{UTC}_{\text{minute}}}{60} + \frac{\text{UTC}_{\text{second}}}{3600})) - \frac{\text{EoT}}{4}$$
+
+### TCXO Quartz Temperature Drift
+$$\frac{\Delta f}{f_0} = \beta (T - T_0)^2 + \delta_{\text{aging}}$$
+Where $\beta \approx -0.035\text{ ppm/}^\circ\text{C}^2$, $T_0 = 25.0^\circ\text{C}$, and aging is bounded at $< 1.0\text{ ppm/year}$.
+
+---
+
+## 4. Universal Client SDK (@horologium/client)
+
+### Installation
+```bash
+npm install @horologium/client
+```
+
+### Quickstart
+```javascript
+import { HorologiumClient } from '@horologium/client';
+
+const client = new HorologiumClient({ endpoint: 'https://horologium.telemetry.org' });
+
+// 1. Fetch synchronized atomic time
+const timeData = await client.getAtomicTime();
+console.log('UTC Synchronized:', timeData.utc);
+
+// 2. Compute 24-hr overlap between London and Tokyo
+const overlap = client.calculateOverlap('Europe/London', 'Asia/Tokyo');
+console.log('Mutual business hours:', overlap.goldenHours);
+
+// 3. Monotonic tick subscription
+const unsubscribe = client.subscribeToTicks((tick) => {
+  console.log('Tick:', tick.utcISO, 'Drift (ms):', tick.estimatedDriftMs);
+});
+```
+
+---
+
+## 5. Web Components & Embedding
+
+Drop-in zero-dependency custom elements:
+```html
+<script type="module" src="https://horologium.telemetry.org/widgets/horologium-widgets.js"></script>
+
+<!-- Standalone Clock Widget -->
+<horologium-clock tz="Asia/Tokyo" city="Tokyo" theme="obsidian"></horologium-clock>
+
+<!-- Overlap Planner Widget -->
+<horologium-overlap station-a="Europe/London" station-b="Asia/Tokyo" theme="obsidian"></horologium-overlap>
+```
+
+---
+
+## 6. Canonical Documentation Links
+
+- Architecture Specification: https://github.com/shaikimthiyas/horologium/blob/main/docs/ARCHITECTURE.md
+- API Developer Guide: https://github.com/shaikimthiyas/horologium/blob/main/docs/API_GUIDE.md
+- Security & Threat Model: https://github.com/shaikimthiyas/horologium/blob/main/docs/SECURITY.md
+- Code Style & Standards: https://github.com/shaikimthiyas/horologium/blob/main/docs/CODE_STYLE.md
+- Database Architecture: https://github.com/shaikimthiyas/horologium/blob/main/docs/DATABASE.md
+- Deployment & DevOps: https://github.com/shaikimthiyas/horologium/blob/main/docs/DEPLOYMENT.md

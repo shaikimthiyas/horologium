@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="obsidian">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error (500) — Horologium</title>
+    <meta name="description" content="Horologium internal server fault. The chronometer recovery subsystem is ready for reconnection." />
+    <link rel="canonical" href="https://horologium.telemetry.org/500.html" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e14" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Zero-Flash Theme Initialization Script -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('horologium_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'silvered' : 'obsidian');
+        document.documentElement.setAttribute('data-theme', t === 'light' || t === 'silvered' ? 'silvered' : 'obsidian');
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/src/styles/main.css"/>
+    <link rel="stylesheet" href="/src/styles/layout.css"/>
+
+    <style>
+        .error-page {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-0, #0B0E14);
+            padding: 24px;
+            font-family: var(--font-mono, "JetBrains Mono", monospace);
+            color: var(--fg-0, #F1F5F9);
+        }
+
+        .error-card {
+            background: var(--bg-1, #121721);
+            border: 1px solid var(--border-hairline, rgba(255, 255, 255, 0.08));
+            border-radius: var(--radius-md, 8px);
+            padding: 40px;
+            max-width: 620px;
+            width: 100%;
+            text-align: center;
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            box-sizing: border-box;
+        }
+
+        .fault-reticle {
+            width: 76px;
+            height: 76px;
+            border: 1px solid var(--state-amber, #F59E0B);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
+        }
+
+        .fault-reticle::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--state-amber, #F59E0B);
+            opacity: 0.35;
+        }
+
+        .fault-reticle::after {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            background: var(--state-amber, #F59E0B);
+            opacity: 0.35;
+        }
+
+        .fault-indicator {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--state-amber, #F59E0B);
+            z-index: 2;
+        }
+
+        .error-tag {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--state-amber, #F59E0B);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .error-card h1 {
+            font-family: var(--font-sans, system-ui, sans-serif);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--fg-0, #F8FAFC);
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .error-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--fg-1, #94A3B8);
+            max-width: 480px;
+            margin: 0;
+        }
+
+        .diagnostic-box {
+            width: 100%;
+            background: var(--bg-0, #0B0E14);
+            border: 1px solid var(--border-hairline, rgba(255, 255, 255, 0.08));
+            border-radius: var(--radius-sm, 4px);
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--fg-muted, #64748B);
+            font-family: var(--font-mono, monospace);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .action-cluster {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-retry {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 20px;
+            border-radius: 6px;
+            font-family: var(--font-mono, monospace);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            background: var(--state-amber, #F59E0B);
+            color: #0B0E14;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+
+        .btn-retry:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 6px;
+            font-family: var(--font-mono, monospace);
+            font-size: 12px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--fg-0, #F8FAFC);
+            border: 1px solid var(--border-hairline, rgba(255, 255, 255, 0.1));
+            transition: background 0.15s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="error-page">
+    <div class="error-card">
+        <div class="fault-reticle">
+            <span class="fault-indicator">500</span>
+        </div>
+
+        <div class="error-tag">Internal Telemetry Exception</div>
+
+        <h1>Server Fault Detected</h1>
+
+        <p class="error-desc">
+            The core chronometry gateway encountered an unexpected execution fault. 
+            Local browser chronometry remains intact. Re-initiating the connection will re-sync with Stratum-1 time.
+        </p>
+
+        <div class="diagnostic-box" id="diagnosticBox">
+            <div>FAULT_CODE: <code>ERR_INTERNAL_500</code></div>
+            <div>STATUS: <span style="color: var(--state-amber, #F59E0B);">DEGRADED_FAILOVER</span></div>
+            <div>UTC_TIMESTAMP: <span id="utcTime">--:--:-- UTC</span></div>
+            <div>DISCLOSURE_SLA: 24h (<a href="/.well-known/security.txt" style="color: inherit;">security.txt</a>)</div>
+        </div>
+
+        <div class="action-cluster">
+            <button class="btn-retry" onclick="window.location.reload()">
+                ↻ Retry Connection
+            </button>
+            <a href="/flight-deck/" class="btn-secondary">
+                Flight Deck
+            </a>
+            <a href="/status/" class="btn-secondary">
+                Live Status
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('utcTime').textContent = new Date().toISOString();
+    </script>
+</body>
+</html>

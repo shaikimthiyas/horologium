@@ -1,4 +1,25 @@
+# Horologium Robots Exclusion Policy
+# Conforming to RFC 9309 (Robots Exclusion Standard)
+
 User-agent: *
 Allow: /
+Allow: /flight-deck/
+Allow: /geodesic-registry/
+Allow: /developers/
+Allow: /api-explorer/
+Allow: /status/
+Allow: /about/
+Allow: /protocol-liaison/
+Allow: /privacy/
+Allow: /llms.txt
+Allow: /openapi.json
+
+# Disallow internal operational probes, websocket sockets, and key management
+Disallow: /healthz
+Disallow: /livez
+Disallow: /readyz
+Disallow: /startupz
+Disallow: /ws/
+Disallow: /api/v1/developers/keys
 
 Sitemap: https://horologium.telemetry.org/sitemap.xml

@@ -113,3 +113,4 @@ startupProbe:
   - `horologium_ntp_clock_skew_milliseconds`: Live Marzullo skew gauge.
   - `horologium_active_websocket_connections`: Gauge tracking connected SNTP clients.
 - **Grafana Dashboard:** Pre-provisioned dashboard available at `http://localhost:3000` (credentials: `admin`/`chronos_ops_vault`).
+

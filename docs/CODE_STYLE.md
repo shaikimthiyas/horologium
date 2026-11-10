@@ -178,3 +178,4 @@ Follow **Conventional Commits** (`type(scope): imperative description`):
 - `chore(deps)`: Upgrade dev dependencies.
 - `docs(api)`: Document meeting overlap query parameters.
 - `test(e2e)`: Verify zero-knowledge client calculations.
+

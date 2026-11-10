@@ -81,6 +81,11 @@ function enterpriseRoutePlugin() {
           return next();
         }
 
+        if (path === '/500.html' || path === '/500') {
+          req.url = `/pages/500.html${qs}`;
+          return next();
+        }
+
         next();
       });
     }
@@ -162,7 +167,8 @@ export default defineConfig({
         status: resolve(__dirname, 'pages/status/index.html'),
         privacy: resolve(__dirname, 'pages/privacy/index.html'),
         developers: resolve(__dirname, 'pages/developers/index.html'),
-        notFound: resolve(__dirname, 'pages/404.html')
+        notFound: resolve(__dirname, 'pages/404.html'),
+        serverError: resolve(__dirname, 'pages/500.html')
       }
     }
   }

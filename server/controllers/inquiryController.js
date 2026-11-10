@@ -5,9 +5,19 @@
 import { db } from '../db/database.js';
 
 export function createTransmission(req, res) {
-  const { name, email, message } = req.body || {};
+  const { name, sender, email, message, hp_station_token } = req.body || {};
 
-  if (!name || !email || !message) {
+  // Honeypot Bot Trap: If hidden honeypot token is populated, silently drop spam
+  if (hp_station_token) {
+    return res.status(201).json({
+      success: true,
+      message: 'Transmission successfully logged in Horologium registry.'
+    });
+  }
+
+  const transmitter = (name || sender || '').trim();
+
+  if (!transmitter || !email || !message) {
     return res.status(400).json({
       success: false,
       error: 'Identifier, email, and payload are required.'
@@ -28,7 +38,7 @@ export function createTransmission(req, res) {
       INSERT INTO transmissions (transmitter_name, return_frequency, payload, ip_address, status)
       VALUES (?, ?, ?, ?, 'acknowledged')
     `);
-    const info = stmt.run(name.trim(), email.trim(), message.trim(), ip.toString());
+    const info = stmt.run(transmitter, email.trim(), message.trim(), ip.toString());
 
     return res.status(201).json({
       success: true,

@@ -101,3 +101,4 @@ We welcome vulnerability disclosures from security researchers. Disclosures shou
 - **Triage & Severity Confirmation:** Within 48 hours.
 - **Patch Deployment:** Within 7 business days for Critical / High severity CVEs.
 - **Coordinated Disclosure:** Public release notes and CVE credit published upon fix release.
+

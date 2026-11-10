@@ -13,6 +13,7 @@ html, body {
   width: 100%;
   height: 100dvh;
   overflow: hidden;
+  scrollbar-gutter: stable;
   background-color: var(--bg-0);
   color: var(--fg-0);
   font-family: var(--font-sans);
@@ -23,6 +24,20 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, [id] {
+  scroll-margin-top: 72px;
+}
+
+/* BRAND ACCENT TEXT SELECTION */
+::selection {
+  background: rgba(56, 189, 248, 0.25);
+  color: var(--fg-0, #f8fafc);
+}
+::-moz-selection {
+  background: rgba(56, 189, 248, 0.25);
+  color: var(--fg-0, #f8fafc);
 }
 
 /* DARK-MODE HALATION COMPENSATION */
@@ -389,5 +404,141 @@ kbd, .kbd-shortcut {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* SIX-STATE INTERACTIVE BUTTON EXTENSIONS */
+button:disabled,
+.btn-machined:disabled,
+.btn-machined[disabled],
+.btn-ghost:disabled,
+.btn-ghost[disabled],
+.telemetry-btn:disabled,
+.telemetry-btn[disabled] {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+[data-loading="true"] {
+  pointer-events: none !important;
+  cursor: wait !important;
+}
+
+/* GEOMETRY-MATCHED SKELETON PLACEHOLDERS */
+.skeleton-bone {
+  background: linear-gradient(
+    90deg,
+    var(--bg-1, #121721) 0%,
+    var(--bg-2, #1a2230) 50%,
+    var(--bg-1, #121721) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite ease-in-out;
+  border-radius: var(--radius-xs, 4px);
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* CANONICAL EMPTY STATE PATTERN */
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  background: var(--bg-1, #121721);
+  border: 1px dashed var(--border-interactive, rgba(255, 255, 255, 0.12));
+  border-radius: var(--radius-md, 8px);
+  gap: 12px;
+}
+.empty-state-card .empty-icon {
+  font-size: 24px;
+  color: var(--fg-muted, #64748B);
+}
+.empty-state-card .empty-title {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg-0, #F8FAFC);
+}
+.empty-state-card .empty-desc {
+  font-size: 13px;
+  color: var(--fg-1, #94A3B8);
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+/* OFFLINE MARINE CHRONOMETER STATUS BANNER */
+.offline-marine-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+  padding: 8px 16px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s var(--ease-snappy, cubic-bezier(0.2, 0, 0, 1));
+}
+.offline-marine-banner.offline {
+  background: var(--state-amber, #F59E0B);
+  color: #0B0E14;
+  font-weight: 600;
+}
+.offline-marine-banner.restored {
+  background: var(--state-green, #10B981);
+  color: #0B0E14;
+  font-weight: 600;
+}
+
+/* PRINT OPTIMIZATION (HIGH-CONTRAST MONOCHROMATIC ARCHIVAL SPECIFICATION) */
+@media print {
+  body::before,
+  .telemetry-bar,
+  .master-header,
+  .offline-marine-banner,
+  .audio-toggle,
+  .planetary-intro-backdrop,
+  #homeThemeToggle,
+  #audioToggleBtn,
+  .btn-machined,
+  button,
+  .command-palette-backdrop {
+    display: none !important;
+  }
+
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: underline !important;
+  }
+
+  .workbench-home, .home-main-scroll, .privacy-page, .about-page, .status-page {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
   }
 }

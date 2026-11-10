@@ -17,16 +17,27 @@
       <stop offset="0%" stop-color="#0B0D11" />
       <stop offset="100%" stop-color="#14171D" />
     </linearGradient>
+
+    <style>
+      .chassis { fill: #08090B; }
+      .dial-plate { fill: #0E1014; stroke: #EDEFF2; stroke-opacity: 0.12; }
+      .ticks { stroke: #5A6270; }
+      @media (prefers-color-scheme: light) {
+        .chassis { fill: #0F172A; }
+        .dial-plate { fill: #1E293B; stroke: #CBD5E1; stroke-opacity: 0.25; }
+        .ticks { stroke: #94A3B8; }
+      }
+    </style>
   </defs>
 
-  <!-- Tier 1: Anodized Tungsten Outer Chassis (#08090B) -->
-  <rect width="64" height="64" rx="12" fill="#08090B" />
+  <!-- Tier 1: Anodized Tungsten Outer Chassis -->
+  <rect class="chassis" width="64" height="64" rx="12" />
   
-  <!-- Tier 2: Brushed Titanium Inner Dial Plate (#0E1014) with 1px Exposed Hairline Groove -->
-  <rect x="2.5" y="2.5" width="59" height="59" rx="9.5" fill="#0E1014" stroke="#EDEFF2" stroke-opacity="0.12" stroke-width="1" />
+  <!-- Tier 2: Brushed Titanium Inner Dial Plate with 1px Exposed Hairline Groove -->
+  <rect class="dial-plate" x="2.5" y="2.5" width="59" height="59" rx="9.5" stroke-width="1" />
   
   <!-- Precision Tachymeter Corner Tick Marks -->
-  <path d="M 8 6 H 12 M 6 8 V 12 M 56 6 H 52 M 58 8 V 12 M 8 58 H 12 M 6 56 V 52 M 56 58 H 52 M 58 56 V 52" stroke="#5A6270" stroke-width="1.2" stroke-linecap="square" />
+  <path class="ticks" d="M 8 6 H 12 M 6 8 V 12 M 56 6 H 52 M 58 8 V 12 M 8 58 H 12 M 6 56 V 52 M 56 58 H 52 M 58 56 V 52" stroke-width="1.2" stroke-linecap="square" />
 
   <!-- =======================================================================
        7-SEGMENT '8' MATRIX -> FORMING 'H'

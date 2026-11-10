@@ -30,6 +30,13 @@ app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+  // Staging / Non-production noindex guard
+  if (process.env.NODE_ENV !== 'production') {
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  }
   next();
 });
 
@@ -48,8 +55,21 @@ app.get('/metrics', (req, res, next) => {
 // Serve static public folder (manifest, openapi.json, cover, etc.)
 const publicPath = resolve(__dirname, '../public');
 if (existsSync(publicPath)) {
-  app.use('/public', express.static(publicPath));
+  app.use('/public', express.static(publicPath, { dotfiles: 'allow' }));
+
+  // RFC 9116 .well-known security directory
+  const wellKnownPath = resolve(publicPath, '.well-known');
+  if (existsSync(wellKnownPath)) {
+    app.use('/.well-known', express.static(wellKnownPath, { dotfiles: 'allow' }));
+  }
 }
+
+// Canonical Root Discovery Endpoints (RFC 9116, Robots, Sitemaps, LLMs)
+app.get('/security.txt', (req, res) => res.redirect(301, '/.well-known/security.txt'));
+app.get('/robots.txt', (req, res) => res.sendFile(resolve(publicPath, 'robots.txt')));
+app.get('/sitemap.xml', (req, res) => res.sendFile(resolve(publicPath, 'sitemap.xml')));
+app.get('/llms.txt', (req, res) => res.sendFile(resolve(publicPath, 'llms.txt')));
+app.get('/manifest.webmanifest', (req, res) => res.sendFile(resolve(publicPath, 'manifest.webmanifest')));
 
 // Serve OpenAPI Specification & Postman Collection
 app.get(['/openapi.json', '/api/openapi.json'], (req, res) => {
@@ -142,6 +162,14 @@ app.get(['/directory', '/directory/'], (req, res) => res.sendFile(resolvePage('g
 app.get(['/auth', '/auth/'], (req, res) => res.sendFile(resolvePage('operator-gateway/index.html')));
 app.get(['/contact', '/contact/'], (req, res) => res.sendFile(resolvePage('protocol-liaison/index.html')));
 app.get(['/docs', '/docs/'], (req, res) => res.sendFile(resolvePage('api-explorer/index.html')));
+
+app.get(['/500', '/500.html'], (req, res) => {
+  const errPath = resolvePage('500.html');
+  if (existsSync(errPath)) {
+    return res.status(500).sendFile(errPath);
+  }
+  res.status(500).send('500 Internal Server Error');
+});
 
 app.use((req, res, next) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/ws')) {

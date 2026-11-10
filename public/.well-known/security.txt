@@ -1,0 +1,14 @@
+# Horologium Security Policy (RFC 9116)
+# https://tools.ietf.org/html/rfc9116
+
+Contact: mailto:security@shaikimthiyas.me
+Contact: https://github.com/shaikimthiyas/horologium/security/advisories
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://horologium.telemetry.org/.well-known/security.txt
+Policy: https://github.com/shaikimthiyas/horologium/blob/main/docs/SECURITY.md
+Acknowledgments: https://github.com/shaikimthiyas/horologium/graphs/contributors
+
+# Scope & Response SLA:
+# Horologium maintains a 24-hour initial response SLA for confirmed vulnerability reports.
+# See docs/SECURITY.md for cryptographic specifications and responsible disclosure guidelines.

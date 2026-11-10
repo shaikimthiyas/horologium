@@ -3,9 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // Account & Access</title>
+    <title>Operator Access — Horologium</title>
+    <meta name="description" content="Secure operator clearance and NTP telemetry gateway for Horologium planetary time operations." />
+    <link rel="canonical" href="https://horologium.telemetry.org/operator-gateway/" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e14" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Open Graph & Social -->
+    <meta property="og:title" content="Operator Access — Horologium" />
+    <meta property="og:description" content="Secure operator clearance and NTP telemetry gateway for Horologium planetary time operations." />
+    <meta property="og:url" content="https://horologium.telemetry.org/operator-gateway/" />
+    <meta property="og:site_name" content="Horologium" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Operator Access — Horologium" />
+    <meta name="twitter:description" content="Secure operator clearance and NTP telemetry gateway for Horologium planetary time operations." />
+    <meta name="twitter:image" content="/cover.png" />
+
+    <!-- Zero-Flash Theme Initialization Script -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('horologium_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'silvered' : 'obsidian');
+        document.documentElement.setAttribute('data-theme', t === 'light' || t === 'silvered' ? 'silvered' : 'obsidian');
+      })();
+    </script>
+
     <link rel="stylesheet" href="/src/styles/main.css"/>
+    <link rel="stylesheet" href="/src/styles/layout.css"/>
     <style>
         .auth-page {
             min-height: 100dvh;
@@ -28,7 +58,7 @@
             background: var(--bg-1);
             border: 1px solid var(--border-interactive);
             border-radius: var(--radius-lg);
-            padding: 28px 24px 32px 24px; /* Optical bottom compensation */
+            padding: 28px 24px 32px 24px;
             box-shadow: inset 0 1px 0 0 var(--border-specular), var(--shadow-popover);
             text-align: left;
         }
@@ -76,6 +106,34 @@
             color: var(--fg-2);
         }
 
+        .caps-lock-warning {
+            display: none;
+            padding: 6px 10px;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid var(--state-amber, #f59e0b);
+            border-radius: var(--radius-xs);
+            color: var(--state-amber, #f59e0b);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+        .toggle-pwd-btn {
+            background: transparent;
+            border: none;
+            color: var(--fg-muted);
+            cursor: pointer;
+            padding: 0 10px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .toggle-pwd-btn:hover {
+            color: var(--fg-0);
+        }
+
         .autofill-btn {
             margin-top: 16px;
             padding: 8px 12px;
@@ -115,6 +173,23 @@
         .auth-status.error {
             color: var(--semantic-danger);
         }
+
+        .operator-badge-panel {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg-0);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-hairline);
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
     </style>
 </head>
 <body class="auth-page">
@@ -122,61 +197,104 @@
     <!-- Top Telemetry Bar -->
     <header class="telemetry-bar">
         <div class="telemetry-left">
-            <a href="/index.html" class="brand-monogram">
+            <a href="/" class="brand-monogram">
                 <span class="brand-dot"></span>
                 <span>HOROLOGIUM</span>
             </a>
-            <span class="telemetry-title">Account & Access</span>
+            <span class="telemetry-title">Operator Access</span>
         </div>
 
         <div class="telemetry-right">
-            <button type="button" class="telemetry-btn" id="loginThemeToggle">OBSIDIAN</button>
+            <button type="button" class="telemetry-btn" id="loginThemeToggle">THEME</button>
             <a href="/flight-deck/" class="nav-action-btn">WORLD MAP</a>
             <a href="/geodesic-registry/" class="nav-action-btn">DIRECTORY</a>
-            <a href="/index.html" class="nav-action-btn">HOME</a>
+            <a href="/" class="nav-action-btn">HOME</a>
         </div>
     </header>
 
     <div class="auth-wrapper">
         <div class="auth-card">
-            <div class="auth-tag">
-                <span class="badge-semantic badge-semantic-vermilion">● ACCOUNT ACCESS</span>
-                <span>SIGN IN</span>
+            <!-- Unauthenticated Form -->
+            <div id="loginSection">
+                <div class="auth-tag">
+                    <span class="badge-semantic badge-semantic-vermilion">● ACCOUNT ACCESS</span>
+                    <span>SIGN IN</span>
+                </div>
+                <h1>Sign In to Horologium</h1>
+                <p class="subtitle">Authenticate with your operator callsign and access key to manage Stratum-1 synchronization and tenant settings.</p>
+
+                <div class="caps-lock-warning" id="capsLockWarning">
+                    ⚠ Caps Lock is active. Passwords are case-sensitive.
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-row">
+                        <label class="form-label" for="username">Operator Callsign or Email</label>
+                        <div class="input-recessed-group">
+                            <span class="input-slot-prefix">ID:</span>
+                            <input type="text" id="username" class="input-recessed" placeholder="admin" required autocomplete="username" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label" for="password">Access Cipher</label>
+                        <div class="input-recessed-group" style="position: relative;">
+                            <span class="input-slot-prefix">KEY:</span>
+                            <input type="password" id="password" class="input-recessed" placeholder="••••••••" required autocomplete="current-password" />
+                            <button type="button" class="toggle-pwd-btn" id="togglePasswordBtn" title="Toggle password visibility">👁</button>
+                        </div>
+                    </div>
+
+                    <!-- Machined Primary Button with Zero-CLS Loading Stack -->
+                    <button type="submit" class="btn-machined" id="authSubmitBtn" style="width: 100%; margin-top: 8px;">
+                        <span class="label">
+                            <span>🔒</span> Verify Clearance
+                        </span>
+                        <span class="spinner">Authenticating...</span>
+                    </button>
+
+                    <div class="autofill-btn" id="demoAutofill">
+                        Fill Demo Operator Credentials (<code>admin</code> / <code>password123</code>)
+                    </div>
+
+                    <div class="auth-status" id="authStatus"></div>
+                </form>
             </div>
-            <h1>Sign In to Horologium</h1>
-            <p class="subtitle">Sign in to save preferred locations, manage your API keys, and customize your timezone display settings.</p>
 
-            <form id="loginForm">
-                <div class="form-row">
-                    <label class="form-label" for="username">Username or Email</label>
-                    <div class="input-recessed-group">
-                        <span class="input-slot-prefix">ID:</span>
-                        <input type="text" id="username" class="input-recessed" placeholder="admin" required autocomplete="username" />
-                    </div>
+            <!-- Authenticated Operator Panel -->
+            <div id="operatorPanel" class="operator-badge-panel">
+                <div class="auth-tag">
+                    <span class="badge-semantic badge-semantic-success">● OPERATOR ACTIVE</span>
+                    <span>LEVEL-5 CLEARANCE</span>
+                </div>
+                <h1>Operator Clearance Active</h1>
+                <p class="subtitle">Your sovereign operator session is active and verified by the local SQLite chronometer store.</p>
+
+                <div class="profile-row">
+                    <span style="color:var(--fg-muted);">CALLSIGN:</span>
+                    <span id="activeCallsign" style="color:var(--accent-primary);font-weight:600;">ADMIN</span>
+                </div>
+                <div class="profile-row">
+                    <span style="color:var(--fg-muted);">ROLE:</span>
+                    <span>COMMANDER [TIER-1]</span>
+                </div>
+                <div class="profile-row">
+                    <span style="color:var(--fg-muted);">SESSION:</span>
+                    <span style="color:var(--semantic-success);">NOMINAL (24H TTL)</span>
                 </div>
 
-                <div class="form-row">
-                    <label class="form-label" for="password">Password</label>
-                    <div class="input-recessed-group">
-                        <span class="input-slot-prefix">KEY:</span>
-                        <input type="password" id="password" class="input-recessed" placeholder="••••••••" required autocomplete="current-password" />
-                    </div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+                    <button type="button" class="btn-machined" id="btnExportTelemetry" style="width:100%;">
+                        <span>⤓ Export Local Telemetry (JSON)</span>
+                    </button>
+                    <a href="/flight-deck/" class="btn-ghost" id="returnConsoleBtn" style="width:100%;justify-content:center;text-decoration:none;">
+                        Return to Flight Deck
+                    </a>
+                    <button type="button" class="btn-ghost" id="btnLogout" style="width:100%;color:var(--semantic-danger);border-color:rgba(239,68,68,0.3);">
+                        Revoke Clearance (Sign Out)
+                    </button>
                 </div>
-
-                <!-- Machined Primary Button with Zero-CLS Loading Stack -->
-                <button type="submit" class="btn-machined" id="authSubmitBtn" style="width: 100%; margin-top: 8px;">
-                    <span class="label">
-                        <span>🔒</span> Sign In
-                    </span>
-                    <span class="spinner">Signing in...</span>
-                </button>
-
-                <div class="autofill-btn" id="demoAutofill">
-                    Fill Demo Credentials (<code>admin</code> / <code>password123</code>)
-                </div>
-
-                <div class="auth-status" id="authStatus"></div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -198,12 +316,69 @@
     </footer>
 
     <script type="module">
+        import { initMasterHeader } from '/src/components/navigation/masterHeader.js';
+        initMasterHeader({ activePage: 'operator-gateway' });
+
         const form = document.getElementById("loginForm");
         const statusEl = document.getElementById("authStatus");
         const autofillBtn = document.getElementById("demoAutofill");
         const submitBtn = document.getElementById("authSubmitBtn");
         const bottomUtcEl = document.getElementById("authBottomUtc");
         const themeBtn = document.getElementById("loginThemeToggle");
+        const passwordInput = document.getElementById("password");
+        const togglePwdBtn = document.getElementById("togglePasswordBtn");
+        const capsWarning = document.getElementById("capsLockWarning");
+
+        const loginSection = document.getElementById("loginSection");
+        const operatorPanel = document.getElementById("operatorPanel");
+        const activeCallsign = document.getElementById("activeCallsign");
+        const btnLogout = document.getElementById("btnLogout");
+        const btnExport = document.getElementById("btnExportTelemetry");
+
+        // Redirect URL Memory
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectTarget = urlParams.get('redirect') || '/flight-deck/';
+
+        // Check active session
+        function checkActiveSession() {
+            const token = localStorage.getItem("horologium_operator_token");
+            const callsign = localStorage.getItem("horologium_operator_callsign");
+            if (token && callsign) {
+                loginSection.style.display = "none";
+                operatorPanel.style.display = "flex";
+                activeCallsign.textContent = callsign.toUpperCase();
+                const returnBtn = document.getElementById("returnConsoleBtn");
+                if (returnBtn) returnBtn.href = redirectTarget;
+            } else {
+                loginSection.style.display = "block";
+                operatorPanel.style.display = "none";
+            }
+        }
+        checkActiveSession();
+
+        // Caps Lock Warning
+        if (passwordInput && capsWarning) {
+            passwordInput.addEventListener("keydown", (e) => {
+                if (e.getModifierState && e.getModifierState("CapsLock")) {
+                    capsWarning.style.display = "block";
+                } else {
+                    capsWarning.style.display = "none";
+                }
+            });
+        }
+
+        // Show/Hide Password Toggle
+        if (togglePwdBtn && passwordInput) {
+            togglePwdBtn.addEventListener("click", () => {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    togglePwdBtn.textContent = "🔒";
+                } else {
+                    passwordInput.type = "password";
+                    togglePwdBtn.textContent = "👁";
+                }
+            });
+        }
 
         function updateClock() {
             const now = new Date();
@@ -241,10 +416,10 @@
                     localStorage.setItem("horologium_operator_token", data.token);
                     localStorage.setItem("horologium_operator_callsign", data.operator.callsign);
                     statusEl.className = "auth-status success";
-                    statusEl.textContent = `✓ Signed in as ${data.operator.callsign}. Opening World Map...`;
+                    statusEl.textContent = `✓ Signed in as ${data.operator.callsign}. Opening destination...`;
                     setTimeout(() => {
-                        window.location.href = "/flight-deck/";
-                    }, 800);
+                        window.location.href = redirectTarget;
+                    }, 650);
                 } else {
                     statusEl.className = "auth-status error";
                     statusEl.textContent = `✗ Authentication failed: ${data.error || 'Invalid credentials.'}`;
@@ -252,11 +427,13 @@
             } catch (err) {
                 // Offline fallback for demo operator
                 if (username === "admin" && password === "password123") {
+                    localStorage.setItem("horologium_operator_token", "demo_session_offline");
+                    localStorage.setItem("horologium_operator_callsign", "admin");
                     statusEl.className = "auth-status success";
-                    statusEl.textContent = "✓ Signed in (Demo Mode). Opening World Map...";
+                    statusEl.textContent = "✓ Signed in (Demo Mode). Opening destination...";
                     setTimeout(() => {
-                        window.location.href = "/flight-deck/";
-                    }, 800);
+                        window.location.href = redirectTarget;
+                    }, 650);
                 } else {
                     statusEl.className = "auth-status error";
                     statusEl.textContent = "✗ Authentication failed: Invalid username or password.";
@@ -267,43 +444,47 @@
             }
         });
 
-        // Theme Toggle
-        function applyTheme(isDark) {
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-                document.documentElement.setAttribute('data-theme', 'obsidian');
-                if (themeBtn) themeBtn.textContent = 'OBSIDIAN';
-                localStorage.setItem('horologium_theme', 'dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.documentElement.setAttribute('data-theme', 'silvered');
-                if (themeBtn) themeBtn.textContent = 'SILVERED';
-                localStorage.setItem('horologium_theme', 'light');
-            }
-        }
+        // Sign Out
+        btnLogout.addEventListener("click", async () => {
+            try {
+                const token = localStorage.getItem("horologium_operator_token");
+                await fetch("/api/auth/logout", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+            } catch (_) {}
+            localStorage.removeItem("horologium_operator_token");
+            localStorage.removeItem("horologium_operator_callsign");
+            checkActiveSession();
+        });
 
-        const savedTheme = localStorage.getItem('horologium_theme') || localStorage.getItem('chronos_theme');
-        applyTheme(savedTheme !== 'light');
+        // Export Telemetry
+        btnExport.addEventListener("click", () => {
+            const telemetryPayload = {
+                export_version: "1.0.0",
+                exported_at_utc: new Date().toISOString(),
+                operator: localStorage.getItem("horologium_operator_callsign") || "anonymous",
+                theme: localStorage.getItem("horologium_theme") || "obsidian",
+                pinned_stations: JSON.parse(localStorage.getItem("horologium_pinned_stations") || "[]"),
+                storage_keys: Object.keys(localStorage).filter(k => k.startsWith("horologium_"))
+            };
+            const blob = new Blob([JSON.stringify(telemetryPayload, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `horologium_telemetry_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
 
         if (themeBtn) {
-            themeBtn.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
-                applyTheme(!isCurrentlyDark);
+            themeBtn.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme') || 'obsidian';
+                const next = current === 'obsidian' ? 'silvered' : 'obsidian';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('horologium_theme', next);
             });
         }
-
-        window.addEventListener('keydown', (e) => {
-            const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-            if (tag === 'input' || tag === 'textarea') return;
-
-            if (e.key === 'm' || e.key === 'M') {
-                window.location.href = '/flight-deck/';
-            } else if (e.key === 't' || e.key === 'T') {
-                const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'obsidian' || document.documentElement.classList.contains('dark');
-                applyTheme(!isCurrentlyDark);
-            }
-        });
     </script>
 </body>
 </html>

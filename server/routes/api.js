@@ -99,10 +99,14 @@ const pinBodySchema = z.object({
 });
 
 const transmissionBodySchema = z.object({
-  sender: z.string().min(1).max(100),
+  sender: z.string().min(1).max(100).optional(),
+  name: z.string().min(1).max(100).optional(),
   email: z.string().email(),
   message: z.string().min(1).max(2000),
-  subject: z.string().max(200).optional()
+  subject: z.string().max(200).optional(),
+  hp_station_token: z.string().optional()
+}).refine(data => data.sender || data.name, {
+  message: "Either 'name' or 'sender' identifier is required."
 });
 
 /**
@@ -252,7 +256,7 @@ apiRouter.delete('/v1/pins/:id', requireOperatorAuth, deletePin);
 /**
  * Transmissions & Inquiries
  */
-apiRouter.post('/transmissions', transmissionLimiter, validateRequest({ body: transmissionBodySchema }), createTransmission);
+apiRouter.post(['/transmissions', '/inquiries'], transmissionLimiter, validateRequest({ body: transmissionBodySchema }), createTransmission);
 apiRouter.get('/transmissions', requireOperatorAuth, getTransmissions);
 
 /**

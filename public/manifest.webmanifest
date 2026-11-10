@@ -1,20 +1,32 @@
 {
   "id": "/",
-  "name": "HOROLOGIUM // Planetary Time & Meridian Telemetry",
+  "name": "HOROLOGIUM — Planetary Time & Distributed Chronometry",
   "short_name": "Horologium",
   "description": "Enterprise-grade high-precision interactive world timezone atlas, UTC meridian tracker, and live temporal telemetry operations architecture.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0A0D10",
-  "theme_color": "#0A0D10",
+  "background_color": "#0B0E14",
+  "theme_color": "#0B0E14",
   "orientation": "any",
   "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -24,14 +36,19 @@
       "description": "Planetary 3D chronometer and timezone flight deck."
     },
     {
-      "name": "Geodesic Registry",
+      "name": "Geodesic Directory",
       "url": "/geodesic-registry/",
       "description": "Sovereign meridian atlas and geodesic search."
     },
     {
-      "name": "Operator Gateway",
-      "url": "/operator-gateway/",
-      "description": "NTP telemetry hub and operator controls."
+      "name": "Developer Platform",
+      "url": "/developers/",
+      "description": "API keys, telemetry metrics, and embeddable widgets."
+    },
+    {
+      "name": "System Status",
+      "url": "/status/",
+      "description": "Live health probes and stratum consensus telemetry."
     }
   ],
   "categories": ["utilities", "productivity", "navigation"]

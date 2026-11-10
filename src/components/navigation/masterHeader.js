@@ -19,6 +19,7 @@
 
 import { haptics } from '../../utils/audioHaptics.js';
 import { pwaManager } from '../../utils/pwaManager.js';
+import { ErrorBoundary } from '../../utils/errorBoundary.js';
 
 export const CANONICAL_PAGES = [
   { id: 'gateway', label: 'Home', href: '/', shortcut: '1' },
@@ -27,6 +28,19 @@ export const CANONICAL_PAGES = [
   { id: 'operator-gateway', label: 'Access', href: '/operator-gateway/', shortcut: '4' },
   { id: 'protocol-liaison', label: 'Contact', href: '/protocol-liaison/', shortcut: '5' },
   { id: 'api-explorer', label: 'API Docs', href: '/api-explorer/', shortcut: '6' }
+];
+
+export const ALL_CONSOLES = [
+  { id: 'gateway', title: 'Mission Gateway (Home)', href: '/', desc: 'Planetary world clock & dual station overlap' },
+  { id: 'flight-deck', title: 'World Map (Flight Deck)', href: '/flight-deck/', desc: '3D orthographic globe & solar terminator' },
+  { id: 'geodesic-registry', title: 'Geodesic Directory', href: '/geodesic-registry/', desc: '220 sovereign territories & timezone search' },
+  { id: 'developers', title: 'Developer Platform', href: '/developers/', desc: 'API keys, metrics & embeddable widgets' },
+  { id: 'api-explorer', title: 'Interactive API Explorer', href: '/api-explorer/', desc: 'OpenAPI 3.1 & Postman collection' },
+  { id: 'status', title: 'System Status & SLA', href: '/status/', desc: 'Stratum-1 truechimer consensus telemetry' },
+  { id: 'protocol-liaison', title: 'Protocol Liaison', href: '/protocol-liaison/', desc: 'Inquiry & telemetry communications' },
+  { id: 'about', title: 'Colophon & Technical Specs', href: '/about/', desc: 'Shaik Imthiyas sovereign architecture' },
+  { id: 'privacy', title: 'Data Sovereignty & Privacy', href: '/privacy/', desc: 'Zero-knowledge chronometry policy' },
+  { id: 'operator-gateway', title: 'Operator Access', href: '/operator-gateway/', desc: 'NTP telemetry clearance & auth' }
 ];
 
 export class MasterHeaderController {
@@ -42,6 +56,16 @@ export class MasterHeaderController {
   }
 
   async init() {
+    // Shield all canonical consoles with universal ErrorBoundary
+    if (typeof window !== 'undefined' && !window.__HOROLOGIUM_ERROR_BOUNDARY__) {
+      try {
+        window.__HOROLOGIUM_ERROR_BOUNDARY__ = new ErrorBoundary({
+          appName: 'Horologium Calibre-01',
+          fsm: this.fsm
+        });
+      } catch (_) {}
+    }
+
     this.headerEl = document.querySelector('.telemetry-bar') || document.querySelector('header');
     if (!this.headerEl) return;
 
@@ -49,6 +73,10 @@ export class MasterHeaderController {
     this.mountTelemetryDock();
     this.bindKeyboardShortcuts();
     this.startMasterClock();
+    this._initOfflineBanner();
+    this._initStaleTabSync();
+    this._initGlobalCommandPalette();
+    this._initStorageNotice();
 
     // Initialize PWA Manager & Service Worker lifecycle
     try {
@@ -321,6 +349,147 @@ export class MasterHeaderController {
       dialog.querySelector('#closeShortcutsModal').onclick = () => this.toggleShortcutsDialog(false);
       dialog.querySelector('#btnDismissShortcuts').onclick = () => this.toggleShortcutsDialog(false);
     }
+  }
+
+  _initOfflineBanner() {
+    if (typeof window === 'undefined') return;
+    let banner = document.getElementById('horologiumOfflineBanner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'horologiumOfflineBanner';
+      banner.className = 'offline-marine-banner';
+      banner.style.display = 'none';
+      document.body.appendChild(banner);
+    }
+
+    const showOffline = () => {
+      banner.className = 'offline-marine-banner offline';
+      banner.innerHTML = '<span>âš“</span> <span>Offline Marine Chronometer — Local TCXO quartz oscillator running. All telemetry queued.</span>';
+      banner.style.display = 'flex';
+    };
+
+    const showRestored = () => {
+      banner.className = 'offline-marine-banner restored';
+      banner.innerHTML = '<span>âœ“</span> <span>Network Restored — Re-synchronizing chronometer with Stratum-1 truechimers...</span>';
+      banner.style.display = 'flex';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 3500);
+    };
+
+    window.addEventListener('offline', showOffline);
+    window.addEventListener('online', showRestored);
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      showOffline();
+    }
+  }
+
+  _initStaleTabSync() {
+    if (typeof document === 'undefined') return;
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.startMasterClock();
+        window.dispatchEvent(new CustomEvent('horologium:tab_resumed', { detail: { timestamp: Date.now() } }));
+      }
+    });
+  }
+
+  _initGlobalCommandPalette() {
+    if (typeof window === 'undefined') return;
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        const searchModal = document.getElementById('searchModal');
+        if (searchModal && typeof window.__openSearchModal === 'function') {
+          window.__openSearchModal();
+        } else {
+          this.openUniversalPalette();
+        }
+      }
+    });
+  }
+
+  openUniversalPalette() {
+    let modal = document.getElementById('horologiumUniversalPalette');
+    if (modal) {
+      modal.remove();
+      return;
+    }
+
+    modal = document.createElement('div');
+    modal.id = 'horologiumUniversalPalette';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(8,10,14,0.78);backdrop-filter:blur(8px);z-index:999999;display:flex;align-items:flex-start;justify-content:center;padding-top:12dvh;';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Global Command Palette');
+
+    modal.innerHTML = `
+      <div style="background:var(--bg-1,#121721);border:1px solid var(--border-interactive,rgba(255,255,255,0.12));border-radius:var(--radius-md,8px);width:100%;max-width:580px;box-shadow:0 24px 60px rgba(0,0,0,0.6);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border-hairline,rgba(255,255,255,0.08));gap:10px;">
+          <span style="color:var(--accent-primary,#FF5E24);font-family:var(--font-mono);font-size:14px;">âŒ˜K</span>
+          <input type="text" id="universalPaletteInput" placeholder="Navigate consoles or run commands..." style="flex:1;background:transparent;border:none;outline:none;color:var(--fg-0,#f8fafc);font-family:var(--font-sans,sans-serif);font-size:14px;" />
+          <kbd style="font-family:var(--font-mono);font-size:10px;padding:2px 6px;background:var(--bg-2,#1a2230);border-radius:4px;color:var(--fg-muted,#64748b);">ESC</kbd>
+        </div>
+        <div id="universalPaletteList" style="max-height:360px;overflow-y:auto;padding:8px 0;">
+          ${ALL_CONSOLES.map(c => `
+            <a href="${c.href}" class="palette-item" style="display:flex;flex-direction:column;padding:10px 16px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.12s ease;">
+              <span style="color:var(--fg-0,#f8fafc);font-weight:500;font-size:13px;">${c.title}</span>
+              <span style="color:var(--fg-muted,#64748b);font-size:11px;">${c.desc}</span>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    const input = modal.querySelector('#universalPaletteInput');
+    input.focus();
+
+    input.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const items = modal.querySelectorAll('.palette-item');
+      items.forEach(el => {
+        const text = el.textContent.toLowerCase();
+        el.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    });
+
+    const close = () => modal.remove();
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) close();
+    });
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        close();
+        window.removeEventListener('keydown', onKeyDown);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+  }
+
+  _initStorageNotice() {
+    if (typeof window === 'undefined' || localStorage.getItem('horologium_storage_ack')) return;
+    const notice = document.createElement('div');
+    notice.id = 'horologiumStorageNotice';
+    notice.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:99999;max-width:380px;background:var(--bg-1,#121721);border:1px solid var(--border-hairline,rgba(255,255,255,0.1));border-radius:8px;padding:14px 16px;box-shadow:0 12px 30px rgba(0,0,0,0.5);font-family:var(--font-mono,monospace);font-size:11px;color:var(--fg-1,#94a3b8);display:flex;flex-direction:column;gap:10px;';
+    notice.innerHTML = `
+      <div style="display:flex;align-items:center;gap:6px;color:var(--fg-0,#f8fafc);font-weight:600;">
+        <span style="color:var(--accent-primary,#FF5E24);">â—</span> Zero-Knowledge Chronometry
+      </div>
+      <div style="line-height:1.45;">
+        Horologium uses strictly client-side storage for chronometer calibration, pinned stations, and theme state. No tracking cookies or external ad analytics are ever deployed.
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;">
+        <a href="/privacy/" style="color:var(--fg-2,#64748b);text-decoration:none;font-size:10px;align-self:center;">Read Policy</a>
+        <button type="button" id="ackStorageBtn" style="background:var(--accent-primary,#FF5E24);color:#0b0e14;border:none;border-radius:4px;padding:4px 10px;font-family:var(--font-mono,monospace);font-size:11px;font-weight:600;cursor:pointer;">Acknowledge</button>
+      </div>
+    `;
+    document.body.appendChild(notice);
+    notice.querySelector('#ackStorageBtn').onclick = () => {
+      localStorage.setItem('horologium_storage_ack', 'true');
+      notice.remove();
+    };
   }
 }
 

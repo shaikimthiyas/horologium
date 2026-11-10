@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // Contact & Support</title>
+    <title>Contact & Liaison — Horologium</title>
+    <meta name="description" content="Direct communication channel and telemetry transmission portal for Horologium inquiries." />
+    <link rel="canonical" href="https://horologium.telemetry.org/protocol-liaison/" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e14" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
+
+    <!-- Favicon Suite -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Social Graph & Twitter Card -->
+    <meta property="og:title" content="Contact & Liaison — Horologium" />
+    <meta property="og:description" content="Direct communication channel and telemetry transmission portal for Horologium inquiries." />
+    <meta property="og:url" content="https://horologium.telemetry.org/protocol-liaison/" />
+    <meta property="og:site_name" content="Horologium" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Contact & Liaison — Horologium" />
+    <meta name="twitter:description" content="Direct communication channel and telemetry transmission portal for Horologium inquiries." />
+    <meta name="twitter:image" content="/cover.png" />
+
+    <!-- Zero-Flash Theme Script -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('horologium_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'silvered' : 'obsidian');
+        document.documentElement.setAttribute('data-theme', t === 'light' || t === 'silvered' ? 'silvered' : 'obsidian');
+      })();
+    </script>
+
     <link rel="stylesheet" href="/src/styles/main.css"/>
     <style>
         .inquiry-page {
@@ -201,6 +234,12 @@
             </div>
 
             <form id="contactForm">
+                <!-- Honeypot invisible bot trap -->
+                <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
+                    <label for="hp_station_token">Leave this field blank</label>
+                    <input type="text" id="hp_station_token" name="hp_station_token" tabindex="-1" autocomplete="off" />
+                </div>
+
                 <div class="form-row">
                     <label class="form-label" for="contactName">Your Name or Organization</label>
                     <div class="input-recessed-group">
@@ -274,21 +313,22 @@
             const name = document.getElementById("contactName").value.trim();
             const email = document.getElementById("contactEmail").value.trim();
             const message = document.getElementById("contactMessage").value.trim();
+            const hp_station_token = document.getElementById("hp_station_token") ? document.getElementById("hp_station_token").value.trim() : "";
 
             submitBtn.setAttribute("data-loading", "true");
             submitBtn.disabled = true;
 
             try {
-                const res = await fetch("/api/inquiries", {
+                const res = await fetch("/api/transmissions", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, email, message })
+                    body: JSON.stringify({ name, email, message, hp_station_token })
                 });
 
                 const data = await res.json();
                 if (data.success) {
                     statusEl.className = "status-msg success";
-                    statusEl.textContent = `✓ Message sent successfully (Reference ID: ${data.inquiry.id}). Our team will review and respond shortly.`;
+                    statusEl.textContent = `✓ Message sent successfully (Reference ID: ${data.id || 'ACK-2026'}). Our team will review and respond shortly.`;
                     form.reset();
                 } else {
                     statusEl.className = "status-msg";

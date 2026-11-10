@@ -187,3 +187,4 @@ Horologium includes a dedicated backup controller ([server/db/backup.js](file://
 3. **Protected Admin Endpoints:**
    - `POST /api/admin/backup`: Triggers an immediate point-in-time snapshot.
    - `GET /api/admin/backups`: Returns metadata and file sizes of existing backups.
+

@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOROLOGIUM // Privacy Policy</title>
+    <title>Privacy Policy & Data Sovereignty — Horologium</title>
     <meta name="description" content="Privacy policy and zero-tracking commitment for Horologium, conceived and built by Shaik Imthiyas." />
+    <link rel="canonical" href="https://horologium.telemetry.org/privacy/" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e14" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
+
+    <!-- Favicon Suite -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Social Graph & Twitter Card -->
+    <meta property="og:title" content="Privacy Policy & Data Sovereignty — Horologium" />
+    <meta property="og:description" content="Privacy policy and zero-tracking commitment for Horologium, conceived and built by Shaik Imthiyas." />
+    <meta property="og:url" content="https://horologium.telemetry.org/privacy/" />
+    <meta property="og:site_name" content="Horologium" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Privacy Policy & Data Sovereignty — Horologium" />
+    <meta name="twitter:description" content="Privacy policy and zero-tracking commitment for Horologium, conceived and built by Shaik Imthiyas." />
+    <meta name="twitter:image" content="/cover.png" />
+
+    <!-- Zero-Flash Theme Script -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('horologium_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'silvered' : 'obsidian');
+        document.documentElement.setAttribute('data-theme', t === 'light' || t === 'silvered' ? 'silvered' : 'obsidian');
+      })();
+    </script>
+
     <link rel="stylesheet" href="/src/styles/main.css"/>
     <link rel="stylesheet" href="/src/styles/layout.css"/>
     <style>
