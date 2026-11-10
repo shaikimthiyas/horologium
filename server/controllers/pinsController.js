@@ -1,13 +1,24 @@
 /**
  * Horologium Pinned Stations Controller
- * CRUD operations for custom telemetry stations stored in SQLite
+ * CRUD operations for custom telemetry stations stored with dual-engine support
+ * and backward-compatible field harmonization (city/name, tz/timezone).
  */
 import { db } from '../db/database.js';
 
 export function getPins(req, res) {
   try {
     const stmt = db.prepare('SELECT id, city, country, tz, sort_order FROM pinned_stations ORDER BY sort_order ASC, id ASC');
-    const pins = stmt.all();
+    const rawPins = stmt.all();
+    const pins = rawPins.map(p => ({
+      id: p.id,
+      city: p.city,
+      name: p.city,
+      country: p.country,
+      tz: p.tz,
+      timezone: p.tz,
+      sort_order: p.sort_order
+    }));
+
     return res.json({
       success: true,
       pins
@@ -18,12 +29,16 @@ export function getPins(req, res) {
 }
 
 export function addPin(req, res) {
-  const { city, country, tz, sort_order } = req.body || {};
+  const body = req.body || {};
+  const city = (body.city || body.name || '').trim();
+  const tz = (body.tz || body.timezone || '').trim();
+  const country = (body.country || 'Global Station').trim();
+  const sort_order = parseInt(body.sort_order, 10) || 0;
 
-  if (!city || !country || !tz) {
+  if (!city || !tz) {
     return res.status(400).json({
       success: false,
-      error: 'Fields "city", "country", and "tz" are required.'
+      error: 'Either ("city" and "tz") or ("name" and "timezone") must be provided.'
     });
   }
 
@@ -32,11 +47,21 @@ export function addPin(req, res) {
       INSERT INTO pinned_stations (city, country, tz, sort_order)
       VALUES (?, ?, ?, ?)
     `);
-    const info = stmt.run(city.trim(), country.trim(), tz.trim(), sort_order || 0);
+    const info = stmt.run(city, country, tz, sort_order);
+    const newId = Number(info.lastInsertRowid);
 
     return res.status(201).json({
       success: true,
-      id: Number(info.lastInsertRowid),
+      id: newId,
+      pin: {
+        id: newId,
+        city,
+        name: city,
+        country,
+        tz,
+        timezone: tz,
+        sort_order
+      },
       message: `Station ${city} pinned to horology matrix.`
     });
   } catch (err) {

@@ -87,6 +87,16 @@ class InMemorySqliteFallback {
           });
           return { changes: 1, lastInsertRowid: self.autoId - 1 };
         }
+        if (s.includes('UPDATE operators') && s.includes('password_hash')) {
+          const [hash, salt, callsign] = params;
+          const op = self.tables.operators.find(o => o.callsign === callsign);
+          if (op) {
+            op.password_hash = hash;
+            op.salt = salt;
+            return { changes: 1 };
+          }
+          return { changes: 0 };
+        }
         if (s.includes('UPDATE api_keys') && s.includes('requests_today = requests_today + 1')) {
           const [last_used_at, id] = params;
           const k = self.tables.api_keys.find(item => item.id === Number(id));
@@ -170,7 +180,7 @@ class InMemorySqliteFallback {
 }
 
 // In test / CI environments, use ':memory:' to avoid file-lock contention across concurrent test workers
-const isTestEnv = process.env.NODE_ENV === 'test' || Boolean(process.env.CI);
+const isTestEnv = process.env.NODE_ENV === 'test' || Boolean(process.env.CI) || process.argv.includes('--test') || process.execArgv.includes('--test');
 const dbPath = isTestEnv ? ':memory:' : resolve(dataDir, 'horologium.db');
 
 export const db = DatabaseSyncClass
@@ -343,12 +353,14 @@ function seedDatabase() {
     const { count } = countStmt.get();
 
     if (count === 0) {
-      const { hash, salt } = hashPassword('password123');
+      const initialCallsign = (process.env.OPERATOR_INITIAL_CALLSIGN || 'admin').trim().toLowerCase();
+      const initialPassword = process.env.OPERATOR_INITIAL_PASSWORD || 'password123';
+      const { hash, salt } = hashPassword(initialPassword);
       const insertOp = db.prepare(`
         INSERT INTO operators (callsign, password_hash, salt, role)
         VALUES (?, ?, ?, ?)
       `);
-      insertOp.run('admin', hash, salt, 'commander');
+      insertOp.run(initialCallsign, hash, salt, 'commander');
     }
 
     // 2. Seed initial pinned telemetry stations

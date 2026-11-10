@@ -1,11 +1,17 @@
 /**
  * Horologium Enterprise Database Adapter (PostgreSQL 16 + TimescaleDB & SQLite Hybrid)
- * Supports enterprise connection pooling, graceful reconnects, and seamless
- * fallback to embedded SQLite (WAL mode) when running standalone without Postgres.
+ * Supports enterprise connection pooling, graceful reconnects, automated migrations bootstrap,
+ * and seamless fallback to embedded SQLite (WAL mode) when running standalone without Postgres.
  */
 
 import pg from 'pg';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { db as sqliteDb } from './database.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const { Pool } = pg;
 
@@ -34,6 +40,9 @@ class DatabaseManager {
 
         this.isPostgres = true;
         console.info('[Horologium DB] Connected to PostgreSQL 16 / TimescaleDB cluster.');
+        this.bootstrapMigrations().catch((err) => {
+          console.warn('[Horologium DB] Migration bootstrap error:', err.message);
+        });
       } catch (err) {
         console.warn('[Horologium DB] Postgres pool initialization failed, using SQLite WAL fallback:', err.message);
         this.isPostgres = false;
@@ -41,6 +50,23 @@ class DatabaseManager {
     } else {
       console.info('[Horologium DB] DATABASE_URL not set. Running embedded high-performance SQLite engine (WAL mode).');
       this.isPostgres = false;
+    }
+  }
+
+  async bootstrapMigrations() {
+    if (!this.isPostgres || !this.pgPool) return;
+    try {
+      const migrationsDir = resolve(__dirname, './migrations');
+      if (existsSync(migrationsDir)) {
+        const files = readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort();
+        for (const file of files) {
+          const sql = readFileSync(resolve(migrationsDir, file), 'utf-8');
+          await this.pgPool.query(sql);
+          console.info(`[Horologium DB] Verified enterprise migration: ${file}`);
+        }
+      }
+    } catch (err) {
+      console.warn('[Horologium DB] Migration bootstrap warning:', err.message);
     }
   }
 
@@ -73,6 +99,131 @@ class DatabaseManager {
       console.error('[SQLite] Query execution error:', err.message, 'SQL:', text);
       throw err;
     }
+  }
+
+  async findOperator(callsign) {
+    if (!callsign) return null;
+    const clean = callsign.trim().toLowerCase();
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query('SELECT * FROM operators WHERE callsign = $1 LIMIT 1', [clean]);
+        return res.rows[0] || null;
+      } catch (err) {
+        console.warn('[Postgres] findOperator fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare('SELECT * FROM operators WHERE callsign = ?');
+    return stmt.get(clean) || null;
+  }
+
+  async updateOperatorPassword(callsign, hash, salt) {
+    if (!callsign) return false;
+    const clean = callsign.trim().toLowerCase();
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query('UPDATE operators SET password_hash = $1, salt = $2 WHERE callsign = $3', [hash, salt, clean]);
+        return res.rowCount > 0;
+      } catch (err) {
+        console.warn('[Postgres] updateOperatorPassword fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare('UPDATE operators SET password_hash = ?, salt = ? WHERE callsign = ?');
+    const res = stmt.run(hash, salt, clean);
+    return res.changes > 0;
+  }
+
+  async getPins() {
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query('SELECT id, city, country, tz_identifier AS tz, latitude AS lat, longitude AS lng, sort_order FROM pinned_stations ORDER BY sort_order ASC, created_at ASC');
+        return res.rows;
+      } catch (err) {
+        console.warn('[Postgres] getPins fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare('SELECT id, city, country, tz, sort_order FROM pinned_stations ORDER BY sort_order ASC, id ASC');
+    return stmt.all();
+  }
+
+  async createPin({ city, country, tz, sort_order = 0, lat = null, lng = null }) {
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query(
+          'INSERT INTO pinned_stations (city, country, tz_identifier, latitude, longitude, sort_order) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+          [city, country, tz, lat, lng, sort_order]
+        );
+        return res.rows[0]?.id;
+      } catch (err) {
+        console.warn('[Postgres] createPin fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare(`
+      INSERT INTO pinned_stations (city, country, tz, sort_order)
+      VALUES (?, ?, ?, ?)
+    `);
+    const info = stmt.run(city, country, tz, sort_order);
+    return Number(info.lastInsertRowid);
+  }
+
+  async deletePin(id) {
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query('DELETE FROM pinned_stations WHERE id = $1', [id]);
+        return res.rowCount > 0;
+      } catch (err) {
+        console.warn('[Postgres] deletePin fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare('DELETE FROM pinned_stations WHERE id = ?');
+    const info = stmt.run(id);
+    return info.changes > 0;
+  }
+
+  async recordTelemetryLog(eventType, details) {
+    const detailsStr = typeof details === 'string' ? details : JSON.stringify(details);
+    try {
+      const stmt = sqliteDb.prepare('INSERT INTO telemetry_logs (event_type, details) VALUES (?, ?)');
+      stmt.run(eventType, detailsStr);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async createTransmission({ transmitterName, returnFrequency, payload, ipAddress }) {
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query(
+          'INSERT INTO transmissions (transmitter_name, return_frequency, payload, ip_address) VALUES ($1, $2, $3, $4) RETURNING id',
+          [transmitterName, returnFrequency, payload, ipAddress]
+        );
+        return res.rows[0]?.id;
+      } catch (err) {
+        console.warn('[Postgres] createTransmission fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare(`
+      INSERT INTO transmissions (transmitter_name, return_frequency, payload, ip_address)
+      VALUES (?, ?, ?, ?)
+    `);
+    const info = stmt.run(transmitterName, returnFrequency, payload, ipAddress);
+    return Number(info.lastInsertRowid);
+  }
+
+  async getTransmissions(limit = 50) {
+    if (this.isPostgres && this.pgPool) {
+      try {
+        const res = await this.pgPool.query(
+          'SELECT id, transmitter_name, return_frequency, payload, ip_address, status, created_at FROM transmissions ORDER BY created_at DESC LIMIT $1',
+          [limit]
+        );
+        return res.rows;
+      } catch (err) {
+        console.warn('[Postgres] getTransmissions fallback:', err.message);
+      }
+    }
+    const stmt = sqliteDb.prepare('SELECT id, transmitter_name, return_frequency, payload, ip_address, status, created_at FROM transmissions ORDER BY id DESC LIMIT ?');
+    return stmt.all(limit);
   }
 
   async recordTelemetryDrift(telemetry) {

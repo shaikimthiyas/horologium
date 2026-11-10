@@ -30,14 +30,60 @@ export class TelemetryMatrix {
         if (data.success && Array.isArray(data.pins) && data.pins.length > 0) {
           this.pinnedCities = data.pins.map(p => ({
             id: p.id,
-            city: p.city,
+            city: p.city || p.name,
             country: p.country,
-            tz: p.tz
+            tz: p.tz || p.timezone
           }));
         }
       }
     } catch (e) {
       // Keep defaults on network error
+    }
+  }
+
+  async togglePin(station) {
+    const city = station.city || station.name;
+    const country = station.country || 'Global Station';
+    const tz = station.tz || station.timezone;
+
+    const existingIdx = this.pinnedCities.findIndex(p => p.tz === tz || (p.city === city && p.country === country));
+
+    if (existingIdx !== -1) {
+      const existingPin = this.pinnedCities[existingIdx];
+      this.pinnedCities.splice(existingIdx, 1);
+      this.render();
+
+      if (existingPin.id) {
+        try {
+          const token = typeof localStorage !== 'undefined' ? localStorage.getItem('horologium_operator_token') : null;
+          await fetch(`/api/pins/${existingPin.id}`, {
+            method: 'DELETE',
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+          });
+        } catch (_) {}
+      }
+      return false;
+    } else {
+      const newPin = { city, country, tz, sort_order: this.pinnedCities.length + 1 };
+      this.pinnedCities.push(newPin);
+      this.render();
+
+      try {
+        const token = typeof localStorage !== 'undefined' ? localStorage.getItem('horologium_operator_token') : null;
+        const res = await fetch('/api/pins', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify(newPin)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.id) newPin.id = data.id;
+        }
+      } catch (_) {}
+      return true;
     }
   }
 

@@ -443,15 +443,57 @@ export class MasterHeaderController {
 
     document.body.appendChild(modal);
     const input = modal.querySelector('#universalPaletteInput');
+    const list = modal.querySelector('#universalPaletteList');
     input.focus();
 
+    let searchDebounceTimer = null;
+
+    const renderLocalFallback = (q) => {
+      list.innerHTML = ALL_CONSOLES
+        .filter(c => !q || c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q))
+        .map(c => `
+          <a href="${c.href}" class="palette-item" style="display:flex;flex-direction:column;padding:10px 16px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.12s ease;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="color:var(--fg-0,#f8fafc);font-weight:500;font-size:13px;">${c.title}</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--accent-primary,#FF5E24);text-transform:uppercase;">CONSOLE</span>
+            </div>
+            <span style="color:var(--fg-muted,#64748b);font-size:11px;">${c.desc}</span>
+          </a>
+        `).join('') || '<div style="padding:16px;text-align:center;color:var(--fg-muted);font-size:12px;">No matching results</div>';
+    };
+
     input.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const items = modal.querySelectorAll('.palette-item');
-      items.forEach(el => {
-        const text = el.textContent.toLowerCase();
-        el.style.display = text.includes(q) ? 'flex' : 'none';
-      });
+      const q = e.target.value.trim().toLowerCase();
+      clearTimeout(searchDebounceTimer);
+
+      if (!q) {
+        renderLocalFallback('');
+        return;
+      }
+
+      searchDebounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`/api/v1/search?q=${encodeURIComponent(q)}&limit=15`);
+          if (!res.ok) throw new Error('Search failed');
+          const data = await res.json();
+
+          if (data.results && data.results.length > 0) {
+            list.innerHTML = data.results.map(r => `
+              <a href="${r.url}" class="palette-item" style="display:flex;flex-direction:column;padding:10px 16px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.12s ease;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="color:var(--fg-0,#f8fafc);font-weight:500;font-size:13px;">${r.flag ? r.flag + ' ' : ''}${r.title}</span>
+                  <span style="font-family:var(--font-mono);font-size:10px;color:${r.type === 'navigation' ? 'var(--accent-primary,#FF5E24)' : r.type === 'territory' ? '#38BDF8' : '#00F5D4'};text-transform:uppercase;">${r.type}</span>
+                </div>
+                <span style="color:var(--fg-muted,#64748b);font-size:11px;">${r.subtitle}</span>
+              </a>
+            `).join('');
+          } else {
+            renderLocalFallback(q);
+          }
+        } catch (_) {
+          renderLocalFallback(q);
+        }
+      }, 120);
     });
 
     const close = () => modal.remove();

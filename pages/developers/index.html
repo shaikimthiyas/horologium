@@ -318,6 +318,8 @@
           </button>
         </form>
 
+        <div id="keyStatusMsg" style="display:none; padding:10px 14px; border-radius:6px; font-size:12px; margin-top:8px;" role="status"></div>
+
         <div id="keyResult" style="display:none; flex-direction:column; gap:10px; margin-top:10px;">
           <span style="font-size:12px; font-weight:600; color:#10B981;">✓ API Key Created Successfully</span>
           <div class="code-box">
@@ -325,6 +327,19 @@
             <code id="rawKeyText">hlg_live_...</code>
           </div>
           <p style="font-size:11px; color:#94A3B8;">Pass this key via <code style="color:#00F5D4;">X-Horologium-Key</code> or <code style="color:#00F5D4;">Authorization: Bearer</code> header.</p>
+        </div>
+
+        <!-- Live Key Quota & Status Inspection Tool -->
+        <div style="border-top: 1px solid var(--dev-border); padding-top: 16px; margin-top: 16px;">
+          <h3 style="font-size: 13px; font-weight: 600; color: #CBD5E1; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+            <span>🔍</span>
+            <span>Inspect Key Quota & Health Status</span>
+          </h3>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="verifyKeyInput" class="form-input" placeholder="Paste your hlg_live_* key here" style="flex: 1;" />
+            <button type="button" id="btnVerifyKey" class="btn-primary" style="padding: 8px 16px; font-size: 12px; white-space: nowrap;">Check Status</button>
+          </div>
+          <div id="verifyKeyResult" style="display: none; margin-top: 12px; padding: 12px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--dev-border); font-size: 12px;" role="region" aria-live="polite"></div>
         </div>
       </section>
 
@@ -417,9 +432,25 @@
     const rawKeyText = document.getElementById('rawKeyText');
     const btnSubmit = document.getElementById('btnSubmitKey');
     const btnCopy = document.getElementById('btnCopyKey');
+    const keyStatusMsg = document.getElementById('keyStatusMsg');
+
+    function showStatus(text, isError = false) {
+      keyStatusMsg.style.display = 'block';
+      if (isError) {
+        keyStatusMsg.style.background = 'rgba(239, 68, 68, 0.12)';
+        keyStatusMsg.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        keyStatusMsg.style.color = '#FCA5A5';
+      } else {
+        keyStatusMsg.style.background = 'rgba(16, 185, 129, 0.12)';
+        keyStatusMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+        keyStatusMsg.style.color = '#6EE7B7';
+      }
+      keyStatusMsg.textContent = text;
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      keyStatusMsg.style.display = 'none';
       btnSubmit.disabled = true;
       btnSubmit.textContent = 'Provisioning...';
 
@@ -439,11 +470,12 @@
         if (res.ok) {
           resultBox.style.display = 'flex';
           rawKeyText.textContent = data.apiKey;
+          showStatus('API key generated successfully. Copy and store it in a secure location.', false);
         } else {
-          alert(data.detail || 'Failed to provision key');
+          showStatus(data.detail || data.title || 'Failed to provision key. Please verify form fields.', true);
         }
       } catch (err) {
-        alert('Network error provisioning key');
+        showStatus('Network error while provisioning API key. Check server connection.', true);
       } finally {
         btnSubmit.disabled = false;
         btnSubmit.textContent = 'Generate Free API Key →';
@@ -454,6 +486,64 @@
       navigator.clipboard.writeText(rawKeyText.textContent);
       btnCopy.textContent = 'Copied!';
       setTimeout(() => { btnCopy.textContent = 'Copy'; }, 2000);
+    });
+
+    // 1b. Key Quota & Live Health Inspector
+    const verifyKeyInput = document.getElementById('verifyKeyInput');
+    const btnVerifyKey = document.getElementById('btnVerifyKey');
+    const verifyKeyResult = document.getElementById('verifyKeyResult');
+
+    btnVerifyKey.addEventListener('click', async () => {
+      const rawKey = verifyKeyInput.value.trim();
+      if (!rawKey) {
+        verifyKeyResult.style.display = 'block';
+        verifyKeyResult.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        verifyKeyResult.style.color = '#FCA5A5';
+        verifyKeyResult.innerHTML = '⚠️ Please enter an API key to inspect.';
+        return;
+      }
+
+      btnVerifyKey.disabled = true;
+      btnVerifyKey.textContent = 'Checking...';
+      verifyKeyResult.style.display = 'block';
+      verifyKeyResult.innerHTML = 'Connecting to telemetry governance node...';
+
+      try {
+        const res = await fetch('/api/v1/developers/keys/verify', {
+          headers: { 'X-Horologium-Key': rawKey }
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === 'valid') {
+          verifyKeyResult.style.border = '1px solid rgba(0, 245, 212, 0.3)';
+          verifyKeyResult.style.color = '#EDEFF2';
+          verifyKeyResult.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-weight:700; color:#00F5D4;">● KEY ACTIVE & VALID</span>
+              <span style="font-family:var(--font-mono); font-size:11px; color:#94A3B8;">PREFIX: ${data.keyPrefix}</span>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; font-size:11px;">
+              <div><strong>Tenant:</strong> ${data.tenantName}</div>
+              <div><strong>Email:</strong> ${data.tenantEmail}</div>
+              <div><strong>Tier:</strong> <span style="text-transform:uppercase; color:#00F5D4;">${data.tier}</span> (${data.rateLimitRpm} RPM)</div>
+              <div><strong>Requests Today:</strong> ${data.requestsToday}</div>
+              <div><strong>Allowed Domains:</strong> <code>${data.allowedDomains}</code></div>
+              <div><strong>SLA Standard:</strong> ${data.slaTier}</div>
+            </div>
+          `;
+        } else {
+          verifyKeyResult.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+          verifyKeyResult.style.color = '#FCA5A5';
+          verifyKeyResult.innerHTML = `❌ Verification Failed: ${data.detail || data.title || 'Invalid or revoked API key.'}`;
+        }
+      } catch (err) {
+        verifyKeyResult.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        verifyKeyResult.style.color = '#FCA5A5';
+        verifyKeyResult.innerHTML = `⚠️ Network error inspecting API key.`;
+      } finally {
+        btnVerifyKey.disabled = false;
+        btnVerifyKey.textContent = 'Check Status';
+      }
     });
 
     // 2. Widget Studio Configurator

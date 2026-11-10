@@ -2,7 +2,7 @@
  * Horologium Operator Authentication Controller
  * Scoped, secure HMAC token-based clearance system
  */
-import { db, verifyPassword } from '../db/database.js';
+import { db, verifyPassword, hashPassword } from '../db/database.js';
 import { randomBytes, createHmac } from 'node:crypto';
 
 const SESSION_SECRET = process.env.SESSION_SECRET || 'horologium_meridian_telemetry_2026';
@@ -117,5 +117,62 @@ export function logout(req, res) {
   return res.json({
     success: true,
     message: 'Operator clearance revoked.'
+  });
+}
+
+export function changePassword(req, res) {
+  const { currentPassword, newPassword } = req.body || {};
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      error: 'Current cipher and new cipher are required.'
+    });
+  }
+
+  if (typeof newPassword !== 'string' || newPassword.length < 8) {
+    return res.status(400).json({
+      success: false,
+      error: 'New cipher must contain at least 8 characters.'
+    });
+  }
+
+  const callsign = req.operator?.callsign;
+  if (!callsign) {
+    return res.status(401).json({
+      success: false,
+      error: 'Active operator session required.'
+    });
+  }
+
+  const stmt = db.prepare('SELECT * FROM operators WHERE callsign = ?');
+  const operator = stmt.get(callsign);
+
+  if (!operator) {
+    return res.status(404).json({
+      success: false,
+      error: 'Operator account not found.'
+    });
+  }
+
+  const isValid = verifyPassword(currentPassword, operator.password_hash, operator.salt);
+  if (!isValid) {
+    return res.status(401).json({
+      success: false,
+      error: 'Current access cipher is invalid.'
+    });
+  }
+
+  const { hash, salt } = hashPassword(newPassword);
+  db.prepare('UPDATE operators SET password_hash = ?, salt = ? WHERE callsign = ?').run(hash, salt, callsign);
+
+  db.prepare('INSERT INTO telemetry_logs (event_type, details) VALUES (?, ?)').run(
+    'AUTH_PASSWORD_CHANGED',
+    JSON.stringify({ callsign, ip: req.ip, timestamp: new Date().toISOString() })
+  );
+
+  return res.json({
+    success: true,
+    message: 'Operator cipher updated successfully.'
   });
 }

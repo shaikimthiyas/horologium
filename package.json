@@ -11,7 +11,7 @@
     "start": "node server.js",
     "preview": "vite preview",
     "verify": "node --test tests/unit/integrity.test.js",
-    "test": "node --test --test-concurrency=1"
+    "test": "node --test --test-concurrency=1 tests/integration/*.test.js tests/unit/*.test.js"
   },
   "devDependencies": {
     "concurrently": "^10.0.6",

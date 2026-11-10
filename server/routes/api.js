@@ -8,7 +8,8 @@
 import { Router } from 'express';
 import { getTime, getSolarDeclination, getSubsolarLongitude } from '../controllers/timeController.js';
 import { getCountries, getCountryByCode } from '../controllers/countriesController.js';
-import { login, getMe, logout } from '../controllers/authController.js';
+import { login, getMe, logout, changePassword } from '../controllers/authController.js';
+import { searchRegistry } from '../controllers/searchController.js';
 import { getPins, addPin, deletePin } from '../controllers/pinsController.js';
 import { createTransmission, getTransmissions } from '../controllers/inquiryController.js';
 import { requireOperatorAuth } from '../middleware/authMiddleware.js';
@@ -92,10 +93,28 @@ const overlapQuerySchema = z.object({
 });
 
 const pinBodySchema = z.object({
-  name: z.string().min(1).max(100),
-  lat: z.coerce.number().min(-90).max(90),
-  lng: z.coerce.number().min(-180).max(180),
-  timezone: z.string().min(1).max(100)
+  city: z.string().min(1).max(100).optional(),
+  name: z.string().min(1).max(100).optional(),
+  country: z.string().max(100).optional(),
+  tz: z.string().max(100).optional(),
+  timezone: z.string().max(100).optional(),
+  lat: z.coerce.number().min(-90).max(90).optional(),
+  lng: z.coerce.number().min(-180).max(180).optional(),
+  sort_order: z.coerce.number().int().optional()
+}).refine(data => (data.city || data.name) && (data.tz || data.timezone), {
+  message: "Either ('city' and 'tz') or ('name' and 'timezone') must be provided."
+});
+
+const searchQuerySchema = z.object({
+  q: z.string().max(100).optional(),
+  query: z.string().max(100).optional(),
+  category: z.enum(['all', 'territories', 'timezones', 'navigation']).optional(),
+  limit: z.coerce.number().int().min(1).max(50).optional()
+});
+
+const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1).max(255),
+  newPassword: z.string().min(8).max(255)
 });
 
 const transmissionBodySchema = z.object({
@@ -236,11 +255,19 @@ apiRouter.get('/v1/zones/overlap', validateRequest({ query: overlapQuerySchema }
 });
 
 /**
+ * Enterprise Federated Search Engine
+ */
+apiRouter.get('/v1/search', validateRequest({ query: searchQuerySchema }), searchRegistry);
+apiRouter.get('/search', validateRequest({ query: searchQuerySchema }), searchRegistry);
+
+/**
  * Operator Authentication
  */
 apiRouter.post('/auth/login', login);
 apiRouter.get('/auth/me', getMe);
 apiRouter.post('/auth/logout', logout);
+apiRouter.post('/auth/change-password', requireOperatorAuth, validateRequest({ body: changePasswordSchema }), changePassword);
+apiRouter.post('/v1/auth/change-password', requireOperatorAuth, validateRequest({ body: changePasswordSchema }), changePassword);
 
 /**
  * Pinned Telemetry Stations

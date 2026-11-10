@@ -46,6 +46,7 @@ export function createTransmission(req, res) {
       message: 'Transmission successfully logged in Horologium registry.'
     });
   } catch (err) {
+    console.error('[InquiryController Error]:', err);
     return res.status(500).json({ success: false, error: err.message });
   }
 }
@@ -59,6 +60,7 @@ export function getTransmissions(req, res) {
       transmissions: records
     });
   } catch (err) {
+    console.error('[InquiryController Error]:', err);
     return res.status(500).json({ success: false, error: err.message });
   }
 }

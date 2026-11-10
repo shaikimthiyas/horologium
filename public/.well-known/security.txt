@@ -12,3 +12,4 @@ Acknowledgments: https://github.com/shaikimthiyas/horologium/graphs/contributors
 # Scope & Response SLA:
 # Horologium maintains a 24-hour initial response SLA for confirmed vulnerability reports.
 # See docs/SECURITY.md for cryptographic specifications and responsible disclosure guidelines.
+

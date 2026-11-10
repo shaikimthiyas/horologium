@@ -12,12 +12,14 @@ import { embedRouter } from './routes/embed.js';
 import { metricsMiddleware } from './middleware/metricsMiddleware.js';
 import { livenessProbe, readinessProbe, startupProbe } from './middleware/healthProbes.js';
 import { problemDetailsErrorHandler } from './middleware/problemDetails.js';
+import { requestIdMiddleware } from './middleware/requestId.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export const app = express();
 
+app.use(requestIdMiddleware);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

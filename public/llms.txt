@@ -132,3 +132,4 @@ Drop-in zero-dependency custom elements:
 - Code Style & Standards: https://github.com/shaikimthiyas/horologium/blob/main/docs/CODE_STYLE.md
 - Database Architecture: https://github.com/shaikimthiyas/horologium/blob/main/docs/DATABASE.md
 - Deployment & DevOps: https://github.com/shaikimthiyas/horologium/blob/main/docs/DEPLOYMENT.md
+
