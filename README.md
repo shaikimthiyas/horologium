@@ -230,7 +230,12 @@ horologium/
 │   └── PULL_REQUEST_TEMPLATE.md  # Standardized production change verification checklist
 ├── deploy/                       # Multi-stage Docker & production deployment manifests
 ├── docs/                         # Consolidated engineering specifications & standards
+│   ├── API_GUIDE.md              # REST & WebSocket SNTP developer integration guide
 │   ├── ARCHITECTURE.md           # Master System Architecture & Calibre-01 Design System
+│   ├── CODE_STYLE.md             # Code style, formatting, conventions & token rules
+│   ├── DATABASE.md               # SQLite WAL & TimescaleDB hypertables architecture
+│   ├── DEPLOYMENT.md             # Multi-stage Docker, Compose & Kubernetes deployment
+│   ├── SECURITY.md               # Security architecture, API key lifecycle & threat model
 │   └── STANDARDS.md              # Quality Gates, RFC Compliance & Editorial Standards
 ├── extension/                    # Chromium Browser Extension companion (Manifest V3)
 │   ├── manifest.json             # Manifest V3 service worker & permissions
@@ -366,6 +371,11 @@ docker compose up -d --build
 ## 9. Deep Architectural Documentation
 
 - 🏛️ [Master System Architecture & Design System](docs/ARCHITECTURE.md)
+- 🔒 [Security Architecture & Threat Model](docs/SECURITY.md)
+- 📡 [Developer REST & WebSocket API Guide](docs/API_GUIDE.md)
+- 🗄️ [Database Architecture & Time-Series Hypertables](docs/DATABASE.md)
+- 📐 [Code Style & Engineering Conventions](docs/CODE_STYLE.md)
+- 🚢 [Production Deployment & Containerization Guide](docs/DEPLOYMENT.md)
 - 🎯 [Production Quality Standards & Editorial Guidelines](docs/STANDARDS.md)
 - 📮 [Official Postman Collection (v2.1.0)](public/horologium.postman_collection.json)
 - 🌐 [OpenAPI 3.1.0 Specification](public/openapi.json)

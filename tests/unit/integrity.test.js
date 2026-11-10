@@ -44,6 +44,16 @@ const PACKAGES = [
   'packages/client/index.d.ts'
 ];
 
+const CANONICAL_DOCS = [
+  'docs/ARCHITECTURE.md',
+  'docs/STANDARDS.md',
+  'docs/SECURITY.md',
+  'docs/CODE_STYLE.md',
+  'docs/DATABASE.md',
+  'docs/API_GUIDE.md',
+  'docs/DEPLOYMENT.md'
+];
+
 describe('Horologium Repository & Architecture Integrity', () => {
   test('all canonical multi-page shells exist on disk with valid doctype', () => {
     for (const page of CANONICAL_PAGES) {
@@ -65,6 +75,15 @@ describe('Horologium Repository & Architecture Integrity', () => {
     for (const pkg of PACKAGES) {
       const p = resolve(root, pkg);
       assert.ok(existsSync(p), `Missing package file: ${pkg}`);
+    }
+  });
+
+  test('canonical documentation files exist on disk with valid headers', () => {
+    for (const doc of CANONICAL_DOCS) {
+      const p = resolve(root, doc);
+      assert.ok(existsSync(p), `Missing documentation file: ${doc}`);
+      const content = readFileSync(p, 'utf-8');
+      assert.ok(content.includes('Shaik Imthiyas'), `Doc ${doc} must reference author Shaik Imthiyas`);
     }
   });
 

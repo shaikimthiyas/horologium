@@ -1,5 +1,7 @@
 # Security Policy & Vulnerability Disclosure
 
+For the complete threat model, cryptographic API key specifications, rate limiting rules, and zero-knowledge client architecture, see [docs/SECURITY.md](docs/SECURITY.md).
+
 ## Supported Versions
 
 Security updates and critical patches are actively applied to the following release branches:
